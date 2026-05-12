@@ -7,9 +7,6 @@
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
-    "cf:login": "npx wrangler login",
-    "cf:whoami": "npx wrangler whoami",
-    "deploy:cloudflare": "npm run build && npx wrangler pages deploy dist --project-name=travel-gateway --branch=main",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
   },

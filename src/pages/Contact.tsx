@@ -55,6 +55,21 @@ function buildInquiryLines(formData: {
   ];
 }
 
+function buildWhatsAppUrl(formData: {
+  name: string;
+  email: string;
+  phone: string;
+  destination: string;
+  travelMonth: string;
+  budget: string;
+  preferredContact: string;
+  message: string;
+}) {
+  const inquiryLines = buildInquiryLines(formData);
+  const whatsappMessage = [`*${inquiryLines[0]}*`, ...inquiryLines.slice(1)].join("\n");
+  return `https://wa.me/${inquiryWhatsAppNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+}
+
 async function postJson(endpoint: string, payload: Record<string, unknown>) {
   const response = await fetch(endpoint, {
     method: "POST",
@@ -166,12 +181,9 @@ export default function Contact() {
         source_page: leadPayload.sourcePage,
         submitted_at: leadPayload.visitedAt,
       });
-
-      const inquiryLines = buildInquiryLines(formData);
-      const whatsappMessage = [`*${inquiryLines[0]}*`, ...inquiryLines.slice(1)].join("\n");
+      const whatsappUrl = buildWhatsAppUrl(formData);
 
       if (typeof window !== "undefined") {
-        const whatsappUrl = `https://wa.me/${inquiryWhatsAppNumber}?text=${encodeURIComponent(whatsappMessage)}`;
         window.open(whatsappUrl, "_blank", "noopener,noreferrer");
       }
 
@@ -179,15 +191,20 @@ export default function Contact() {
       setSubmitMessage("Thank you for your inquiry. Your email has been sent successfully and our team will contact you shortly.");
       setFormData({ ...initialFormData, destination: prefilledDestination });
     } catch (error) {
-      if (typeof window !== "undefined") {
+      if (typeof window !== "undefined" && formData.preferredContact === "WhatsApp") {
+        const whatsappUrl = buildWhatsAppUrl(formData);
+        window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      } else if (typeof window !== "undefined") {
         const subject = `Travel Gateway Inquiry - ${formData.name || "Website Lead"}`;
         const body = buildInquiryLines(formData).join("\n");
         window.open(`mailto:${inquiryEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, "_blank");
       }
 
-      setSubmitState("error");
+      setSubmitState(formData.preferredContact === "WhatsApp" ? "success" : "error");
       setSubmitMessage(
-        "We could not send your inquiry automatically right now. A pre-filled email has been opened as a backup."
+        formData.preferredContact === "WhatsApp"
+          ? "WhatsApp has been opened with your inquiry details so you can send them directly to Travel Gateway."
+          : "We could not send your inquiry automatically right now. A pre-filled email has been opened as a backup."
       );
     }
   };

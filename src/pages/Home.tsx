@@ -141,7 +141,7 @@ export default function Home() {
             name: "Travel Gateway",
             url: "https://travelgateway.in/",
             telephone: "+91 9898111689",
-            email: "enquiries@travelgateway.in",
+            email: "inquiry@travelgateway.in",
             address: {
               "@type": "PostalAddress",
               streetAddress: "G 901, Samanvay Scintilla, VIP Road, South Bopal",

@@ -78,7 +78,7 @@ export default function PrivacyPolicy() {
               If you have any questions about this Privacy Policy, please contact us at:<br />
               <strong>TravelGateway</strong><br />
               G 901, SAMANVAY SCINTILLA, VIP ROAD, SOUTH BOPAL, AHMEDABAD-380058<br />
-              Email: enquiries@travelgateway.in<br />
+              Email: inquiry@travelgateway.in<br />
               Phone: +91 9898111689
             </p>
           </section>

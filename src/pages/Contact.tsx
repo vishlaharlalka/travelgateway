@@ -7,7 +7,7 @@ import SEO from "@/components/SEO";
 import { FormEvent, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-const inquiryEmail = "info@travelgateway.in";
+const inquiryEmail = "enquiries@travelgateway.in";
 const inquiryWhatsAppNumber = "919898111689";
 const inquiryEndpoint = "/api/inquiry";
 const formSubmitEndpoint = `https://formsubmit.co/ajax/${inquiryEmail}`;

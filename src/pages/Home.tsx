@@ -93,17 +93,17 @@ const services = [
 const reviewPlatforms = [
   {
     name: "Google Reviews",
-    tone: "Local trust from Ahmedabad travelers",
-    description: "Read recent customer feedback and see how guests describe their planning experience with Travel Gateway.",
-    ratingLabel: "Share your Google experience",
+    tone: "Review us on Google",
+    description: "If Vishal and the Travel Gateway team helped plan a smooth trip, your Google review helps future travelers find us with confidence.",
+    actionLabel: "Write a Google review",
     href: "https://www.google.com/search?q=Travel+Gateway+South+Bopal+Ahmedabad+reviews",
     accent: "from-[#4285F4]/15 via-[#34A853]/10 to-[#FBBC05]/15",
   },
   {
     name: "Tripadvisor",
-    tone: "Traveler stories for trip planning",
-    description: "Explore traveler-style feedback and add your own review after a memorable holiday with Vishal and the team.",
-    ratingLabel: "Review Travel Gateway on Tripadvisor",
+    tone: "Review us on Tripadvisor",
+    description: "Share your Travel Gateway experience on Tripadvisor so international guests can see real stories from our travelers.",
+    actionLabel: "Find us on Tripadvisor",
     href: "https://www.tripadvisor.com/Search?q=Travel%20Gateway%20Ahmedabad",
     accent: "from-[#00AA6C]/15 via-[#00AA6C]/5 to-background",
   },
@@ -403,14 +403,14 @@ export default function Home() {
           <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
               <Badge className="mb-4 border-none bg-primary/10 text-primary">Traveler Reviews</Badge>
-              <h2 className="text-4xl font-bold tracking-tight md:text-5xl">Trusted trips, reviewed by travelers</h2>
+              <h2 className="text-4xl font-bold tracking-tight md:text-5xl">Loved your trip? Review Travel Gateway</h2>
               <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-                See what guests say on the platforms they already use before choosing a travel planner.
+                Your review helps other families, honeymooners, and international guests choose a thoughtful travel planner in Ahmedabad.
               </p>
             </div>
             <div className="flex items-center gap-2 rounded-full border border-primary/15 bg-primary/5 px-5 py-3 text-sm font-bold text-primary">
               <Star className="h-4 w-4 fill-current" />
-              Reviews from real trip conversations
+              Review us after your journey
             </div>
           </div>
 
@@ -439,15 +439,9 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="mb-7 flex gap-1 text-yellow-500">
-                  {[...Array(5)].map((_, starIndex) => (
-                    <Star key={starIndex} className="h-5 w-5 fill-current" />
-                  ))}
-                </div>
-
                 <p className="mb-8 text-lg leading-relaxed text-muted-foreground">{platform.description}</p>
                 <span className="inline-flex items-center font-bold text-primary">
-                  {platform.ratingLabel}
+                  {platform.actionLabel}
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </span>
               </motion.a>

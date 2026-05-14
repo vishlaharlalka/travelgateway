@@ -114,10 +114,24 @@ function DestinationCard({ dest, index, onSelect }: DestinationCardProps) {
               <Download className="h-4 w-4" />
             </Button>
           </div>
+
+          <button
+            type="button"
+            onClick={() => navigateToPackageReviews(dest)}
+            className="mt-4 inline-flex items-center text-sm font-bold text-primary transition-colors hover:text-primary/80"
+          >
+            Review this package
+            <Star className="ml-2 h-4 w-4" />
+          </button>
         </div>
       </Card>
     </motion.article>
   );
+}
+
+function navigateToPackageReviews(dest: Destination) {
+  const reviewPath = `${dest.link || `/destinations/${dest.id}`}#package-reviews`;
+  window.location.href = reviewPath;
 }
 
 export default function Destinations() {

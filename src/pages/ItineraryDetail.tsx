@@ -19,6 +19,14 @@ import { parseInrPrice } from "@/lib/pricing";
 
 const geminiApiKey = process.env.GEMINI_API_KEY || "";
 const destinationImageFallback = "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=1000";
+const reviewPrompts = [
+  "What made this package easy to plan from India?",
+  "Which hotel, guide, transfer, or sightseeing moment stood out?",
+  "Would you recommend this itinerary to another Indian family, couple, or group?",
+  "What should future travelers know before booking this route?",
+  "How did Travel Gateway support you before and during the journey?",
+  "Which day of the itinerary became your favorite memory?",
+];
 
 export default function ItineraryDetail() {
   const { id } = useParams();
@@ -108,6 +116,7 @@ export default function ItineraryDetail() {
   const galleryImages = destination.galleryImages?.length
     ? destination.galleryImages
     : [{ url: destination.image, alt: destination.name, caption: `${destination.name} signature view` }];
+  const packageReviewUrl = `/contact?destination=${encodeURIComponent(`${destination.name} package review`)}`;
 
   return (
     <div className="min-h-screen bg-background">
@@ -428,6 +437,42 @@ export default function ItineraryDetail() {
                 </div>
               </div>
             </section>
+
+            {/* Package Reviews */}
+            <section id="package-reviews" className="space-y-8 rounded-[3rem] border border-primary/10 bg-muted/20 p-8 md:p-12">
+              <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                <div className="max-w-2xl">
+                  <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">Package Reviews</p>
+                  <h2 className="text-3xl font-black uppercase tracking-tight">Review this {destination.name} package</h2>
+                  <p className="mt-4 text-muted-foreground leading-relaxed">
+                    We only publish genuine traveler feedback. If you booked this itinerary with Travel Gateway, share your experience so future Indian travelers can choose with confidence.
+                  </p>
+                </div>
+                <Button
+                  className="rounded-full px-7 py-6 font-bold"
+                  onClick={() => navigate(packageReviewUrl)}
+                >
+                  Write a Review
+                  <MessageSquare className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {reviewPrompts.map((prompt, index) => (
+                  <div key={prompt} className="rounded-2xl border border-primary/10 bg-background/70 p-5">
+                    <div className="mb-3 flex items-center gap-2 text-primary">
+                      <Star className="h-4 w-4" />
+                      <span className="text-[10px] font-black uppercase tracking-[0.18em]">Review prompt {index + 1}</span>
+                    </div>
+                    <p className="text-sm leading-6 text-muted-foreground">{prompt}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="rounded-2xl border border-dashed border-primary/25 bg-background/60 p-6 text-sm leading-6 text-muted-foreground">
+                No public reviews are shown for this package yet. Once real travelers submit feedback, Travel Gateway can add approved reviews here with the traveler name, city, travel month, and package details.
+              </div>
+            </section>
           </div>
 
           {/* Right Column: Sticky Action Card */}
@@ -495,6 +540,20 @@ export default function ItineraryDetail() {
                     <p className="text-center text-[10px] uppercase tracking-widest text-muted-foreground">
                       Includes itinerary, FAQs, price, and HD image section
                     </p>
+                  </div>
+
+                  <div className="rounded-3xl border border-primary/10 bg-primary/5 p-5">
+                    <p className="text-xs font-black uppercase tracking-[0.18em] text-primary">Already travelled?</p>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                      Help future guests by reviewing this package after your journey.
+                    </p>
+                    <Button
+                      variant="link"
+                      className="mt-2 h-auto p-0 font-bold text-primary"
+                      onClick={() => document.getElementById("package-reviews")?.scrollIntoView({ behavior: "smooth" })}
+                    >
+                      Review this package
+                    </Button>
                   </div>
                   
                   <div className="text-center">

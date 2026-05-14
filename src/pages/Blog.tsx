@@ -359,6 +359,11 @@ async function loadLiveNews() {
     throw new Error(`Live feed returned ${response.status}`);
   }
 
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    throw new Error("Live feed is temporarily unavailable");
+  }
+
   return (await response.json()) as FeedResponse;
 }
 
@@ -479,9 +484,7 @@ export default function Blog() {
       setLastUpdated(new Date());
       setNewsStatus("error");
       setNewsError(
-        error instanceof Error
-          ? `${error.message}. Showing verified India travel updates instead.`
-          : "The live travel feed could not be loaded right now. Showing verified India travel updates instead."
+        "The live travel feed could not refresh right now. Showing verified India travel updates instead."
       );
     }
   }, []);

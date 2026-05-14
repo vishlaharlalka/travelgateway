@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, MapPin, Star, Calendar, Users, ShieldCheck, Globe, Plane, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, MapPin, Star, Users, ShieldCheck, Globe, Plane, Quote, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -87,6 +87,25 @@ const services = [
     icon: <Users className="w-8 h-8 text-primary" />,
     title: "Group Expeditions",
     description: "Expertly guided small group tours for like-minded adventure seekers.",
+  },
+];
+
+const reviewPlatforms = [
+  {
+    name: "Google Reviews",
+    tone: "Local trust from Ahmedabad travelers",
+    description: "Read recent customer feedback and see how guests describe their planning experience with Travel Gateway.",
+    ratingLabel: "Share your Google experience",
+    href: "https://www.google.com/search?q=Travel+Gateway+South+Bopal+Ahmedabad+reviews",
+    accent: "from-[#4285F4]/15 via-[#34A853]/10 to-[#FBBC05]/15",
+  },
+  {
+    name: "Tripadvisor",
+    tone: "Traveler stories for trip planning",
+    description: "Explore traveler-style feedback and add your own review after a memorable holiday with Vishal and the team.",
+    ratingLabel: "Review Travel Gateway on Tripadvisor",
+    href: "https://www.tripadvisor.com/Search?q=Travel%20Gateway%20Ahmedabad",
+    accent: "from-[#00AA6C]/15 via-[#00AA6C]/5 to-background",
   },
 ];
 
@@ -373,6 +392,65 @@ export default function Home() {
                   {service.description}
                 </p>
               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Review Platforms Section */}
+      <section className="bg-background px-6 py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-2xl">
+              <Badge className="mb-4 border-none bg-primary/10 text-primary">Traveler Reviews</Badge>
+              <h2 className="text-4xl font-bold tracking-tight md:text-5xl">Trusted trips, reviewed by travelers</h2>
+              <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+                See what guests say on the platforms they already use before choosing a travel planner.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 rounded-full border border-primary/15 bg-primary/5 px-5 py-3 text-sm font-bold text-primary">
+              <Star className="h-4 w-4 fill-current" />
+              Reviews from real trip conversations
+            </div>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            {reviewPlatforms.map((platform, index) => (
+              <motion.a
+                key={platform.name}
+                href={platform.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className={`group block rounded-3xl border border-border bg-gradient-to-br ${platform.accent} p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl`}
+              >
+                <div className="mb-8 flex items-start justify-between gap-6">
+                  <div>
+                    <p className="mb-3 text-sm font-black uppercase tracking-[0.18em] text-muted-foreground">
+                      {platform.tone}
+                    </p>
+                    <h3 className="text-3xl font-black tracking-tight">{platform.name}</h3>
+                  </div>
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-background text-primary shadow-sm transition-transform group-hover:scale-105">
+                    <ExternalLink className="h-5 w-5" />
+                  </div>
+                </div>
+
+                <div className="mb-7 flex gap-1 text-yellow-500">
+                  {[...Array(5)].map((_, starIndex) => (
+                    <Star key={starIndex} className="h-5 w-5 fill-current" />
+                  ))}
+                </div>
+
+                <p className="mb-8 text-lg leading-relaxed text-muted-foreground">{platform.description}</p>
+                <span className="inline-flex items-center font-bold text-primary">
+                  {platform.ratingLabel}
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </span>
+              </motion.a>
             ))}
           </div>
         </div>

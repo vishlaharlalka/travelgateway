@@ -34,7 +34,7 @@ export async function onRequestOptions() {
 export async function onRequestPost(context: any) {
   const env = context.env || {};
   const resendApiKey = env.RESEND_API_KEY;
-  const toEmail = env.INQUIRY_TO_EMAIL || "inquiry@travelgateway.in";
+  const toEmail = env.INQUIRY_TO_EMAIL || "info@travelgateway.in";
   const fromEmail = env.INQUIRY_FROM_EMAIL || "Travel Gateway <inquiry@travelgateway.in>";
 
   if (!resendApiKey) {

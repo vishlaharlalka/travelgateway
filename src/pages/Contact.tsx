@@ -8,9 +8,10 @@ import { FormEvent, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const inquiryEmail = "inquiry@travelgateway.in";
+const inquiryDeliveryEmail = "info@travelgateway.in";
 const inquiryWhatsAppNumber = "919898111689";
 const inquiryEndpoint = "/api/inquiry";
-const formSubmitEndpoint = `https://formsubmit.co/ajax/${inquiryEmail}`;
+const formSubmitEndpoint = `https://formsubmit.co/ajax/${inquiryDeliveryEmail}`;
 
 type InquiryRequest = {
   name: string;
@@ -197,7 +198,7 @@ export default function Contact() {
       } else if (typeof window !== "undefined") {
         const subject = `Travel Gateway Inquiry - ${formData.name || "Website Lead"}`;
         const body = buildInquiryLines(formData).join("\n");
-        window.open(`mailto:${inquiryEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, "_blank");
+        window.open(`mailto:${inquiryDeliveryEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, "_blank");
       }
 
       setSubmitState(formData.preferredContact === "WhatsApp" ? "success" : "error");

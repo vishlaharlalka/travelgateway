@@ -464,11 +464,14 @@ export default function Blog() {
 
     try {
       const data = await loadLiveNews();
+      const liveFeedArticles = (data.articles || [])
+        .filter(isTravelRelevant)
+        .map(normalizeArticle)
+        .slice(0, 12);
       const nextArticles = dedupeArticles(
-        [...officialIndiaTravelUpdates, ...(data.articles || [])
-          .filter(isTravelRelevant)
-          .map(normalizeArticle)
-          .slice(0, 10)]
+        liveFeedArticles.length > 0
+          ? [...liveFeedArticles, ...officialIndiaTravelUpdates]
+          : officialIndiaTravelUpdates
       );
 
       setLiveArticles(nextArticles);

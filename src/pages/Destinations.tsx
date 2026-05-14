@@ -10,6 +10,7 @@ import SEO from "@/components/SEO";
 import { destinations as globalDestinations } from "@/lib/data";
 import { generateDestinationPDF } from "@/lib/pdf";
 import { Destination } from "@/lib/types";
+import { defaultSeoImage, graphSchema, pageSchema, siteUrl } from "@/lib/seo";
 
 const destinations = globalDestinations;
 const tripScopes = ["INDIA", "International"];
@@ -310,7 +311,23 @@ export default function Destinations() {
         title="Destinations | India and International Tour Packages by Travel Gateway"
         description="Browse Travel Gateway destinations across India and the world, including luxury trains, family holidays, cultural routes, safaris, and curated international journeys."
         canonicalPath="/destinations"
+        image={defaultSeoImage}
+        imageAlt="Travel Gateway India and international destination packages"
         keywords="India tour packages, international travel packages, luxury train booking India, Golden Chariot tour, Palace on Wheels tour, curated holidays Ahmedabad"
+        structuredData={graphSchema([
+          pageSchema("/destinations", "Destinations | India and International Tour Packages by Travel Gateway", "Browse Travel Gateway destinations across India and the world, including luxury trains, family holidays, cultural routes, safaris, and curated international journeys."),
+          {
+            "@type": "ItemList",
+            "@id": `${siteUrl}/destinations#packages`,
+            name: "Travel Gateway tour packages",
+            itemListElement: destinations.slice(0, 30).map((destination, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              url: new URL(destination.link || `/destinations/${destination.id}`, siteUrl).toString(),
+              name: destination.name,
+            })),
+          },
+        ])}
       />
       <section className="relative overflow-hidden px-6 pt-32">
         <div className="absolute inset-0 h-[36rem] bg-[#061328]" />

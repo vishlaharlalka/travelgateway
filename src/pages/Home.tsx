@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CurrencyConverter from "@/components/CurrencyConverter";
 import { formatInr, parseInrPrice } from "@/lib/pricing";
+import { defaultSeoImage, graphSchema, pageSchema, siteUrl } from "@/lib/seo";
 
 const heroImages = [
   {
@@ -152,32 +153,22 @@ export default function Home() {
         title="Travel Gateway | Luxury Travel Agency in Ahmedabad for India and International Tours"
         description="Travel Gateway is a boutique travel agency in Ahmedabad helping Indian travelers and international guests book curated holidays, India tours, luxury trains, safaris, and personalized trip planning."
         canonicalPath="/"
+        image={defaultSeoImage}
+        imageAlt="Travel Gateway curated India and international journeys"
         keywords="travel agency Ahmedabad, travel agent India, international tour booking Ahmedabad, India luxury travel, inbound India travel planner, Golden Chariot booking, Palace on Wheels booking, Gujarat travel consultant"
-        structuredData={[
+        structuredData={graphSchema([
+          pageSchema("/", "Travel Gateway | Luxury Travel Agency in Ahmedabad for India and International Tours", "Travel Gateway is a boutique travel agency in Ahmedabad helping Indian travelers and international guests book curated holidays, India tours, luxury trains, safaris, and personalized trip planning."),
           {
-            "@context": "https://schema.org",
-            "@type": "TravelAgency",
-            name: "Travel Gateway",
-            url: "https://travelgateway.in/",
-            telephone: "+91 9898111689",
-            email: "inquiry@travelgateway.in",
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: "G 901, Samanvay Scintilla, VIP Road, South Bopal",
-              addressLocality: "Ahmedabad",
-              addressRegion: "Gujarat",
-              postalCode: "380058",
-              addressCountry: "IN",
-            },
-            areaServed: ["India", "United States", "United Kingdom", "UAE", "Australia", "Canada", "Europe"],
+            "@type": "ItemList",
+            "@id": `${siteUrl}/#featured-destinations`,
+            name: "Featured Travel Gateway destinations",
+            itemListElement: featuredDestinations.map((destination, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              name: destination.name,
+            })),
           },
-          {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "Travel Gateway",
-            url: "https://travelgateway.in/",
-          },
-        ]}
+        ])}
       />
 
       {/* Hero Section */}

@@ -19,6 +19,8 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import SocialShare from "@/components/SocialShare";
+import SEO from "@/components/SEO";
+import { defaultSeoImage, graphSchema, pageSchema, siteUrl } from "@/lib/seo";
 
 type EditorialPost = {
   id: number;
@@ -536,6 +538,35 @@ export default function Blog() {
 
   return (
     <div className="pt-32 pb-24 px-6 bg-background">
+      <SEO
+        title="Travel Gateway Blog | Live Travel News, Visa Alerts and Planning Guides"
+        description="Read Travel Gateway travel news, visa updates, airline stories, destination insights, and advisor-written planning guides for Indian and international travelers."
+        canonicalPath="/blog"
+        ogType="article"
+        image={defaultSeoImage}
+        imageAlt="Travel Gateway blog and live travel news"
+        keywords="travel blog India, travel news India, visa updates for Indian travelers, airline news, holiday planning guides"
+        structuredData={graphSchema([
+          pageSchema("/blog", "Travel Gateway Blog | Live Travel News, Visa Alerts and Planning Guides", "Read Travel Gateway travel news, visa updates, airline stories, destination insights, and advisor-written planning guides for Indian and international travelers."),
+          {
+            "@type": "Blog",
+            "@id": `${siteUrl}/blog#blog`,
+            name: "Travel Gateway Journal",
+            url: `${siteUrl}/blog`,
+            publisher: { "@id": `${siteUrl}/#travelagency` },
+            blogPost: posts.map((post) => ({
+              "@type": "BlogPosting",
+              headline: post.title,
+              description: post.excerpt,
+              image: post.image,
+              author: { "@type": "Person", name: post.author },
+              publisher: { "@id": `${siteUrl}/#travelagency` },
+              url: `${siteUrl}/blog/${post.slug}`,
+              keywords: post.tags.join(", "),
+            })),
+          },
+        ])}
+      />
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-14">
           <Badge className="mb-4 bg-primary/10 text-primary border-none">Live Travel Dispatch</Badge>

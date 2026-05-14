@@ -3,6 +3,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { HelpCircle, MessageCircle, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import SEO from "@/components/SEO";
+import { defaultSeoImage, graphSchema, pageSchema } from "@/lib/seo";
 
 export default function FAQ() {
   useEffect(() => {
@@ -38,6 +40,28 @@ export default function FAQ() {
 
   return (
     <div className="pt-32 pb-24 px-6 bg-background">
+      <SEO
+        title="Travel Gateway FAQs | Ahmedabad Travel Agency Questions"
+        description="Answers to common questions about Travel Gateway, international tour packages, visa assistance, travel insurance, payments, and trip support."
+        canonicalPath="/faq"
+        image={defaultSeoImage}
+        imageAlt="Travel Gateway frequently asked questions"
+        keywords="Travel Gateway FAQ, Ahmedabad travel agency questions, visa assistance FAQ, tour package questions"
+        structuredData={graphSchema([
+          pageSchema("/faq", "Travel Gateway FAQs | Ahmedabad Travel Agency Questions", "Answers to common questions about Travel Gateway, international tour packages, visa assistance, travel insurance, payments, and trip support."),
+          {
+            "@type": "FAQPage",
+            mainEntity: faqs.map((faq) => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.answer,
+              },
+            })),
+          },
+        ])}
+      />
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <motion.div

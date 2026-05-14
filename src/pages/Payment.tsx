@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, CreditCard, Lock, CheckCircle2, AlertCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import SEO from "@/components/SEO";
+import { defaultSeoImage, graphSchema, pageSchema } from "@/lib/seo";
 
 export default function Payment() {
   const paymentFormRef = useRef<HTMLFormElement>(null);
@@ -34,6 +36,17 @@ export default function Payment() {
 
   return (
     <div className="pt-32 pb-24 px-6 min-h-screen bg-background relative overflow-hidden">
+      <SEO
+        title="Secure Travel Payment | Travel Gateway Ahmedabad"
+        description="Use Travel Gateway's secure payment page for confirmed travel bookings, tour packages, and trip services."
+        canonicalPath="/payment"
+        image={defaultSeoImage}
+        imageAlt="Travel Gateway secure payment"
+        noindex
+        structuredData={graphSchema([
+          pageSchema("/payment", "Secure Travel Payment | Travel Gateway Ahmedabad", "Use Travel Gateway's secure payment page for confirmed travel bookings, tour packages, and trip services."),
+        ])}
+      />
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20 z-0">
         <motion.div 

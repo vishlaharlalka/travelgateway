@@ -16,6 +16,8 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { generateDestinationPDF } from "@/lib/pdf";
 import CurrencyConverter from "@/components/CurrencyConverter";
 import { parseInrPrice } from "@/lib/pricing";
+import SEO from "@/components/SEO";
+import { graphSchema, pageSchema, siteUrl } from "@/lib/seo";
 
 const geminiApiKey = process.env.GEMINI_API_KEY || "";
 const destinationImageFallback = "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=1000";
@@ -90,12 +92,6 @@ export default function ItineraryDetail() {
 
     generateTips();
 
-    // SEO updates
-    document.title = `${destination.name} - Detailed Itinerary | TravelGateway`;
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", destination.description);
-    }
   }, [destination]);
 
   const generatePDF = async () => {
@@ -117,9 +113,56 @@ export default function ItineraryDetail() {
     ? destination.galleryImages
     : [{ url: destination.image, alt: destination.name, caption: `${destination.name} signature view` }];
   const packageReviewUrl = `/contact?destination=${encodeURIComponent(`${destination.name} package review`)}`;
+  const detailPath = destination.link || `/destinations/${destination.id}`;
+  const detailTitle = `${destination.name} Tour Package | Travel Gateway`;
+  const detailDescription = destination.longDescription || destination.description;
+  const detailUrl = new URL(detailPath, siteUrl).toString();
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={detailTitle}
+        description={detailDescription}
+        canonicalPath={detailPath}
+        ogType="article"
+        image={destination.image}
+        imageAlt={`${destination.name} travel package by Travel Gateway`}
+        keywords={`${destination.name} package, ${destination.country} tour package, ${destination.category} travel package, Travel Gateway Ahmedabad`}
+        structuredData={graphSchema([
+          pageSchema(detailPath, detailTitle, detailDescription, destination.image),
+          {
+            "@type": "TouristTrip",
+            "@id": `${detailUrl}#tour`,
+            name: destination.name,
+            description: detailDescription,
+            image: destination.image,
+            touristType: ["Indian travelers", "Families", "Couples", "Inbound guests"],
+            itinerary: destination.itinerary?.map((item, index) => ({
+              "@type": "ItemList",
+              position: index + 1,
+              name: item.title,
+              description: item.description,
+            })),
+            offers: {
+              "@type": "Offer",
+              priceCurrency: "INR",
+              price: parseInrPrice(destination.price),
+              availability: "https://schema.org/InStock",
+              url: detailUrl,
+            },
+            provider: { "@id": `${siteUrl}/#travelagency` },
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": `${detailUrl}#breadcrumb`,
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+              { "@type": "ListItem", position: 2, name: "Destinations", item: `${siteUrl}/destinations` },
+              { "@type": "ListItem", position: 3, name: destination.name, item: detailUrl },
+            ],
+          },
+        ])}
+      />
       {/* Hero Section */}
       <section className="relative h-[70vh] w-full overflow-hidden">
         <motion.img

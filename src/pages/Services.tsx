@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { Plane, Hotel, Map, Shield, Users, Briefcase, CreditCard, Headphones } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import SEO from "@/components/SEO";
+import { defaultSeoImage, graphSchema, pageSchema } from "@/lib/seo";
 
 const services = [
   {
@@ -45,6 +47,24 @@ const services = [
 export default function Services() {
   return (
     <div className="pt-32 pb-24 px-6 bg-background">
+      <SEO
+        title="Travel Services | International Tours, Visa Help and Luxury Planning"
+        description="Explore Travel Gateway services including custom itineraries, flights, hotels, visa documentation, group tours, travel insurance, and concierge support."
+        canonicalPath="/services"
+        image={defaultSeoImage}
+        imageAlt="Travel Gateway travel planning services"
+        keywords="travel services Ahmedabad, visa assistance Ahmedabad, international tour planner, luxury travel services India"
+        structuredData={graphSchema([
+          pageSchema("/services", "Travel Services | International Tours, Visa Help and Luxury Planning", "Explore Travel Gateway services including custom itineraries, flights, hotels, visa documentation, group tours, travel insurance, and concierge support."),
+          {
+            "@type": "Service",
+            name: "Custom travel planning",
+            provider: { "@id": "https://travelgateway.in/#travelagency" },
+            areaServed: "India",
+            serviceType: services.map((service) => service.title),
+          },
+        ])}
+      />
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-20">
           <h1 className="text-5xl font-bold mb-6 tracking-tight">Our Services</h1>

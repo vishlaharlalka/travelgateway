@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { FileText, Scale, AlertCircle, CheckCircle } from "lucide-react";
 import { useEffect } from "react";
+import SEO from "@/components/SEO";
+import { defaultSeoImage, graphSchema, pageSchema } from "@/lib/seo";
 
 export default function TermsOfService() {
   useEffect(() => {
@@ -9,6 +11,16 @@ export default function TermsOfService() {
 
   return (
     <div className="pt-32 pb-24 px-6 bg-background">
+      <SEO
+        title="Terms and Conditions | Travel Gateway Ahmedabad"
+        description="Read Travel Gateway terms and conditions for tour planning, bookings, payments, cancellations, and travel services."
+        canonicalPath="/terms-of-service"
+        image={defaultSeoImage}
+        imageAlt="Travel Gateway terms and conditions"
+        structuredData={graphSchema([
+          pageSchema("/terms-of-service", "Terms and Conditions | Travel Gateway Ahmedabad", "Read Travel Gateway terms and conditions for tour planning, bookings, payments, cancellations, and travel services."),
+        ])}
+      />
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <motion.div

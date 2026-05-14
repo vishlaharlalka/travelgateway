@@ -15,10 +15,23 @@ import {
   UserCheck
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import SEO from "@/components/SEO";
+import { defaultSeoImage, graphSchema, pageSchema } from "@/lib/seo";
 
 export default function About() {
   return (
     <div className="pt-32 pb-24 px-6 bg-background">
+      <SEO
+        title="About Travel Gateway | Vishal Harlalka Travel Planner Ahmedabad"
+        description="Meet Travel Gateway founder Vishal Harlalka and learn about the boutique Ahmedabad travel agency behind curated India and international journeys."
+        canonicalPath="/about"
+        image={defaultSeoImage}
+        imageAlt="About Travel Gateway Ahmedabad"
+        keywords="Vishal Harlalka, Travel Gateway Ahmedabad, boutique travel agency Ahmedabad, travel planner South Bopal"
+        structuredData={graphSchema([
+          pageSchema("/about", "About Travel Gateway | Vishal Harlalka Travel Planner Ahmedabad", "Meet Travel Gateway founder Vishal Harlalka and learn about the boutique Ahmedabad travel agency behind curated India and international journeys."),
+        ])}
+      />
       <div className="max-w-7xl mx-auto">
         {/* Hero */}
         <div className="mb-32 flex justify-center">

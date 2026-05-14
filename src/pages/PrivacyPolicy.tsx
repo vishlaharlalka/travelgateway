@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { ShieldCheck, Lock, Eye, FileText } from "lucide-react";
 import { useEffect } from "react";
+import SEO from "@/components/SEO";
+import { defaultSeoImage, graphSchema, pageSchema } from "@/lib/seo";
 
 export default function PrivacyPolicy() {
   useEffect(() => {
@@ -9,6 +11,16 @@ export default function PrivacyPolicy() {
 
   return (
     <div className="pt-32 pb-24 px-6 bg-background">
+      <SEO
+        title="Privacy Policy | Travel Gateway Ahmedabad"
+        description="Read the Travel Gateway privacy policy for how customer inquiry, contact, and travel planning information is handled."
+        canonicalPath="/privacy-policy"
+        image={defaultSeoImage}
+        imageAlt="Travel Gateway privacy policy"
+        structuredData={graphSchema([
+          pageSchema("/privacy-policy", "Privacy Policy | Travel Gateway Ahmedabad", "Read the Travel Gateway privacy policy for how customer inquiry, contact, and travel planning information is handled."),
+        ])}
+      />
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <motion.div

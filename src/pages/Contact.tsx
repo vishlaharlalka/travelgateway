@@ -425,6 +425,7 @@ export default function Contact() {
                     )}
 
                     <Button
+                      type="submit"
                       size="lg"
                       disabled={submitState === "submitting"}
                       className="w-full md:w-auto rounded-full px-12 py-7 text-lg font-bold group"

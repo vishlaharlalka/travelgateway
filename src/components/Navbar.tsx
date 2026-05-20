@@ -20,6 +20,9 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const isHeroRoute = location.pathname === "/" || location.pathname.startsWith("/destinations");
+  const useTransparentHeader = isHeroRoute && !isScrolled;
+  const useSolidHeader = !useTransparentHeader;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,7 +36,7 @@ export default function Navbar() {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 px-4 transition-all duration-700 sm:px-6",
-        isScrolled 
+        useSolidHeader
           ? "border-b bg-background/95 py-2 shadow-2xl backdrop-blur-xl text-foreground" 
           : "bg-transparent py-4 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] sm:py-5"
       )}
@@ -43,7 +46,7 @@ export default function Navbar() {
           to="/"
           className={cn(
             "group flex flex-none items-center gap-3 rounded-[1.75rem] border px-3 py-3 transition-all duration-700 sm:px-4",
-            isScrolled
+            useSolidHeader
               ? "border-[#D9B56D]/30 bg-white/92 shadow-lg shadow-slate-900/8 backdrop-blur-xl"
               : "border-white/15 bg-[linear-gradient(135deg,rgba(7,17,31,0.92),rgba(11,33,71,0.78),rgba(217,181,109,0.18))] shadow-[0_20px_60px_rgba(0,0,0,0.32)] backdrop-blur-xl"
           )}
@@ -51,13 +54,13 @@ export default function Navbar() {
           <Logo 
             className={cn(
               "shrink-0 transition-all duration-700 group-hover:scale-[1.05]",
-              isScrolled ? "h-[3.25rem] w-[3.25rem] sm:h-[3.65rem] sm:w-[3.65rem]" : "h-[3.85rem] w-[3.85rem] sm:h-[4.25rem] sm:w-[4.25rem]"
+              useSolidHeader ? "h-[3.25rem] w-[3.25rem] sm:h-[3.65rem] sm:w-[3.65rem]" : "h-[3.85rem] w-[3.85rem] sm:h-[4.25rem] sm:w-[4.25rem]"
             )} 
           />
           <div className="flex min-w-0 flex-col justify-center">
             <span className={cn(
               "whitespace-nowrap text-[0.96rem] font-black uppercase leading-none tracking-[0.14em] transition-all duration-700 sm:text-[1.08rem] md:text-[1.2rem]",
-              isScrolled
+              useSolidHeader
                 ? "bg-[linear-gradient(90deg,#07111F,#0B2147,#B98635)] bg-clip-text text-transparent"
                 : "bg-[linear-gradient(90deg,#FFFFFF,#F5E4B8,#D9B56D)] bg-clip-text text-transparent"
             )}>
@@ -66,14 +69,14 @@ export default function Navbar() {
             <span
               className={cn(
                 "mt-2 h-1 rounded-full transition-all duration-700",
-                isScrolled
+                useSolidHeader
                   ? "w-18 sm:w-24 bg-[linear-gradient(90deg,#0B2147,#D9B56D,#8FB6AA)]"
                   : "w-20 sm:w-28 bg-[linear-gradient(90deg,#FFFFFF,#D9B56D,#8FB6AA)] shadow-[0_0_24px_rgba(217,181,109,0.22)]"
               )}
             />
             <span className={cn(
               "mt-2 text-[0.54rem] font-bold uppercase leading-none tracking-[0.24em] transition-all duration-700 sm:text-[0.64rem] md:text-[0.72rem]",
-              isScrolled ? "text-[#0B2147]/72" : "text-[#F8E9B8]/92"
+              useSolidHeader ? "text-[#0B2147]/72" : "text-[#F8E9B8]/92"
             )}>
               Curated Journeys
             </span>
@@ -109,7 +112,7 @@ export default function Navbar() {
                   size="icon"
                   className={cn(
                     "h-11 w-11 rounded-full border transition-all",
-                    isScrolled
+                    useSolidHeader
                       ? "border-slate-200 bg-white/90 text-[#0B2147] shadow-sm"
                       : "border-white/20 bg-black/20 text-white backdrop-blur-md"
                   )}

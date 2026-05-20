@@ -17,6 +17,26 @@ type TravelNewsFeed = {
 
 const travelNewsFeeds: TravelNewsFeed[] = [
   {
+    url: "https://travel.economictimes.indiatimes.com/rss/topstories",
+    source: "ET TravelWorld",
+    category: "India Travel News",
+  },
+  {
+    url: "https://www.travelbizmonitor.com/feed/",
+    source: "TravelBiz Monitor",
+    category: "India Travel News",
+  },
+  {
+    url: "https://www.tourismbreakingnews.com/feed/",
+    source: "Tourism Breaking News",
+    category: "India Travel News",
+  },
+  {
+    url: "https://www.todaystraveller.net/feed/",
+    source: "Today's Traveller",
+    category: "India Travel News",
+  },
+  {
     url: "https://feeds.feedburner.com/breakingtravelnews/news/airline",
     source: "Breaking Travel News",
     category: "Aviation",
@@ -54,7 +74,7 @@ export async function onRequestGet() {
     return jsonResponse({
       articles,
       fetchedAt: new Date().toISOString(),
-      source: "Breaking Travel News RSS feeds",
+      source: "India travel RSS feeds with global travel backup feeds",
     });
   } catch (error) {
     return jsonResponse({
@@ -87,8 +107,8 @@ async function fetchTravelNews(): Promise<TravelNewsArticle[]> {
     .flatMap((result) => (result.status === "fulfilled" ? result.value : []))
     .filter((article) => article.title && article.url)
     .filter(uniqueArticle())
-    .sort((a, b) => b.seendate.localeCompare(a.seendate))
-    .slice(0, 12);
+    .sort((a, b) => feedPriority(a).localeCompare(feedPriority(b)) || b.seendate.localeCompare(a.seendate))
+    .slice(0, 18);
 }
 
 function parseRssItems(xml: string, feed: TravelNewsFeed): TravelNewsArticle[] {
@@ -100,6 +120,7 @@ function parseRssItems(xml: string, feed: TravelNewsFeed): TravelNewsArticle[] {
     const description = cleanFeedDescription(readTag(block, "description"));
     const pubDate = cleanFeedText(readTag(block, "pubDate"));
     const image = cleanFeedText(readMediaUrl(block));
+    const source = cleanFeedText(readTag(block, "source")) || feed.source;
     const publishedAt = Number.isNaN(new Date(pubDate).getTime()) ? new Date() : new Date(pubDate);
 
     return {
@@ -107,7 +128,7 @@ function parseRssItems(xml: string, feed: TravelNewsFeed): TravelNewsArticle[] {
       title,
       seendate: toCompactUtcDate(publishedAt),
       socialimage: image,
-      domain: feed.source,
+      domain: source,
       sourcecountry: feed.category,
       language: "English",
       description,
@@ -121,8 +142,17 @@ function readTag(block: string, tagName: string) {
 }
 
 function readMediaUrl(block: string) {
-  const match = /<media:content\b[^>]*\burl=["']([^"']+)["']/i.exec(block);
+  const match =
+    /<media:content\b[^>]*\burl=["']([^"']+)["']/i.exec(block) ||
+    /<media:thumbnail\b[^>]*\burl=["']([^"']+)["']/i.exec(block) ||
+    /<enclosure\b[^>]*\burl=["']([^"']+)["']/i.exec(block);
   return match?.[1] || "";
+}
+
+function feedPriority(article: TravelNewsArticle) {
+  if (article.sourcecountry.startsWith("India")) return "0";
+  if (article.sourcecountry === "Visa") return "1";
+  return "2";
 }
 
 function cleanFeedDescription(value: string) {

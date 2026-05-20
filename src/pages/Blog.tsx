@@ -157,6 +157,8 @@ const liveCategoryImages: Record<string, string> = {
     "https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?auto=format&fit=crop&q=80&w=1000",
   "India Travel News":
     "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=1000",
+  "India Aviation":
+    "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1000",
   "Travel News": NEWS_FALLBACK_IMAGE,
 };
 
@@ -340,9 +342,11 @@ function formatRelativeTime(date: Date) {
   return formatter.format(Math.round(diffInSeconds / 86400), "day");
 }
 
-function getLiveCategory(title: string) {
+function getLiveCategory(title: string, feedCategory?: string) {
+  if (feedCategory) return feedCategory;
+
   const text = title.toLowerCase();
-  if (text.includes("india") || text.includes("tourism")) return "India Travel News";
+  if (text.includes("india")) return "India Travel News";
   if (text.includes("visa") || text.includes("passport")) return "Visa";
   if (text.includes("airline") || text.includes("flight") || text.includes("airport")) return "Aviation";
   if (text.includes("cruise")) return "Cruise";
@@ -378,7 +382,7 @@ function getTravelerChecks(category: string) {
     ];
   }
 
-  if (category === "Aviation") {
+  if (category === "Aviation" || category === "India Aviation") {
     return [
       "Check operating airline, baggage allowance, and airport terminal before confirming.",
       "Protect cruises, trains, and safaris with a sensible connection buffer.",
@@ -411,7 +415,7 @@ function getTravelerChecks(category: string) {
 
 function normalizeArticle(article: FeedArticle): LiveArticle {
   const title = cleanTitle(article.title);
-  const category = getLiveCategory(title);
+  const category = getLiveCategory(title, article.sourcecountry);
   const source = article.domain || "Live travel source";
   const sourceCountry = article.sourcecountry || "Global";
   const excerpt = cleanExcerpt(article.description);
@@ -588,8 +592,8 @@ export default function Blog() {
               </Badge>
               <h2 className="text-3xl font-bold tracking-tight">Live Travel News</h2>
               <p className="text-muted-foreground mt-2 max-w-2xl">
-                India-focused tourism updates first, plus live airline, hotel, and travel stories
-                whenever the feed is available, refreshed automatically every five minutes.
+                India travel and aviation updates first, followed by live global airline,
+                hotel, cruise, and tourism stories refreshed every five minutes.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3">

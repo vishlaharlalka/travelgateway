@@ -192,6 +192,7 @@ export default function Contact() {
       setSubmitMessage("Thank you for your inquiry. Your email has been sent successfully and our team will contact you shortly.");
       setFormData({ ...initialFormData, destination: prefilledDestination });
     } catch (error) {
+      console.error("Inquiry delivery failed. Opening direct contact fallback.", error);
       if (typeof window !== "undefined" && formData.preferredContact === "WhatsApp") {
         const whatsappUrl = buildWhatsAppUrl(formData);
         window.open(whatsappUrl, "_blank", "noopener,noreferrer");
@@ -204,8 +205,8 @@ export default function Contact() {
       setSubmitState(formData.preferredContact === "WhatsApp" ? "success" : "error");
       setSubmitMessage(
         formData.preferredContact === "WhatsApp"
-          ? "WhatsApp has been opened with your inquiry details so you can send them directly to Travel Gateway."
-          : "We could not send your inquiry automatically right now. A pre-filled email has been opened as a backup."
+          ? "Automatic email delivery needs attention. WhatsApp has been opened with your inquiry details so you can send them directly to Travel Gateway."
+          : "Automatic email delivery needs attention. A pre-filled email has been opened as a backup."
       );
     }
   };

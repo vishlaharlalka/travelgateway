@@ -138,9 +138,9 @@ export async function onRequestPost(context: any) {
     return jsonResponse(
       {
         ok: false,
-        error: result?.message || "Email provider rejected the inquiry.",
+        error: result?.message || "Email provider rejected the inquiry. Please check RESEND_API_KEY in Cloudflare Pages.",
       },
-      502
+      200
     );
   }
 

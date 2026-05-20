@@ -61,6 +61,11 @@ const travelNewsFeeds: TravelNewsFeed[] = [
     category: 'India Travel News',
   },
   {
+    url: 'https://news.google.com/rss/search?q=India%20travel%20tourism%20aviation%20hotel%20visa%20when%3A7d&hl=en-IN&gl=IN&ceid=IN%3Aen',
+    source: 'Google News India',
+    category: 'India Travel News',
+  },
+  {
     url: 'https://feeds.feedburner.com/breakingtravelnews/news/airline',
     source: 'Breaking Travel News',
     category: 'Aviation',
@@ -236,7 +241,7 @@ async function fetchTravelNews(): Promise<TravelNewsPayload> {
     .filter((article) => article.title && article.url)
     .filter(uniqueArticle())
     .sort((a, b) => feedPriority(a).localeCompare(feedPriority(b)) || b.seendate.localeCompare(a.seendate))
-    .slice(0, 18);
+    .slice(0, 36);
 
   return {
     articles,
@@ -279,7 +284,8 @@ function readMediaUrl(block: string) {
   const match =
     /<media:content\b[^>]*\burl=["']([^"']+)["']/i.exec(block) ||
     /<media:thumbnail\b[^>]*\burl=["']([^"']+)["']/i.exec(block) ||
-    /<enclosure\b[^>]*\burl=["']([^"']+)["']/i.exec(block);
+    /<enclosure\b[^>]*\burl=["']([^"']+)["']/i.exec(block) ||
+    /<img\b[^>]*\bsrc=["']([^"']+)["']/i.exec(block);
   return match?.[1] || '';
 }
 

@@ -144,22 +144,40 @@ const LIVE_NEWS_ENDPOINT = "/api/travel-news";
 const NEWS_FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1000";
 
-const liveCategoryImages: Record<string, string> = {
-  Aviation:
+const liveCategoryImages: Record<string, string[]> = {
+  Aviation: [
     "https://images.unsplash.com/photo-1529074963764-98f45c47344b?auto=format&fit=crop&q=80&w=1000",
-  Cruise:
-    "https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&q=80&w=1000",
-  Hotels:
-    "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1000",
-  Tourism:
-    "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=1000",
-  Visa:
-    "https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?auto=format&fit=crop&q=80&w=1000",
-  "India Travel News":
-    "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=1000",
-  "India Aviation":
     "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1000",
-  "Travel News": NEWS_FALLBACK_IMAGE,
+    "https://images.unsplash.com/photo-1542296332-2e4473faf563?auto=format&fit=crop&q=80&w=1000",
+  ],
+  Cruise: [
+    "https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&q=80&w=1000",
+    "https://images.unsplash.com/photo-1580541631950-7282082b53ce?auto=format&fit=crop&q=80&w=1000",
+  ],
+  Hotels: [
+    "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1000",
+    "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&q=80&w=1000",
+    "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&q=80&w=1000",
+  ],
+  Tourism: [
+    "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=1000",
+    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=1000",
+  ],
+  Visa: [
+    "https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?auto=format&fit=crop&q=80&w=1000",
+    "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=1000",
+  ],
+  "India Travel News": [
+    "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=1000",
+    "https://images.unsplash.com/photo-1567157577867-05ccb1388e66?auto=format&fit=crop&q=80&w=1000",
+    "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&q=80&w=1000",
+    "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&q=80&w=1000",
+  ],
+  "India Aviation": [
+    "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1000",
+    "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&q=80&w=1000",
+  ],
+  "Travel News": [NEWS_FALLBACK_IMAGE],
 };
 
 const travelKeywords = [
@@ -180,7 +198,20 @@ const travelKeywords = [
   "holiday",
 ];
 
-const blockedTitleTerms = ["used suv", "teen driver", "top used suv"];
+const blockedTitleTerms = [
+  "appointed",
+  "brand usa",
+  "director of operations",
+  "food & beverage manager",
+  "hospitality with a heart",
+  "osceola county",
+  "profit and purpose",
+  "supports over",
+  "the leela welcomes",
+  "used suv",
+  "teen driver",
+  "top used suv",
+];
 
 const posts: EditorialPost[] = [
   {
@@ -343,9 +374,35 @@ function formatRelativeTime(date: Date) {
 }
 
 function getLiveCategory(title: string, feedCategory?: string) {
+  const text = title.toLowerCase();
+  if (feedCategory?.startsWith("India")) {
+    if (text.includes("visa") || text.includes("passport") || text.includes("e-gate") || text.includes("immigration")) {
+      return "Visa";
+    }
+    if (
+      text.includes("airline") ||
+      text.includes("flight") ||
+      text.includes("airport") ||
+      text.includes("bengaluru-zurich") ||
+      text.includes("hyderabad")
+    ) {
+      return "India Aviation";
+    }
+    if (
+      text.includes("hotel") ||
+      text.includes("resort") ||
+      text.includes("hospitality") ||
+      text.includes("restaurant") ||
+      text.includes("ihg") ||
+      text.includes("hilton")
+    ) {
+      return "Hotels";
+    }
+    return feedCategory;
+  }
+
   if (feedCategory) return feedCategory;
 
-  const text = title.toLowerCase();
   if (text.includes("india")) return "India Travel News";
   if (text.includes("visa") || text.includes("passport")) return "Visa";
   if (text.includes("airline") || text.includes("flight") || text.includes("airport")) return "Aviation";
@@ -355,8 +412,15 @@ function getLiveCategory(title: string, feedCategory?: string) {
   return "Travel News";
 }
 
-function getLiveImage(category: string) {
-  return liveCategoryImages[category] || NEWS_FALLBACK_IMAGE;
+function getImageIndex(title: string, total: number) {
+  if (total <= 1) return 0;
+  return Math.abs([...title].reduce((sum, char) => sum + char.charCodeAt(0), 0)) % total;
+}
+
+function getLiveImage(category: string, title: string, sourceImage?: string) {
+  if (sourceImage?.startsWith("http")) return sourceImage;
+  const images = liveCategoryImages[category] || liveCategoryImages["Travel News"];
+  return images[getImageIndex(title, images.length)] || NEWS_FALLBACK_IMAGE;
 }
 
 async function loadLiveNews() {
@@ -424,7 +488,7 @@ function normalizeArticle(article: FeedArticle): LiveArticle {
     id: `${article.url}-${article.seendate}`,
     title,
     url: article.url,
-    image: getLiveImage(category),
+    image: getLiveImage(category, title, article.socialimage),
     source,
     sourceCountry,
     seenAt: parseGdeltDate(article.seendate),
@@ -438,9 +502,11 @@ function normalizeArticle(article: FeedArticle): LiveArticle {
 
 function isTravelRelevant(article: FeedArticle) {
   const title = cleanTitle(article.title).toLowerCase();
+  const publishedAt = parseGdeltDate(article.seendate);
+  const isRecent = Date.now() - publishedAt.getTime() < 14 * 24 * 60 * 60 * 1000;
   const hasTravelKeyword = travelKeywords.some((keyword) => title.includes(keyword));
   const isBlocked = blockedTitleTerms.some((term) => title.includes(term));
-  return hasTravelKeyword && !isBlocked;
+  return isRecent && hasTravelKeyword && !isBlocked;
 }
 
 function dedupeArticles(articles: LiveArticle[]) {
@@ -472,13 +538,10 @@ export default function Blog() {
       const data = await loadLiveNews();
       const liveFeedArticles = (data.articles || [])
         .filter(isTravelRelevant)
-        .map(normalizeArticle)
-        .slice(0, 12);
+        .map(normalizeArticle);
       const nextArticles = dedupeArticles(
-        liveFeedArticles.length > 0
-          ? [...liveFeedArticles, ...officialIndiaTravelUpdates]
-          : officialIndiaTravelUpdates
-      );
+        liveFeedArticles.length > 0 ? liveFeedArticles : officialIndiaTravelUpdates
+      ).slice(0, 12);
 
       setLiveArticles(nextArticles);
       setSelectedLiveId((current) => {

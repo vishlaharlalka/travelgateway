@@ -182,15 +182,9 @@ export default function Contact() {
         source_page: leadPayload.sourcePage,
         submitted_at: leadPayload.visitedAt,
       });
-      const whatsappUrl = buildWhatsAppUrl(formData);
-
-      if (typeof window !== "undefined") {
-        window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-      }
 
       setSubmitState("success");
-      setSubmitMessage("Thank you for your inquiry. Your email has been sent successfully and our team will contact you shortly.");
-      setFormData({ ...initialFormData, destination: prefilledDestination });
+      setSubmitMessage("Thank you for your inquiry. Your email has been sent successfully. You can press Send Again if you need to resend the same details.");
     } catch (error) {
       console.error("Inquiry delivery failed. Opening direct contact fallback.", error);
       if (typeof window !== "undefined" && formData.preferredContact === "WhatsApp") {
@@ -435,7 +429,11 @@ export default function Contact() {
                       disabled={submitState === "submitting"}
                       className="w-full md:w-auto rounded-full px-12 py-7 text-lg font-bold group"
                     >
-                      {submitState === "submitting" ? "Sending Inquiry..." : "Send Inquiry"}
+                      {submitState === "submitting"
+                        ? "Sending Inquiry..."
+                        : submitState === "success"
+                          ? "Send Again"
+                          : "Send Inquiry"}
                       {submitState === "submitting" ? (
                         <Loader2 className="ml-2 w-5 h-5 animate-spin" />
                       ) : (

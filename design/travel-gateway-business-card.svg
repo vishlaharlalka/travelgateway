@@ -1,0 +1,105 @@
+<svg width="2100" height="1350" viewBox="0 0 2100 1350" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="navy" x1="0" y1="0" x2="1050" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#07111F"/>
+      <stop offset="0.48" stop-color="#0B2147"/>
+      <stop offset="1" stop-color="#101F37"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="240" y2="160" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF4CF"/>
+      <stop offset="0.46" stop-color="#D9B56D"/>
+      <stop offset="1" stop-color="#B98635"/>
+    </linearGradient>
+    <linearGradient id="sage" x1="0" y1="0" x2="260" y2="160" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C9DDD6"/>
+      <stop offset="1" stop-color="#7FA99C"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="22" stdDeviation="24" flood-color="#07111F" flood-opacity="0.18"/>
+    </filter>
+    <filter id="logoShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#000814" flood-opacity="0.35"/>
+    </filter>
+    <style>
+      .label { font: 700 27px Arial, Helvetica, sans-serif; letter-spacing: 5px; text-transform: uppercase; }
+      .brand { font: 900 58px Arial, Helvetica, sans-serif; letter-spacing: 14px; text-transform: uppercase; }
+      .tag { font: 800 24px Arial, Helvetica, sans-serif; letter-spacing: 11px; text-transform: uppercase; }
+      .name { font: 900 58px Arial, Helvetica, sans-serif; letter-spacing: 1px; }
+      .role { font: 700 25px Arial, Helvetica, sans-serif; letter-spacing: 5px; text-transform: uppercase; }
+      .body { font: 500 31px Arial, Helvetica, sans-serif; }
+      .small { font: 700 24px Arial, Helvetica, sans-serif; letter-spacing: 1px; }
+      .micro { font: 800 21px Arial, Helvetica, sans-serif; letter-spacing: 5px; text-transform: uppercase; }
+    </style>
+  </defs>
+
+  <rect width="2100" height="1350" fill="#EEF2F0"/>
+
+  <!-- Front side -->
+  <g transform="translate(90 90)" filter="url(#cardShadow)">
+    <rect width="900" height="525" rx="46" fill="url(#navy)"/>
+    <path d="M0 383C167 322 311 329 461 381C623 438 754 462 900 390V525H0V383Z" fill="#0E2A53" opacity="0.58"/>
+    <path d="M0 430C155 376 302 386 456 429C615 474 738 490 900 438" stroke="url(#sage)" stroke-width="13" opacity="0.55"/>
+    <path d="M0 470C155 432 302 438 456 469C615 501 738 509 900 476" stroke="#D9B56D" stroke-width="9" opacity="0.42"/>
+
+    <g transform="translate(80 73)">
+      <rect x="0" y="0" width="132" height="132" rx="32" fill="#07111F" stroke="#D9B56D" stroke-width="3.5" filter="url(#logoShadow)"/>
+      <circle cx="66" cy="57" r="31" fill="url(#gold)"/>
+      <path d="M66 22L76 70L112 83L78 94L66 120L54 94L20 83L56 70L66 22Z" fill="#F8F0D6"/>
+      <path d="M66 44L72 72L92 81L72 88L66 108L60 88L40 81L60 72L66 44Z" fill="#0B2147"/>
+      <path d="M29 49C49 30 82 27 104 50" stroke="#F8F0D6" stroke-width="4" stroke-linecap="round" opacity="0.86"/>
+      <path d="M30 100C50 91 73 92 101 100" stroke="#8FB6AA" stroke-width="5" stroke-linecap="round" opacity="0.75"/>
+    </g>
+
+    <text x="245" y="132" fill="#FFFFFF" class="brand">Travel</text>
+    <text x="245" y="194" fill="#D9B56D" class="brand">Gateway</text>
+    <rect x="247" y="228" width="120" height="8" rx="4" fill="#D9B56D"/>
+    <rect x="385" y="228" width="120" height="8" rx="4" fill="#8FB6AA"/>
+    <text x="245" y="278" fill="#F8E9B8" class="tag">Curated Journeys</text>
+
+    <text x="80" y="386" fill="#F8E9B8" class="label">Boutique Travel Planning</text>
+    <text x="80" y="438" fill="#FFFFFF" class="body">India journeys, international holidays,</text>
+    <text x="80" y="480" fill="#FFFFFF" class="body">luxury trains, safaris and bespoke vacations</text>
+  </g>
+
+  <!-- Back side -->
+  <g transform="translate(1110 90)" filter="url(#cardShadow)">
+    <rect width="900" height="525" rx="46" fill="#FFFFFF"/>
+    <rect x="0" y="0" width="900" height="525" rx="46" stroke="#D9B56D" stroke-width="3"/>
+    <path d="M0 0H900V125C733 168 582 143 433 104C272 62 139 45 0 98V0Z" fill="url(#navy)"/>
+    <path d="M622 0H900V525H744C696 375 651 212 622 0Z" fill="#F8F2E4"/>
+    <path d="M748 0C775 157 820 351 900 525" stroke="#D9B56D" stroke-width="9" opacity="0.68"/>
+
+    <text x="72" y="221" fill="#07111F" class="name">Vishal Harlalka</text>
+    <text x="74" y="268" fill="#B98635" class="role">Founder &amp; Travel Planner</text>
+
+    <g transform="translate(76 327)">
+      <circle cx="18" cy="18" r="18" fill="#0B2147"/>
+      <text x="52" y="29" fill="#07111F" class="body">+91 9898111689</text>
+      <text x="13" y="28" fill="#FFFFFF" font-family="Arial" font-size="24" font-weight="900">P</text>
+    </g>
+
+    <g transform="translate(76 383)">
+      <circle cx="18" cy="18" r="18" fill="#0B2147"/>
+      <text x="52" y="29" fill="#07111F" class="body">inquiry@travelgateway.in</text>
+      <text x="9" y="28" fill="#FFFFFF" font-family="Arial" font-size="23" font-weight="900">@</text>
+    </g>
+
+    <g transform="translate(76 439)">
+      <circle cx="18" cy="18" r="18" fill="#0B2147"/>
+      <text x="52" y="29" fill="#07111F" class="body">travelgateway.in</text>
+      <text x="8" y="28" fill="#FFFFFF" font-family="Arial" font-size="23" font-weight="900">W</text>
+    </g>
+
+    <text x="492" y="356" fill="#07111F" class="small">G 901, Samanvay Scintilla</text>
+    <text x="492" y="392" fill="#07111F" class="small">VIP Road, South Bopal</text>
+    <text x="492" y="428" fill="#07111F" class="small">Ahmedabad, Gujarat 380058</text>
+    <text x="492" y="474" fill="#7A6840" class="micro">Travel Agent Ahmedabad</text>
+  </g>
+
+  <!-- Print labels -->
+  <text x="90" y="678" fill="#7A6840" class="micro">Front</text>
+  <text x="1110" y="678" fill="#7A6840" class="micro">Back</text>
+  <text x="90" y="1270" fill="#07111F" font-family="Arial" font-size="24">
+    Suggested print size: 3.5 x 2 in per card, add 0.125 in bleed when exporting for press.
+  </text>
+</svg>

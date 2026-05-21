@@ -1,11 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
-import { ArrowRight, Menu } from "lucide-react";
+import { ArrowRight, ChevronDown, Globe2, MapPin, Menu } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import Logo from "./Logo";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { destinationPath, destinations } from "@/lib/data";
+import type { Destination } from "@/lib/types";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -16,6 +18,102 @@ const navLinks = [
   { name: "Contact Us", href: "/contact" },
   { name: "Payment", href: "/payment" },
 ];
+
+const isIndiaDestination = (destination: Destination) =>
+  destination.country === "India" || (destination.type === "Luxury Train" && destination.country === "India");
+
+const destinationMenuGroups = [
+  {
+    title: "India Packages",
+    icon: MapPin,
+    items: destinations
+      .filter(isIndiaDestination)
+      .sort((a, b) => (a.state || "India").localeCompare(b.state || "India") || a.name.localeCompare(b.name)),
+  },
+  {
+    title: "International Packages",
+    icon: Globe2,
+    items: destinations
+      .filter((destination) => !isIndiaDestination(destination))
+      .sort((a, b) => a.country.localeCompare(b.country) || a.name.localeCompare(b.name)),
+  },
+];
+
+function DestinationMegaMenu({ useSolidHeader }: { useSolidHeader: boolean }) {
+  return (
+    <div className="group/menu relative">
+      <Link
+        to="/destinations"
+        className="flex items-center gap-1.5 text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors relative"
+      >
+        Destinations
+        <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover/menu:rotate-180" />
+        <span className="absolute -bottom-2 left-0 h-1 w-0 bg-primary transition-all duration-300 group-hover/menu:w-full" />
+      </Link>
+
+      <div className="pointer-events-none absolute left-1/2 top-full z-50 w-[min(92vw,64rem)] -translate-x-1/2 translate-y-2 pt-5 opacity-0 transition-all duration-200 group-hover/menu:pointer-events-auto group-hover/menu:opacity-100 group-hover/menu:translate-y-0 group-focus-within/menu:pointer-events-auto group-focus-within/menu:opacity-100 group-focus-within/menu:translate-y-0">
+        <div className="overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white text-slate-950 shadow-[0_32px_90px_rgba(15,23,42,0.25)]">
+          <div className="flex items-center justify-between gap-4 border-b border-slate-100 bg-[#f7f8fb] px-6 py-4">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.24em] text-primary">All destination URLs</p>
+              <h3 className="text-lg font-black tracking-tight">Choose a package directly</h3>
+            </div>
+            <Link
+              to="/destinations"
+              className="rounded-full border border-primary/20 px-4 py-2 text-xs font-black uppercase tracking-widest text-primary transition-colors hover:bg-primary hover:text-white"
+            >
+              View all
+            </Link>
+          </div>
+
+          <div className="grid max-h-[70vh] grid-cols-1 gap-0 overflow-y-auto lg:grid-cols-2">
+            {destinationMenuGroups.map((group) => {
+              const Icon = group.icon;
+
+              return (
+                <div key={group.title} className="border-b border-slate-100 p-5 lg:border-b-0 lg:border-r last:lg:border-r-0">
+                  <div className="mb-4 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                        <Icon className="h-4 w-4" />
+                      </span>
+                      <div>
+                        <h4 className="text-sm font-black uppercase tracking-[0.16em]">{group.title}</h4>
+                        <p className="text-xs text-slate-500">{group.items.length} curated routes</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-1 sm:grid-cols-2">
+                    {group.items.map((destination) => (
+                      <Link
+                        key={destination.id}
+                        to={destinationPath(destination)}
+                        className="rounded-xl px-3 py-2 transition-colors hover:bg-primary/10 focus:bg-primary/10 focus:outline-none"
+                      >
+                        <span className="block truncate text-sm font-bold">{destination.name}</span>
+                        <span className="mt-0.5 block truncate text-xs text-slate-500">
+                          {[destination.state || destination.country, destination.category].filter(Boolean).join(" | ")}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div
+          className={cn(
+            "mx-auto mt-3 h-1 w-24 rounded-full",
+            useSolidHeader ? "bg-primary/40" : "bg-white/60"
+          )}
+        />
+      </div>
+    </div>
+  );
+}
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -85,16 +183,22 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-10">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.href}
-              className="text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors relative group"
-            >
-              {link.name}
-              <span className="absolute -bottom-2 left-0 w-0 h-1 bg-primary transition-all duration-300 group-hover:w-full" />
-            </Link>
-          ))}
+          {navLinks.map((link) =>
+            link.name === "Destinations" ? (
+              <div key={link.name}>
+                <DestinationMegaMenu useSolidHeader={useSolidHeader} />
+              </div>
+            ) : (
+              <Link
+                key={link.name}
+                to={link.href}
+                className="text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors relative group"
+              >
+                {link.name}
+                <span className="absolute -bottom-2 left-0 w-0 h-1 bg-primary transition-all duration-300 group-hover:w-full" />
+              </Link>
+            )
+          )}
         </nav>
 
         <div className="hidden md:flex items-center gap-4">

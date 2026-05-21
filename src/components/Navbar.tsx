@@ -22,20 +22,39 @@ const navLinks = [
 const isIndiaDestination = (destination: Destination) =>
   destination.country === "India" || (destination.type === "Luxury Train" && destination.country === "India");
 
+function groupDestinationsByPlace(items: Destination[], placeFor: (destination: Destination) => string) {
+  return Object.entries(
+    items.reduce<Record<string, Destination[]>>((groups, destination) => {
+      const place = placeFor(destination);
+      groups[place] = [...(groups[place] || []), destination];
+      return groups;
+    }, {})
+  )
+    .map(([place, destinationsInPlace]) => ({
+      place,
+      items: destinationsInPlace.sort((a, b) => a.name.localeCompare(b.name)),
+    }))
+    .sort((a, b) => a.place.localeCompare(b.place));
+}
+
 const destinationMenuGroups = [
   {
     title: "India Packages",
     icon: MapPin,
-    items: destinations
-      .filter(isIndiaDestination)
-      .sort((a, b) => (a.state || "India").localeCompare(b.state || "India") || a.name.localeCompare(b.name)),
+    count: destinations.filter(isIndiaDestination).length,
+    places: groupDestinationsByPlace(
+      destinations.filter(isIndiaDestination),
+      (destination) => destination.state || "India"
+    ),
   },
   {
     title: "International Packages",
     icon: Globe2,
-    items: destinations
-      .filter((destination) => !isIndiaDestination(destination))
-      .sort((a, b) => a.country.localeCompare(b.country) || a.name.localeCompare(b.name)),
+    count: destinations.filter((destination) => !isIndiaDestination(destination)).length,
+    places: groupDestinationsByPlace(
+      destinations.filter((destination) => !isIndiaDestination(destination)),
+      (destination) => destination.country || "International"
+    ),
   },
 ];
 
@@ -79,23 +98,35 @@ function DestinationMegaMenu({ useSolidHeader }: { useSolidHeader: boolean }) {
                       </span>
                       <div>
                         <h4 className="text-sm font-black uppercase tracking-[0.16em]">{group.title}</h4>
-                        <p className="text-xs text-slate-500">{group.items.length} curated routes</p>
+                        <p className="text-xs text-slate-500">{group.count} curated routes</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-1 sm:grid-cols-2">
-                    {group.items.map((destination) => (
-                      <Link
-                        key={destination.id}
-                        to={destinationPath(destination)}
-                        className="rounded-xl px-3 py-2 transition-colors hover:bg-primary/10 focus:bg-primary/10 focus:outline-none"
-                      >
-                        <span className="block truncate text-sm font-bold">{destination.name}</span>
-                        <span className="mt-0.5 block truncate text-xs text-slate-500">
-                          {[destination.state || destination.country, destination.category].filter(Boolean).join(" | ")}
-                        </span>
-                      </Link>
+                  <div className="space-y-4">
+                    {group.places.map((placeGroup) => (
+                      <div key={`${group.title}-${placeGroup.place}`}>
+                        <div className="mb-2 flex items-center justify-between rounded-xl bg-slate-100 px-3 py-2">
+                          <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-700">{placeGroup.place}</p>
+                          <span className="text-[10px] font-black uppercase tracking-widest text-primary">
+                            {placeGroup.items.length}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-1 gap-1 sm:grid-cols-2">
+                          {placeGroup.items.map((destination) => (
+                            <Link
+                              key={destination.id}
+                              to={destinationPath(destination)}
+                              className="rounded-xl px-3 py-2 transition-colors hover:bg-primary/10 focus:bg-primary/10 focus:outline-none"
+                            >
+                              <span className="block truncate text-sm font-bold">{destination.name}</span>
+                              <span className="mt-0.5 block truncate text-xs text-slate-500">
+                                {destination.category}
+                              </span>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>

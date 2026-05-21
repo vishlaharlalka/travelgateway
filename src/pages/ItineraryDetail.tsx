@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowLeft, Download, MapPin, Clock, Star, 
   CheckCircle2, Headphones, Sparkles, Lightbulb, 
-  Calendar, Globe, ShieldCheck, Share2, MessageSquare
+  Calendar, Globe, ShieldCheck, Share2, MessageSquare, Send, HelpCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -142,7 +142,29 @@ export default function ItineraryDetail() {
   const galleryImages = destination.galleryImages?.length
     ? destination.galleryImages
     : [{ url: destination.image, alt: destination.name, caption: `${destination.name} signature view` }];
+  const itineraryVisuals = itineraryItems.map((_, index) => galleryImages[index % galleryImages.length] || galleryImages[0]);
+  const faqItems = destination.faqs?.length
+    ? destination.faqs
+    : [
+        {
+          question: `What is the best way to book the ${destination.name} package?`,
+          answer: "Send an inquiry with your travel month, number of guests, budget, and preferred hotel style. Travel Gateway will reply with a personalized plan and current availability.",
+        },
+        {
+          question: "Can this itinerary be customized?",
+          answer: "Yes. The route, hotels, transfers, meal preferences, sightseeing pace, and add-on nights can be adjusted for families, couples, senior travelers, honeymooners, or group travel.",
+        },
+        {
+          question: "Are flights, hotels, and local transfers included?",
+          answer: "Package inclusions depend on the final quote. Share your requirements through the booking inquiry form and the team will clearly mention flights, hotels, transfers, guide services, meals, and exclusions.",
+        },
+        {
+          question: "How quickly will I receive the package details?",
+          answer: "After you submit the inquiry, the request goes to Travel Gateway's team so they can respond with practical details, current pricing, and the next booking steps.",
+        },
+      ];
   const packageReviewUrl = `/contact?destination=${encodeURIComponent(`${destination.name} package review`)}`;
+  const bookingUrl = `/contact?destination=${encodeURIComponent(destination.name)}`;
   const detailPath = destinationPath(destination);
   const detailTitle = `${destination.name} Tour Package | Travel Gateway`;
   const detailDescription = destination.longDescription || destination.description;
@@ -313,11 +335,11 @@ export default function ItineraryDetail() {
             </section>
 
             {/* Itinerary */}
-            <section className="space-y-8">
+            <section className="space-y-6">
               <div className="flex items-end justify-between border-b-2 border-primary/20 pb-4">
                 <div className="inline-block">
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2">Your Timeline</p>
-                  <h2 className="text-3xl font-black uppercase tracking-tight">Daily Chronicle</h2>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2">Dream Before You Book</p>
+                  <h2 className="text-3xl font-black uppercase tracking-tight">Visual Day-by-Day Itinerary</h2>
                 </div>
                 <div className="hidden md:flex items-center gap-2 text-muted-foreground text-sm">
                   <Calendar className="w-4 h-4" />
@@ -325,109 +347,81 @@ export default function ItineraryDetail() {
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {itineraryItems.map((item, i) => (
-                    <div
-                      key={`summary-${item.day}-${i}`}
-                      className="rounded-3xl border border-primary/10 bg-primary/5 p-5"
-                    >
-                      <div className="flex items-center gap-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-black text-white">
-                          {i + 1}
-                        </span>
-                        <div>
-                          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">{item.day}</p>
-                          <h3 className="text-base font-black uppercase tracking-tight text-foreground">{item.title}</h3>
-                        </div>
-                      </div>
-                      <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                        {item.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+              <div className="space-y-5">
+                {itineraryItems.map((item, i) => {
+                  const image = itineraryVisuals[i];
 
-                {itineraryItems.map((item, i) => (
+                  return (
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     key={i}
+                    className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_24px_70px_-48px_rgba(15,23,42,0.8)]"
                   >
-                <Accordion type="single" className="w-full">
-                      <AccordionItem 
-                        value={`day-${i}`} 
-                        className="border border-white/10 rounded-3xl px-8 bg-muted/10 hover:bg-muted/20 transition-colors overflow-hidden data-[state=open]:bg-white/5 data-[state=open]:border-primary/20"
-                      >
-                        <AccordionTrigger className="hover:no-underline font-bold text-lg py-8">
-                          <div className="flex items-center gap-6 text-left">
-                            <span className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-white text-sm font-black shadow-lg shadow-primary/20 shrink-0">
-                              {i + 1}
-                            </span>
-                            <div className="space-y-1">
-                              <p className="text-xs text-primary uppercase tracking-widest font-bold">{item.day}</p>
-                              <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight">{item.title}</h3>
-                            </div>
+                    <div className="grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr]">
+                      <div className="relative min-h-[16rem] overflow-hidden">
+                        <img
+                          src={image.url}
+                          alt={image.alt}
+                          loading="lazy"
+                          referrerPolicy="no-referrer"
+                          className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                          onError={(event) => {
+                            if (event.currentTarget.src !== destinationImageFallback) {
+                              event.currentTarget.src = destinationImageFallback;
+                            }
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+                        <div className="absolute bottom-4 left-4 right-4">
+                          <Badge className="mb-3 rounded-full border-none bg-white text-slate-950">{item.day}</Badge>
+                          <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/80">{image.caption}</p>
+                        </div>
+                      </div>
+
+                      <div className="p-6 md:p-8">
+                        <div className="mb-5 flex items-center gap-4">
+                          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary text-base font-black text-white shadow-lg shadow-primary/20">
+                            {i + 1}
+                          </span>
+                          <div>
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Planned Day</p>
+                            <h3 className="text-2xl font-black uppercase tracking-tight">{item.title}</h3>
                           </div>
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-10 pl-20 pr-8 space-y-6 pt-6 border-t border-white/5">
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="md:col-span-2 space-y-6">
-                              <div className="flex items-center gap-2 text-primary">
-                                <Sparkles className="w-4 h-4" />
-                                <span className="text-[10px] font-black uppercase tracking-[0.2em]">Daily Experience Highlights</span>
-                              </div>
-                              <div className="space-y-4">
-                                <p className="text-lg text-muted-foreground leading-relaxed font-light">
-                                  {item.description}
-                                </p>
-                                <div className="flex flex-wrap gap-2 pt-2">
-                                  {item.title.split('&').map((activity, idx) => (
-                                    <Badge key={idx} variant="secondary" className="bg-primary/5 text-primary border-primary/10 text-[10px] font-bold uppercase tracking-widest px-3 py-1">
-                                      {activity.trim()}
-                                    </Badge>
-                                  ))}
-                                </div>
-                              </div>
+                        </div>
+
+                        <p className="text-base leading-7 text-muted-foreground">
+                          {item.description}
+                        </p>
+
+                        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                          <div className="rounded-2xl border border-primary/10 bg-primary/5 p-4">
+                            <div className="mb-2 flex items-center gap-2 text-primary">
+                              <Sparkles className="h-4 w-4" />
+                              <span className="text-[10px] font-black uppercase tracking-[0.18em]">Mood</span>
                             </div>
-                            
-                            <div className="space-y-4">
-                              <div className="bg-muted/30 rounded-3xl p-6 border border-white/5 space-y-4">
-                                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2">
-                                  <Clock className="w-3 h-3" /> Activity Insights
-                                </h4>
-                                <div className="space-y-3">
-                                  <div className="flex justify-between items-center text-[10px] uppercase tracking-wider">
-                                    <span className="text-muted-foreground">Intensity</span>
-                                    <span className="font-black text-primary">Balanced</span>
-                                  </div>
-                                  <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                                    <div className="h-full w-2/3 bg-primary rounded-full" />
-                                  </div>
-                                  <p className="text-[10px] text-muted-foreground italic leading-relaxed">
-                                    Curated to balance exploration with premium relaxation.
-                                  </p>
-                                </div>
-                              </div>
-                              
-                              <div className="px-6 py-4 rounded-2xl border border-primary/10 bg-primary/5 flex items-center gap-3">
-                                <CheckCircle2 className="w-4 h-4 text-primary" />
-                                <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Luxury Inclusion</span>
-                              </div>
-                            </div>
+                            <p className="text-sm font-bold text-foreground">Scenic, relaxed, and photo-friendly</p>
                           </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
+                          <div className="rounded-2xl border border-primary/10 bg-primary/5 p-4">
+                            <div className="mb-2 flex items-center gap-2 text-primary">
+                              <CheckCircle2 className="h-4 w-4" />
+                              <span className="text-[10px] font-black uppercase tracking-[0.18em]">Comfort</span>
+                            </div>
+                            <p className="text-sm font-bold text-foreground">Balanced pace with room to breathe</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </motion.div>
-                ))}
+                  );
+                })}
               </div>
 
             </section>
 
             {/* FAQs */}
-            {destination.faqs && destination.faqs.length > 0 && (
+            {faqItems.length > 0 && (
               <section className="space-y-6">
                 <div className="inline-block">
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2">Expert Advice</p>
@@ -435,7 +429,7 @@ export default function ItineraryDetail() {
                 </div>
                 
                     <Accordion type="single" className="w-full space-y-4">
-                  {destination.faqs.map((faq, idx) => (
+                  {faqItems.map((faq, idx) => (
                     <AccordionItem 
                       key={idx} 
                       value={`faq-${idx}`}
@@ -444,7 +438,7 @@ export default function ItineraryDetail() {
                       <AccordionTrigger className="hover:no-underline py-6">
                         <div className="flex items-center gap-4 text-left">
                           <div className="p-2 bg-primary/10 rounded-lg shrink-0">
-                            <MessageSquare className="w-4 h-4 text-primary" />
+                            <HelpCircle className="w-4 h-4 text-primary" />
                           </div>
                           <span className="font-bold text-lg tracking-tight">{faq.question}</span>
                         </div>
@@ -463,7 +457,7 @@ export default function ItineraryDetail() {
                 <div className="p-6 bg-muted/20 rounded-3xl border border-white/5 text-center">
                   <p className="text-sm text-muted-foreground flex items-center justify-center gap-2">
                     <Globe className="w-4 h-4" />
-                    Have more questions? <Button variant="link" className="p-0 h-auto font-bold text-primary" onClick={() => navigate("/contact")}>Consult Vishal Directly</Button>
+                    Have more questions? <Button variant="link" className="p-0 h-auto font-bold text-primary" onClick={() => navigate(bookingUrl)}>Consult Vishal Directly</Button>
                   </p>
                 </div>
               </section>
@@ -596,12 +590,15 @@ export default function ItineraryDetail() {
 
                   <div className="pt-8 border-t border-white/10 space-y-4">
                     <Button 
-                      className="w-full py-8 rounded-full font-black text-xl uppercase tracking-tighter bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 group h-auto"
-                      onClick={() => navigate(`/contact?destination=${encodeURIComponent(destination.name)}`)}
+                      className="w-full py-8 rounded-full font-black text-lg uppercase tracking-tight bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/20 group h-auto"
+                      onClick={() => navigate(bookingUrl)}
                     >
-                      Secure Journey
-                      <ArrowLeft className="ml-2 w-5 h-5 rotate-180 transition-transform group-hover:translate-x-1" />
+                      Send Inquiry Now
+                      <Send className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
                     </Button>
+                    <p className="text-center text-xs font-semibold leading-5 text-muted-foreground">
+                      Opens the contact form for this package and sends your inquiry to info@travelgateway.in.
+                    </p>
                     
                     <Button 
                       variant="outline" 

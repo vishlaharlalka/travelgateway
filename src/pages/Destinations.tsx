@@ -1,7 +1,7 @@
 ﻿import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Headphones, MapPin, Search, ShieldCheck, Sparkles, Star, Users } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -148,6 +148,7 @@ export default function Destinations() {
   const gridRef = useRef<HTMLDivElement>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     document.title = "Explore World Destinations | Bespoke Travel Packages | TravelGateway";
@@ -155,6 +156,35 @@ export default function Destinations() {
       .querySelector('meta[name="description"]')
       ?.setAttribute("content", "Discover curated India and international itineraries with TravelGateway.");
   }, []);
+
+  useEffect(() => {
+    const scope = searchParams.get("scope");
+    const state = searchParams.get("state");
+    const experience = searchParams.get("experience");
+    const search = searchParams.get("search");
+
+    if (scope === "INDIA" || scope === "International") {
+      setTripScope(scope);
+    }
+
+    if (state) {
+      setTripScope("INDIA");
+      setActiveState(state);
+    }
+
+    if (experience) {
+      setActiveCategory(experience);
+    }
+
+    if (search) {
+      setSearchQuery(search);
+    }
+
+    if (scope || state || experience || search) {
+      setSelectedDestinationId("All Destinations");
+      setVisibleCount(9);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     setSelectedDestinationId("All Destinations");

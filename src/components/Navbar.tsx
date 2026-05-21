@@ -1,17 +1,15 @@
 import { Link, useLocation } from "react-router-dom";
-import { ArrowRight, ChevronDown, Globe2, MapPin, Menu } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import Logo from "./Logo";
 import LanguageSwitcher from "./LanguageSwitcher";
-import { destinationPath, destinations } from "@/lib/data";
-import type { Destination } from "@/lib/types";
 
 const navLinks = [
   { name: "Home", href: "/" },
-  { name: "Destinations", href: "/destinations" },
+  { name: "Tour Packages", href: "/destinations" },
   { name: "Services", href: "/services" },
   { name: "About", href: "/about" },
   { name: "Blog", href: "/blog" },
@@ -19,43 +17,17 @@ const navLinks = [
   { name: "Payment", href: "/payment" },
 ];
 
-const isIndiaDestination = (destination: Destination) =>
-  destination.country === "India" || (destination.type === "Luxury Train" && destination.country === "India");
-
-function groupDestinationsByPlace(items: Destination[], placeFor: (destination: Destination) => string) {
-  return Object.entries(
-    items.reduce<Record<string, Destination[]>>((groups, destination) => {
-      const place = placeFor(destination);
-      groups[place] = [...(groups[place] || []), destination];
-      return groups;
-    }, {})
-  )
-    .map(([place, destinationsInPlace]) => ({
-      place,
-      items: destinationsInPlace.sort((a, b) => a.name.localeCompare(b.name)),
-    }))
-    .sort((a, b) => a.place.localeCompare(b.place));
-}
-
-const destinationMenuGroups = [
-  {
-    title: "India Packages",
-    icon: MapPin,
-    count: destinations.filter(isIndiaDestination).length,
-    places: groupDestinationsByPlace(
-      destinations.filter(isIndiaDestination),
-      (destination) => destination.state || "India"
-    ),
-  },
-  {
-    title: "International Packages",
-    icon: Globe2,
-    count: destinations.filter((destination) => !isIndiaDestination(destination)).length,
-    places: groupDestinationsByPlace(
-      destinations.filter((destination) => !isIndiaDestination(destination)),
-      (destination) => destination.country || "International"
-    ),
-  },
+const tourPackageMenuLinks = [
+  { name: "India Tour Packages", href: "/destinations" },
+  { name: "Gujarat Tours", href: "/destinations?scope=INDIA&state=Gujarat" },
+  { name: "Rajasthan Tours", href: "/destinations?scope=INDIA&state=Rajasthan" },
+  { name: "Kerala Tours", href: "/destinations?scope=INDIA&state=Kerala" },
+  { name: "Himachal Tours", href: "/destinations?scope=INDIA&state=Himachal%20Pradesh" },
+  { name: "Uttar Pradesh Tours", href: "/destinations?scope=INDIA&state=Uttar%20Pradesh" },
+  { name: "Spiritual Tours", href: "/destinations?scope=INDIA&experience=Pilgrimage" },
+  { name: "Luxury Train Tours", href: "/destinations?experience=Luxury%20Train" },
+  { name: "International Tour Packages", href: "/destinations?scope=International" },
+  { name: "Wildlife & Safari Tours", href: "/destinations?scope=International&search=safari" },
 ];
 
 function DestinationMegaMenu({ useSolidHeader }: { useSolidHeader: boolean }) {
@@ -63,75 +35,25 @@ function DestinationMegaMenu({ useSolidHeader }: { useSolidHeader: boolean }) {
     <div className="group/menu relative">
       <Link
         to="/destinations"
-        className="flex items-center gap-1.5 text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors relative"
+        className="flex items-center gap-1.5 whitespace-nowrap text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors relative"
       >
-        Destinations
+        Tour Packages
         <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover/menu:rotate-180" />
         <span className="absolute -bottom-2 left-0 h-1 w-0 bg-primary transition-all duration-300 group-hover/menu:w-full" />
       </Link>
 
-      <div className="pointer-events-none absolute left-1/2 top-full z-50 w-[min(92vw,64rem)] -translate-x-1/2 translate-y-2 pt-5 opacity-0 transition-all duration-200 group-hover/menu:pointer-events-auto group-hover/menu:opacity-100 group-hover/menu:translate-y-0 group-focus-within/menu:pointer-events-auto group-focus-within/menu:opacity-100 group-focus-within/menu:translate-y-0">
-        <div className="overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white text-slate-950 shadow-[0_32px_90px_rgba(15,23,42,0.25)]">
-          <div className="flex items-center justify-between gap-4 border-b border-slate-100 bg-[#f7f8fb] px-6 py-4">
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.24em] text-primary">All destination URLs</p>
-              <h3 className="text-lg font-black tracking-tight">Choose a package directly</h3>
-            </div>
-            <Link
-              to="/destinations"
-              className="rounded-full border border-primary/20 px-4 py-2 text-xs font-black uppercase tracking-widest text-primary transition-colors hover:bg-primary hover:text-white"
-            >
-              View all
-            </Link>
-          </div>
-
-          <div className="grid max-h-[70vh] grid-cols-1 gap-0 overflow-y-auto lg:grid-cols-2">
-            {destinationMenuGroups.map((group) => {
-              const Icon = group.icon;
-
-              return (
-                <div key={group.title} className="border-b border-slate-100 p-5 lg:border-b-0 lg:border-r last:lg:border-r-0">
-                  <div className="mb-4 flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2">
-                      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                        <Icon className="h-4 w-4" />
-                      </span>
-                      <div>
-                        <h4 className="text-sm font-black uppercase tracking-[0.16em]">{group.title}</h4>
-                        <p className="text-xs text-slate-500">{group.count} curated routes</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    {group.places.map((placeGroup) => (
-                      <div key={`${group.title}-${placeGroup.place}`}>
-                        <div className="mb-2 flex items-center justify-between rounded-xl bg-slate-100 px-3 py-2">
-                          <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-700">{placeGroup.place}</p>
-                          <span className="text-[10px] font-black uppercase tracking-widest text-primary">
-                            {placeGroup.items.length}
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-1 gap-1 sm:grid-cols-2">
-                          {placeGroup.items.map((destination) => (
-                            <Link
-                              key={destination.id}
-                              to={destinationPath(destination)}
-                              className="rounded-xl px-3 py-2 transition-colors hover:bg-primary/10 focus:bg-primary/10 focus:outline-none"
-                            >
-                              <span className="block truncate text-sm font-bold">{destination.name}</span>
-                              <span className="mt-0.5 block truncate text-xs text-slate-500">
-                                {destination.category}
-                              </span>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+      <div className="pointer-events-none absolute left-0 top-full z-50 w-80 translate-y-2 pt-5 opacity-0 transition-all duration-200 group-hover/menu:pointer-events-auto group-hover/menu:opacity-100 group-hover/menu:translate-y-0 group-focus-within/menu:pointer-events-auto group-focus-within/menu:opacity-100 group-focus-within/menu:translate-y-0">
+        <div className="border border-slate-100 bg-white py-4 text-slate-950 shadow-[0_24px_70px_rgba(15,23,42,0.16)]">
+          <div className="flex flex-col">
+            {tourPackageMenuLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.href}
+                className="whitespace-nowrap px-7 py-3 text-[1rem] font-black text-[#17143d] transition-colors hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary focus:outline-none"
+              >
+                {link.name}
+              </Link>
+            ))}
           </div>
         </div>
 
@@ -213,7 +135,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-10">
+        <nav className="hidden lg:flex items-center gap-7 xl:gap-10">
           {navLinks.map((link) =>
             link.name === "Destinations" ? (
               <div key={link.name}>
@@ -223,7 +145,7 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 to={link.href}
-                className="text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors relative group"
+                className="whitespace-nowrap text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors relative group"
               >
                 {link.name}
                 <span className="absolute -bottom-2 left-0 w-0 h-1 bg-primary transition-all duration-300 group-hover:w-full" />

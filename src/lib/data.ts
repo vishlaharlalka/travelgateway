@@ -1,4 +1,68 @@
-import type { Destination } from './types';
+import type { Destination, DestinationImage } from './types';
+
+const mediaUrl = (fileName: string) =>
+  `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(fileName)}?width=1600`;
+
+const curatedMediaRules: Array<{ keywords: string[]; url: string; caption: string }> = [
+  { keywords: ["dwarkadhish", "dwarka"], url: mediaUrl("Dwarkadhish Temple, Dwarka, Gujarat.JPG"), caption: "Dwarkadhish Temple, Dwarka" },
+  { keywords: ["somnath"], url: mediaUrl("Somnath temple gujrat.jpg"), caption: "Somnath Temple, Gujarat coast" },
+  { keywords: ["nageshwar", "nageshvara"], url: mediaUrl("Nageshwar Temple.jpg"), caption: "Nageshwar Jyotirlinga, Dwarka" },
+  { keywords: ["statue of unity"], url: mediaUrl("Statue of Unity, Gujarat.jpg"), caption: "Statue of Unity, Gujarat" },
+  { keywords: ["gir lion", "gir safari", "gir"], url: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&q=80&w=1600", caption: "Gir-style wildlife safari" },
+  { keywords: ["white rann", "rann of kutch", "kutch", "dhordo"], url: mediaUrl("Rann of Kutch.jpg"), caption: "White Rann of Kutch" },
+  { keywords: ["mandvi"], url: mediaUrl("Mandvi Beach.jpg"), caption: "Mandvi coast" },
+  { keywords: ["jaipur", "amber", "amer"], url: mediaUrl("Amer Fort Jaipur.jpg"), caption: "Jaipur palace and fort circuit" },
+  { keywords: ["jaisalmer"], url: mediaUrl("Jaisalmer Fort Rajasthan.jpg"), caption: "Jaisalmer desert fortress" },
+  { keywords: ["jodhpur", "mehrangarh"], url: mediaUrl("Mehrangarh Fort Jodhpur.jpg"), caption: "Mehrangarh Fort, Jodhpur" },
+  { keywords: ["pushkar"], url: mediaUrl("Pushkar Lake.jpg"), caption: "Pushkar lake walk" },
+  { keywords: ["alleppey", "backwater", "kumarakom"], url: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=1600", caption: "Kerala backwater houseboat" },
+  { keywords: ["munnar", "tea"], url: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&q=80&w=1600", caption: "Munnar tea hills" },
+  { keywords: ["kochi", "cochin"], url: mediaUrl("Chinese fishing nets Cochin.jpg"), caption: "Kochi heritage waterfront" },
+  { keywords: ["taj mahal", "agra"], url: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=1600", caption: "Taj Mahal, Agra" },
+  { keywords: ["varanasi", "kashi", "ganga aarti"], url: "https://images.unsplash.com/photo-1561361058-c24cecae35ca?auto=format&fit=crop&q=80&w=1600", caption: "Varanasi ghats and Ganga aarti" },
+  { keywords: ["ayodhya"], url: mediaUrl("Ram Mandir Inauguration Day Picture.jpg"), caption: "Ayodhya temple circuit" },
+  { keywords: ["prayagraj", "sangam"], url: mediaUrl("Triveni Sangam, Prayagraj.jpg"), caption: "Prayagraj Sangam" },
+  { keywords: ["goa", "beach"], url: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&q=80&w=1600", caption: "Goa coast" },
+  { keywords: ["hampi"], url: mediaUrl("Stone Chariot, Hampi.jpg"), caption: "Hampi ruins" },
+  { keywords: ["mysuru", "mysore"], url: mediaUrl("Mysore Palace, Karnataka.jpg"), caption: "Mysuru Palace" },
+  { keywords: ["coorg"], url: "https://images.unsplash.com/photo-1600100397608-f010c6744e0c?auto=format&fit=crop&q=80&w=1600", caption: "Coorg coffee country" },
+  { keywords: ["kaziranga"], url: "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&q=80&w=1600", caption: "Kaziranga wildlife" },
+  { keywords: ["tawang"], url: mediaUrl("Tawang Monastery Arunachal Pradesh.jpg"), caption: "Tawang Monastery" },
+  { keywords: ["darjeeling"], url: mediaUrl("Darjeeling Himalayan Railway.jpg"), caption: "Darjeeling toy train" },
+  { keywords: ["bodh gaya", "mahabodhi"], url: "https://images.unsplash.com/photo-1652288156243-a7505dcaa0ec?auto=format&fit=crop&q=80&w=1600", caption: "Bodh Gaya pilgrimage" },
+];
+
+export function curatedImageForText(text: string): DestinationImage | undefined {
+  const normalized = text.toLowerCase();
+  const match = curatedMediaRules.find((rule) => rule.keywords.some((keyword) => normalized.includes(keyword)));
+
+  if (!match) return undefined;
+
+  return {
+    url: match.url,
+    alt: match.caption,
+    caption: match.caption,
+  };
+}
+
+function curatedGalleryForPackage(row: { name: string; state: string; city: string; highlights: string[]; image: string }) {
+  const candidates = [
+    ...row.highlights.map((highlight) => curatedImageForText(highlight) || curatedImageForText(`${highlight} ${row.city}`)),
+    curatedImageForText(`${row.name} ${row.state} ${row.city}`),
+    { url: row.image, alt: `${row.name} hero image`, caption: row.highlights[0] },
+  ].filter(Boolean) as DestinationImage[];
+
+  const unique = candidates.filter((image, index, images) => images.findIndex((candidate) => candidate.url === image.url) === index);
+
+  return row.highlights.slice(0, 3).map((highlight, index) => {
+    const image = unique[index % unique.length];
+    return {
+      url: image.url,
+      alt: image.alt || `${row.name} ${highlight}`,
+      caption: index === 0 && image.caption ? image.caption : highlight,
+    };
+  });
+}
 
 const baseDestinations: Destination[] = [
   {
@@ -1996,7 +2060,7 @@ const premiumIndiaPackageRows = [
     price: "₹45,500",
     description: "A coastal pilgrimage route linking Dwarka, Somnath, Nageshwar, and sacred Gujarat heritage.",
     highlights: ["Dwarkadhish Temple", "Somnath aarti", "Nageshwar Jyotirlinga"],
-    image: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&q=80&w=1600"
+    image: mediaUrl("Dwarkadhish Temple, Dwarka, Gujarat.JPG")
   },
   {
     state: "Uttar Pradesh",
@@ -2125,11 +2189,7 @@ const premiumIndiaPackages: Destination[] = premiumIndiaPackageRows.map((row, in
   rating: index % 3 === 0 ? 5.0 : 4.9,
   description: row.description,
   longDescription: `${row.name} is designed as a polished India itinerary with a clear ${row.days}-day pace, premium routing, and practical support for families, couples, senior travelers, and inbound guests who want ${row.state} to feel easy, memorable, and well curated.`,
-  galleryImages: [
-    { url: row.image, alt: `${row.name} hero image`, caption: row.highlights[0] },
-    { url: row.image, alt: `${row.state} travel experience`, caption: row.highlights[1] },
-    { url: row.image, alt: `${row.state} curated itinerary`, caption: row.highlights[2] }
-  ],
+  galleryImages: curatedGalleryForPackage(row),
   services: ["Private Transfers", "Hand-picked Hotels", "Local Expert Guides", "Daily Breakfast", "Flexible Sightseeing", "Brochure Download"],
   itinerary: [
     { day: "Day 1", title: `${row.state} Arrival`, description: `Arrive into ${row.city.split(",")[0].trim()} with assisted transfer, hotel check-in, and a relaxed start based on your flight or train timing.` },

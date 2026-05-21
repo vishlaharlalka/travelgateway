@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { 
   Accordion, AccordionContent, AccordionItem, AccordionTrigger 
 } from "@/components/ui/accordion";
-import { destinationPath, findDestinationByRouteParam } from "@/lib/data";
+import { curatedImageForText, destinationPath, findDestinationByRouteParam } from "@/lib/data";
 import { GoogleGenAI, Type } from "@google/genai";
 import { generateDestinationPDF } from "@/lib/pdf";
 import CurrencyConverter from "@/components/CurrencyConverter";
@@ -142,7 +142,22 @@ export default function ItineraryDetail() {
   const galleryImages = destination.galleryImages?.length
     ? destination.galleryImages
     : [{ url: destination.image, alt: destination.name, caption: `${destination.name} signature view` }];
-  const itineraryVisuals = itineraryItems.map((_, index) => galleryImages[index % galleryImages.length] || galleryImages[0]);
+  const itineraryVisuals = itineraryItems.map((item, index) => {
+    return (
+      curatedImageForText(
+        `${item.title} ${item.description}`
+      ) ||
+      curatedImageForText(
+        `${destination.city || ""} ${destination.state || ""} ${destination.country} ${item.title}`
+      ) ||
+      galleryImages[index % galleryImages.length] ||
+      galleryImages[0]
+    );
+  });
+  const visualGalleryImages = [
+    ...itineraryVisuals,
+    ...galleryImages,
+  ].filter((image, index, images) => images.findIndex((candidate) => candidate.url === image.url) === index);
   const faqItems = destination.faqs?.length
     ? destination.faqs
     : [
@@ -303,7 +318,7 @@ export default function ItineraryDetail() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                {galleryImages.slice(0, 3).map((image, index) => (
+                {visualGalleryImages.slice(0, 3).map((image, index) => (
                   <motion.figure
                     key={`${image.url}-${index}`}
                     initial={{ opacity: 0, y: 20 }}

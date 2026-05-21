@@ -73,7 +73,7 @@ export default function Vietnam() {
   ];
 
   return (
-    <div className="pt-20 pb-24 bg-background">
+    <div className="pt-20 pb-16 bg-background">
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
@@ -316,7 +316,7 @@ export default function Vietnam() {
         </div>
       </div>
 
-      <section className="mt-24 px-6">
+      <section className="mt-16 px-6">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold mb-12 text-center tracking-tight">Glimpses of Vietnam</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -338,7 +338,7 @@ export default function Vietnam() {
         </div>
       </section>
 
-      <section className="mt-32 pb-24 px-6 bg-muted/20">
+      <section className="mt-16 pb-16 px-6 bg-muted/20">
         <div className="max-w-7xl mx-auto pt-24">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>

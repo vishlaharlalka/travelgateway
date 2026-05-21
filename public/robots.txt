@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /api/
-
-Sitemap: https://travelgateway.in/sitemap.xml
-Host: https://travelgateway.in

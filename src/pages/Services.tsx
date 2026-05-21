@@ -46,7 +46,7 @@ const services = [
 
 export default function Services() {
   return (
-    <div className="pt-32 pb-24 px-6 bg-background">
+    <div className="pt-24 pb-16 px-6 bg-background">
       <SEO
         title="Travel Services | International Tours, Visa Help and Luxury Planning"
         description="Explore Travel Gateway services including custom itineraries, flights, hotels, visa documentation, group tours, travel insurance, and concierge support."
@@ -66,7 +66,7 @@ export default function Services() {
         ])}
       />
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
+        <div className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-6 tracking-tight">Our Services</h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             We provide end-to-end travel solutions to ensure your journey is as smooth as it is memorable.
@@ -83,7 +83,7 @@ export default function Services() {
               transition={{ delay: index * 0.1 }}
             >
               <Card className="h-full border-none shadow-md hover:shadow-xl transition-all duration-300 rounded-[2rem] overflow-hidden group">
-                <CardContent className="p-10">
+                <CardContent className="p-8">
                   <div className="mb-8 text-primary bg-primary/10 w-20 h-20 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                     {service.icon}
                   </div>
@@ -106,7 +106,7 @@ export default function Services() {
         </div>
 
         {/* Support Banner */}
-        <div className="mt-24 bg-muted/50 rounded-[3rem] p-12 md:p-20 flex flex-col md:flex-row items-center gap-12">
+        <div className="mt-14 bg-muted/50 rounded-[2rem] p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
           <div className="flex-1">
             <div className="flex items-center gap-3 text-primary font-bold mb-4">
               <Headphones className="w-6 h-6" />

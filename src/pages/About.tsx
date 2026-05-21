@@ -20,7 +20,7 @@ import { defaultSeoImage, graphSchema, pageSchema } from "@/lib/seo";
 
 export default function About() {
   return (
-    <div className="pt-32 pb-24 px-6 bg-background">
+    <div className="pt-24 pb-16 px-6 bg-background">
       <SEO
         title="About Travel Gateway | Vishal Harlalka Travel Planner Ahmedabad"
         description="Meet Travel Gateway founder Vishal Harlalka and learn about the boutique Ahmedabad travel agency behind curated India and international journeys."
@@ -34,7 +34,7 @@ export default function About() {
       />
       <div className="max-w-7xl mx-auto">
         {/* Hero */}
-        <div className="mb-32 flex justify-center">
+        <div className="mb-16 flex justify-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -55,12 +55,12 @@ export default function About() {
         </div>
 
         {/* Mission & Vision */}
-        <div className="mb-32 grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="mb-16 grid grid-cols-1 md:grid-cols-2 gap-8">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-12 rounded-[3rem] bg-primary/5 border border-primary/10"
+            className="p-8 rounded-[2rem] bg-primary/5 border border-primary/10"
           >
             <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
               <Target className="w-8 h-8 text-primary" />
@@ -75,7 +75,7 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="p-12 rounded-[3rem] bg-muted border border-border"
+            className="p-8 rounded-[2rem] bg-muted border border-border"
           >
             <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
               <Compass className="w-8 h-8 text-primary" />
@@ -88,8 +88,8 @@ export default function About() {
         </div>
 
         {/* Values */}
-        <div className="mb-32">
-          <div className="text-center mb-16">
+        <div className="mb-16">
+          <div className="text-center mb-10">
             <h2 className="text-4xl font-bold mb-4 tracking-tight">Our Core Values</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               These principles guide every decision we make and every itinerary we craft.
@@ -125,7 +125,7 @@ export default function About() {
                   ease: [0.21, 0.47, 0.32, 0.98] 
                 }}
               >
-                <Card className="h-full border-none shadow-md rounded-3xl p-10 hover:shadow-xl transition-all duration-500 bg-card/50 backdrop-blur-sm group hover:-translate-y-2">
+                <Card className="h-full border-none shadow-md rounded-3xl p-8 hover:shadow-xl transition-all duration-500 bg-card/50 backdrop-blur-sm group hover:-translate-y-2">
                   <motion.div 
                     className="mb-6 inline-block"
                     whileHover={{ scale: 1.1, rotate: 5 }}
@@ -142,7 +142,7 @@ export default function About() {
         </div>
 
         {/* Team & Expertise */}
-        <div className="mb-32">
+        <div className="mb-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1 relative">
               <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl">
@@ -192,13 +192,13 @@ export default function About() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="mb-32 -mx-6 md:-mx-12 lg:-mx-24 px-6 md:px-12 lg:px-24 py-24 bg-slate-950 text-white overflow-hidden relative"
+          className="mb-16 -mx-6 md:-mx-12 lg:-mx-24 px-6 md:px-12 lg:px-24 py-16 bg-slate-950 text-white overflow-hidden relative"
         >
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/15 rounded-full blur-[140px] -mr-64 -mt-64" />
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[140px] -ml-64 -mb-64" />
           
           <div className="max-w-7xl mx-auto relative z-10">
-            <div className="max-w-3xl mb-20 text-center mx-auto">
+            <div className="max-w-3xl mb-12 text-center mx-auto">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">The Boutique Advantage</h2>
               <p className="text-slate-400 text-xl leading-relaxed">
                 We go beyond booking. We curate experiences that are defined by their depth, precision, and personal touch.
@@ -248,7 +248,7 @@ export default function About() {
         </motion.div>
 
         {/* Why Choose Us */}
-        <div className="mb-32">
+        <div className="mb-16">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 px-4">
             <div className="max-w-2xl">
               <h2 className="text-4xl font-bold mb-4 tracking-tight">Why Choose Travel Gateway</h2>
@@ -312,7 +312,7 @@ export default function About() {
         </div>
 
         {/* Stats */}
-        <div className="bg-muted/50 rounded-[3rem] p-12 md:p-20 grid grid-cols-2 lg:grid-cols-4 gap-12 text-center">
+        <div className="bg-muted/50 rounded-[2rem] p-8 md:p-12 grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           <div>
             <p className="text-5xl font-bold text-primary mb-2">5k+</p>
             <p className="text-muted-foreground font-medium">Curated Trips</p>

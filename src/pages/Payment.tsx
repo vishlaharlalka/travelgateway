@@ -35,7 +35,7 @@ export default function Payment() {
   }, []);
 
   return (
-    <div className="pt-32 pb-24 px-6 min-h-screen bg-background relative overflow-hidden">
+    <div className="pt-24 pb-16 px-6 min-h-screen bg-background relative overflow-hidden">
       <SEO
         title="Secure Travel Payment | Travel Gateway Ahmedabad"
         description="Use Travel Gateway's secure payment page for confirmed travel bookings, tour packages, and trip services."
@@ -79,12 +79,12 @@ export default function Payment() {
           <h1 className="mx-auto mb-6 max-w-72 text-4xl font-black uppercase tracking-tight sm:max-w-none md:text-6xl md:tracking-tighter">
             Complete Your <span className="text-primary italic">Booking</span>
           </h1>
-          <p className="mx-auto mb-12 max-w-72 text-base leading-relaxed text-muted-foreground sm:max-w-2xl sm:text-lg">
+          <p className="mx-auto mb-8 max-w-72 text-base leading-relaxed text-muted-foreground sm:max-w-2xl sm:text-lg">
             Securely pay for your curated journey using our trusted Razorpay integration. 
             All transactions are encrypted and protected.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             {[
               { icon: <Lock className="w-6 h-6 text-primary" />, title: "Secure Processing", desc: "256-bit SSL encryption" },
               { icon: <CreditCard className="w-6 h-6 text-primary" />, title: "Multiple Options", desc: "Cards, UPI, NetBanking" },
@@ -108,7 +108,7 @@ export default function Payment() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5 }}
-            className="bg-white dark:bg-zinc-900 shadow-2xl rounded-[3rem] p-12 max-w-lg mx-auto border border-white/10"
+            className="bg-white dark:bg-zinc-900 shadow-2xl rounded-[2rem] p-8 max-w-lg mx-auto border border-white/10"
           >
             <h2 className="text-2xl font-bold mb-8">Payment Details</h2>
             <div className="space-y-6 mb-10 text-left">

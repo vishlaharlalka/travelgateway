@@ -206,7 +206,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="pt-32 pb-24 px-6 bg-background">
+    <div className="pt-24 pb-16 px-6 bg-background">
       <SEO
         title="Contact Travel Gateway | Travel Agent in South Bopal Ahmedabad for India and International Bookings"
         description="Contact Travel Gateway in South Bopal, Ahmedabad for international holidays, India luxury journeys, visa guidance, family tours, honeymoon planning, and personalized booking support."
@@ -231,7 +231,7 @@ export default function Contact() {
       />
 
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
+        <div className="text-center mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -245,11 +245,11 @@ export default function Contact() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Contact Info */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             <Card className="border-none shadow-md rounded-3xl overflow-hidden">
-              <CardContent className="p-8 space-y-8">
+              <CardContent className="p-6 space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="p-3 bg-primary/10 rounded-2xl text-primary">
                     <Mail className="w-6 h-6" />
@@ -286,7 +286,7 @@ export default function Contact() {
             </Card>
 
             <Card className="border-none shadow-md rounded-3xl overflow-hidden bg-primary text-primary-foreground">
-              <CardContent className="p-8">
+              <CardContent className="p-6">
                 <div className="flex items-center gap-3 mb-6">
                   <MessageSquare className="w-6 h-6" />
                   <h4 className="font-bold text-xl">WhatsApp Chat</h4>
@@ -309,9 +309,9 @@ export default function Contact() {
           {/* Contact Form */}
           <div className="lg:col-span-2">
             <Card className="border-none shadow-xl rounded-[2.5rem] overflow-hidden">
-              <CardContent className="p-10 md:p-16">
-                <h3 className="text-3xl font-bold mb-8 tracking-tight">Plan Your Trip with Experts</h3>
-                <p className="text-muted-foreground mb-10">
+              <CardContent className="p-6 md:p-10">
+                <h3 className="text-3xl font-bold mb-5 tracking-tight">Plan Your Trip with Experts</h3>
+                <p className="text-muted-foreground mb-7">
                   Fill out the form below, and our team will get back to you with a customized itinerary within 24 hours.
                 </p>
                 <form className="space-y-6" onSubmit={handleSubmit}>
@@ -395,7 +395,7 @@ export default function Contact() {
                   <div className="space-y-2">
                     <label className="text-sm font-semibold ml-1">Tell Vishal about your dream trip</label>
                     <textarea 
-                      className="w-full min-h-[150px] rounded-2xl border border-muted bg-background px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-shadow"
+                      className="w-full min-h-[120px] rounded-2xl border border-muted bg-background px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-shadow"
                       placeholder="Share your preferences, dates, budget, or any special requests..."
                       value={formData.message}
                       onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}

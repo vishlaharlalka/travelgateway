@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { 
   Accordion, AccordionContent, AccordionItem, AccordionTrigger 
 } from "@/components/ui/accordion";
-import { destinations } from "@/lib/data";
+import { destinationPath, findDestinationByRouteParam } from "@/lib/data";
 import { GoogleGenAI, Type } from "@google/genai";
 import { generateDestinationPDF } from "@/lib/pdf";
 import CurrencyConverter from "@/components/CurrencyConverter";
@@ -37,8 +37,38 @@ export default function ItineraryDetail() {
   const [aiTips, setAiTips] = useState<{ title: string; content: string }[]>([]);
 
   const destination = useMemo(() => {
-    return destinations.find((d) => d.id === Number(id));
+    return findDestinationByRouteParam(id);
   }, [id]);
+
+  const itineraryItems = useMemo(() => {
+    if (!destination) return [];
+    if (destination.itinerary?.length) return destination.itinerary;
+
+    const location = [destination.city, destination.state, destination.country].filter(Boolean).join(", ") || destination.country;
+
+    return [
+      {
+        day: "Day 1",
+        title: `${destination.name} Arrival & Orientation`,
+        description: `Arrive in ${location}, settle into your hotel, and complete a relaxed orientation with key local highlights, dining guidance, and trip briefing.`,
+      },
+      {
+        day: "Day 2",
+        title: "Signature Sightseeing & Local Stories",
+        description: `Explore the main cultural, scenic, or heritage experiences connected with ${destination.name}, paced with private transfers and guide support where useful.`,
+      },
+      {
+        day: "Day 3",
+        title: "Deeper Experiences & Personal Time",
+        description: `Add curated experiences such as markets, viewpoints, food trails, temples, beaches, wildlife, or museums based on the destination style and your travel preferences.`,
+      },
+      {
+        day: "Day 4",
+        title: "Flexible Extension or Departure",
+        description: "Keep the final day flexible for shopping, a relaxed breakfast, an optional add-on experience, or a smooth transfer to the airport, station, or next destination.",
+      },
+    ];
+  }, [destination]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -113,7 +143,7 @@ export default function ItineraryDetail() {
     ? destination.galleryImages
     : [{ url: destination.image, alt: destination.name, caption: `${destination.name} signature view` }];
   const packageReviewUrl = `/contact?destination=${encodeURIComponent(`${destination.name} package review`)}`;
-  const detailPath = destination.link || `/destinations/${destination.id}`;
+  const detailPath = destinationPath(destination);
   const detailTitle = `${destination.name} Tour Package | Travel Gateway`;
   const detailDescription = destination.longDescription || destination.description;
   const detailUrl = new URL(detailPath, siteUrl).toString();
@@ -137,7 +167,7 @@ export default function ItineraryDetail() {
             description: detailDescription,
             image: destination.image,
             touristType: ["Indian travelers", "Families", "Couples", "Inbound guests"],
-            itinerary: destination.itinerary?.map((item, index) => ({
+            itinerary: itineraryItems.map((item, index) => ({
               "@type": "ItemList",
               position: index + 1,
               name: item.title,
@@ -215,7 +245,7 @@ export default function ItineraryDetail() {
               </span>
               <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
               <span className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-primary" /> {destination.itinerary?.length} Days
+                <Clock className="w-5 h-5 text-primary" /> {itineraryItems.length} Days
               </span>
             </div>
           </motion.div>
@@ -223,10 +253,10 @@ export default function ItineraryDetail() {
       </section>
 
       {/* Content Section */}
-      <main className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Left Column: Details */}
-          <div className="lg:col-span-8 space-y-20">
+          <div className="lg:col-span-8 space-y-12">
             {/* Overview */}
             <section className="space-y-6">
               <div className="inline-block">
@@ -239,7 +269,7 @@ export default function ItineraryDetail() {
             </section>
 
             {/* Visual Gallery */}
-            <section className="space-y-8">
+            <section className="space-y-6">
               <div className="flex items-end justify-between border-b-2 border-primary/20 pb-4">
                 <div className="inline-block">
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2">High Definition Gallery</p>
@@ -297,7 +327,7 @@ export default function ItineraryDetail() {
 
               <div className="space-y-4">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {destination.itinerary?.map((item, i) => (
+                  {itineraryItems.map((item, i) => (
                     <div
                       key={`summary-${item.day}-${i}`}
                       className="rounded-3xl border border-primary/10 bg-primary/5 p-5"
@@ -318,7 +348,7 @@ export default function ItineraryDetail() {
                   ))}
                 </div>
 
-                {destination.itinerary?.map((item, i) => (
+                {itineraryItems.map((item, i) => (
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -342,7 +372,7 @@ export default function ItineraryDetail() {
                           </div>
                         </AccordionTrigger>
                         <AccordionContent className="pb-10 pl-20 pr-8 space-y-6 pt-6 border-t border-white/5">
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="md:col-span-2 space-y-6">
                               <div className="flex items-center gap-2 text-primary">
                                 <Sparkles className="w-4 h-4" />
@@ -398,7 +428,7 @@ export default function ItineraryDetail() {
 
             {/* FAQs */}
             {destination.faqs && destination.faqs.length > 0 && (
-              <section className="space-y-8">
+              <section className="space-y-6">
                 <div className="inline-block">
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2">Expert Advice</p>
                   <h2 className="text-3xl font-black uppercase tracking-tight border-b-2 border-primary/20 pb-4">Essential FAQs</h2>
@@ -440,12 +470,12 @@ export default function ItineraryDetail() {
             )}
 
             {/* AI Insights */}
-            <section className="p-8 md:p-12 rounded-[3rem] bg-gradient-to-br from-amber-500/10 to-primary/5 border border-amber-500/20 relative overflow-hidden group">
+            <section className="p-6 md:p-8 rounded-[2rem] bg-gradient-to-br from-amber-500/10 to-primary/5 border border-amber-500/20 relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-700">
                 <Sparkles className="w-32 h-32 text-amber-500" />
               </div>
               
-              <div className="relative z-10 space-y-8">
+              <div className="relative z-10 space-y-6">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-amber-500 rounded-2xl shadow-lg shadow-amber-500/20">
                     <Lightbulb className="w-8 h-8 text-white" />
@@ -482,7 +512,7 @@ export default function ItineraryDetail() {
             </section>
 
             {/* Package Reviews */}
-            <section id="package-reviews" className="space-y-8 rounded-[3rem] border border-primary/10 bg-muted/20 p-8 md:p-12">
+            <section id="package-reviews" className="space-y-6 rounded-[2rem] border border-primary/10 bg-muted/20 p-6 md:p-8">
               <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                 <div className="max-w-2xl">
                   <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">Package Reviews</p>
@@ -520,8 +550,8 @@ export default function ItineraryDetail() {
 
           {/* Right Column: Sticky Action Card */}
           <div className="lg:col-span-4">
-            <aside className="sticky top-32 space-y-8">
-              <div className="bg-muted/20 p-8 md:p-10 rounded-[3rem] border border-white/10 backdrop-blur-md shadow-2xl relative">
+            <aside className="sticky top-28 space-y-6">
+              <div className="bg-muted/20 p-6 md:p-8 rounded-[2rem] border border-white/10 backdrop-blur-md shadow-2xl relative">
                 <div className="absolute -top-6 -right-6">
                   <motion.div
                     animate={{ rotate: 360 }}
@@ -532,7 +562,7 @@ export default function ItineraryDetail() {
                   </motion.div>
                 </div>
 
-                <div className="space-y-8">
+                <div className="space-y-6">
                   <div>
                     <p className="text-sm text-muted-foreground uppercase tracking-widest font-bold mb-2">Package Investment</p>
                     <div className="flex items-baseline gap-2">
@@ -609,7 +639,7 @@ export default function ItineraryDetail() {
               </div>
 
               {/* Quick Contact Card */}
-              <div className="p-8 bg-primary/5 rounded-[2.5rem] border border-primary/10 flex items-center gap-6">
+              <div className="p-6 bg-primary/5 rounded-[2rem] border border-primary/10 flex items-center gap-5">
                 <div className="p-4 bg-primary/10 rounded-2xl">
                   <Headphones className="w-6 h-6 text-primary" />
                 </div>

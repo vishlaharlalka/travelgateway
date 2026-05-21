@@ -10,7 +10,7 @@ export default function TermsOfService() {
   }, []);
 
   return (
-    <div className="pt-32 pb-24 px-6 bg-background">
+    <div className="pt-24 pb-16 px-6 bg-background">
       <SEO
         title="Terms and Conditions | Travel Gateway Ahmedabad"
         description="Read Travel Gateway terms and conditions for tour planning, bookings, payments, cancellations, and travel services."
@@ -22,7 +22,7 @@ export default function TermsOfService() {
         ])}
       />
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -35,7 +35,7 @@ export default function TermsOfService() {
           </motion.div>
         </div>
 
-        <div className="prose prose-lg max-w-none text-muted-foreground space-y-12">
+        <div className="prose prose-lg max-w-none text-muted-foreground space-y-8">
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-3">
               <Scale className="text-primary w-6 h-6" /> 1. Booking & Payments
@@ -86,7 +86,7 @@ export default function TermsOfService() {
             </p>
           </section>
 
-          <section className="bg-muted/30 p-8 rounded-3xl border border-muted">
+          <section className="bg-muted/30 p-6 rounded-3xl border border-muted">
             <h2 className="text-xl font-bold text-foreground mb-4">Governing Law</h2>
             <p className="text-sm">
               These terms are governed by the laws of India. Any disputes will be subject to the exclusive jurisdiction of the courts in <strong>Ahmedabad, Gujarat</strong>.

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import SEO from "@/components/SEO";
-import { destinations as globalDestinations } from "@/lib/data";
+import { destinationPath, destinations as globalDestinations } from "@/lib/data";
 import { generateDestinationPDF } from "@/lib/pdf";
 import { Destination } from "@/lib/types";
 import { defaultSeoImage, graphSchema, pageSchema, siteUrl } from "@/lib/seo";
@@ -131,7 +131,7 @@ function DestinationCard({ dest, index, onSelect }: DestinationCardProps) {
 }
 
 function navigateToPackageReviews(dest: Destination) {
-  const reviewPath = `${dest.link || `/destinations/${dest.id}`}#package-reviews`;
+  const reviewPath = `${destinationPath(dest)}#package-reviews`;
   window.location.href = reviewPath;
 }
 
@@ -293,7 +293,7 @@ export default function Destinations() {
 
   const navigateToDetail = (dest: Destination) => {
     window.scrollTo(0, 0);
-    navigate(dest.link || `/destinations/${dest.id}`);
+    navigate(destinationPath(dest));
   };
 
   const clearFilters = () => {
@@ -306,7 +306,7 @@ export default function Destinations() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f6f8fb] pb-24 text-slate-950">
+    <div className="min-h-screen bg-[#f6f8fb] pb-16 text-slate-950">
       <SEO
         title="Destinations | India and International Tour Packages by Travel Gateway"
         description="Browse Travel Gateway destinations across India and the world, including luxury trains, family holidays, cultural routes, safaris, and curated international journeys."
@@ -323,13 +323,13 @@ export default function Destinations() {
             itemListElement: destinations.slice(0, 30).map((destination, index) => ({
               "@type": "ListItem",
               position: index + 1,
-              url: new URL(destination.link || `/destinations/${destination.id}`, siteUrl).toString(),
+              url: new URL(destinationPath(destination), siteUrl).toString(),
               name: destination.name,
             })),
           },
         ])}
       />
-      <section className="relative overflow-hidden px-6 pt-32">
+      <section className="relative overflow-hidden px-6 pt-24">
         <div className="absolute inset-0 h-[36rem] bg-[#061328]" />
         <img src={heroImage} alt="" className="absolute inset-0 h-[36rem] w-full object-cover opacity-35" />
         <div className="absolute inset-0 h-[36rem] bg-gradient-to-b from-black/45 via-[#061328]/70 to-[#f6f8fb]" />
@@ -442,7 +442,7 @@ export default function Destinations() {
         </div>
       </section>
 
-      <section ref={gridRef} className="relative mx-auto mt-14 max-w-7xl px-6">
+      <section ref={gridRef} className="relative mx-auto mt-10 max-w-7xl px-6">
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">{tripScope === "INDIA" ? "India collection" : "International collection"}</p>
@@ -455,7 +455,7 @@ export default function Destinations() {
 
         {visibleDestinations.length > 0 ? (
           tripScope === "International" || tripScope === "INDIA" ? (
-            <div className="space-y-12">
+            <div className="space-y-8">
               {groupedVisibleDestinations.map((group) => (
                 <section key={group.label} className="rounded-[2rem] border border-slate-200 bg-white/70 p-4 shadow-sm backdrop-blur-sm md:p-6">
                   <div className="mb-6 flex flex-col gap-2 border-b border-slate-200 pb-5 md:flex-row md:items-end md:justify-between">
@@ -507,7 +507,7 @@ export default function Destinations() {
         </div>
       </section>
 
-      <section className="mx-auto mt-28 max-w-7xl px-6">
+      <section className="mx-auto mt-16 max-w-7xl px-6">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {[
             { icon: <Sparkles className="h-6 w-6" />, title: "Curated Portfolio", description: "Hand-picked itineraries with clearer destination grouping." },

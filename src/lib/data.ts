@@ -2581,3 +2581,29 @@ export const destinations = [
   ...pilgrimageIndiaPackages,
 ];
 
+export function destinationSlug(destination: Pick<Destination, "id" | "name" | "link">) {
+  if (destination.link) {
+    return destination.link.replace(/^\/destinations\//, "").replace(/^\/+|\/+$/g, "");
+  }
+
+  const slug = destination.name
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return `${slug}-${destination.id}`;
+}
+
+export function destinationPath(destination: Pick<Destination, "id" | "name" | "link">) {
+  return destination.link || `/destinations/${destinationSlug(destination)}`;
+}
+
+export function findDestinationByRouteParam(param?: string) {
+  if (!param) return undefined;
+
+  return destinations.find((destination) => {
+    return String(destination.id) === param || destinationSlug(destination) === param;
+  });
+}
+

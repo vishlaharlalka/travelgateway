@@ -39,7 +39,7 @@ export default function FAQ() {
   ];
 
   return (
-    <div className="pt-32 pb-24 px-6 bg-background">
+    <div className="pt-24 pb-16 px-6 bg-background">
       <SEO
         title="Travel Gateway FAQs | Ahmedabad Travel Agency Questions"
         description="Answers to common questions about Travel Gateway, international tour packages, visa assistance, travel insurance, payments, and trip support."
@@ -63,7 +63,7 @@ export default function FAQ() {
         ])}
       />
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -80,7 +80,7 @@ export default function FAQ() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="bg-muted/30 p-8 md:p-12 rounded-[2.5rem] mb-16"
+          className="bg-muted/30 p-6 md:p-8 rounded-[2rem] mb-10"
         >
             <Accordion type="single" className="w-full">
             {faqs.map((faq, index) => (
@@ -96,7 +96,7 @@ export default function FAQ() {
           </Accordion>
         </motion.div>
 
-        <div className="text-center bg-primary text-primary-foreground p-12 rounded-[3rem] shadow-xl">
+        <div className="text-center bg-primary text-primary-foreground p-8 md:p-10 rounded-[2rem] shadow-xl">
           <h2 className="text-3xl font-bold mb-4">Still have questions?</h2>
           <p className="text-primary-foreground/80 mb-8 text-lg">
             Vishal and the team are just a message away. Get in touch for a personalized consultation.

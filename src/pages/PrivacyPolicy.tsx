@@ -10,7 +10,7 @@ export default function PrivacyPolicy() {
   }, []);
 
   return (
-    <div className="pt-32 pb-24 px-6 bg-background">
+    <div className="pt-24 pb-16 px-6 bg-background">
       <SEO
         title="Privacy Policy | Travel Gateway Ahmedabad"
         description="Read the Travel Gateway privacy policy for how customer inquiry, contact, and travel planning information is handled."
@@ -22,7 +22,7 @@ export default function PrivacyPolicy() {
         ])}
       />
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -35,7 +35,7 @@ export default function PrivacyPolicy() {
           </motion.div>
         </div>
 
-        <div className="prose prose-lg max-w-none text-muted-foreground space-y-12">
+        <div className="prose prose-lg max-w-none text-muted-foreground space-y-8">
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-3">
               <Eye className="text-primary w-6 h-6" /> 1. Information We Collect
@@ -84,7 +84,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          <section className="bg-muted/30 p-8 rounded-3xl border border-muted">
+          <section className="bg-muted/30 p-6 rounded-3xl border border-muted">
             <h2 className="text-xl font-bold text-foreground mb-4">Contact Us Regarding Privacy</h2>
             <p className="text-sm">
               If you have any questions about this Privacy Policy, please contact us at:<br />

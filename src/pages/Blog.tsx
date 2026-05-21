@@ -604,7 +604,7 @@ export default function Blog() {
   };
 
   return (
-    <div className="pt-32 pb-24 px-6 bg-background">
+    <div className="pt-24 pb-16 px-6 bg-background">
       <SEO
         title="Travel Gateway Blog | Live Travel News, Visa Alerts and Planning Guides"
         description="Read Travel Gateway travel news, visa updates, airline stories, destination insights, and advisor-written planning guides for Indian and international travelers."

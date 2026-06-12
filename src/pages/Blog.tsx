@@ -10,7 +10,9 @@ import {
   Globe2,
   Loader2,
   Newspaper,
+  Radio,
   RefreshCcw,
+  Sparkles,
   Tag,
   User,
 } from "lucide-react";
@@ -477,6 +479,30 @@ function getTravelerChecks(category: string) {
   ];
 }
 
+function getNewsImpact(category: string) {
+  if (category === "Visa") {
+    return "Entry-rule changes can affect whether a traveler can board, how early documents must be prepared, and which bookings are safe to confirm.";
+  }
+
+  if (category === "Aviation" || category === "India Aviation") {
+    return "Airline and airport changes can quickly affect fares, connection time, baggage planning, and the usable days inside a holiday.";
+  }
+
+  if (category === "Cruise") {
+    return "Cruise updates matter before flights and hotels are locked because port timings, embarkation rules, and route changes can affect the whole trip.";
+  }
+
+  if (category === "Hotels") {
+    return "Hotel developments can change destination value, room availability, location choices, and the service level travelers should expect.";
+  }
+
+  if (category === "India Travel News") {
+    return "This update may influence current India itinerary planning, destination demand, supplier availability, or the advice shared with travelers.";
+  }
+
+  return "This story is a useful planning signal for travelers and advisors comparing destination timing, availability, costs, and current conditions.";
+}
+
 function normalizeArticle(article: FeedArticle): LiveArticle {
   const title = cleanTitle(article.title);
   const category = getLiveCategory(title, article.sourcecountry);
@@ -528,6 +554,7 @@ export default function Blog() {
   const [newsStatus, setNewsStatus] = useState<NewsStatus>("idle");
   const [newsError, setNewsError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [feedSource, setFeedSource] = useState("Live travel feeds");
   const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
 
   const refreshLiveNews = useCallback(async () => {
@@ -549,6 +576,7 @@ export default function Blog() {
         return nextArticles[0]?.id ?? null;
       });
       setLastUpdated(new Date());
+      setFeedSource(data.source || "Live travel feeds");
       setNewsStatus("success");
     } catch (error) {
       setLiveArticles(officialIndiaTravelUpdates);
@@ -596,6 +624,8 @@ export default function Blog() {
   const selectedPost = posts.find((post) => post.id === selectedPostId) || posts[0];
   const selectedLiveArticle =
     liveArticles.find((article) => article.id === selectedLiveId) || liveArticles[0];
+  const latestLiveArticle = liveArticles[0];
+  const liveCategories = Array.from(new Set(liveArticles.map((article) => article.category)));
   const showEditorialGrid = activeCategory !== "Live News";
 
   const selectPost = (postId: number) => {
@@ -636,7 +666,10 @@ export default function Blog() {
       />
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-14">
-          <Badge className="mb-4 bg-primary/10 text-primary border-none">Live Travel Dispatch</Badge>
+          <Badge className="mb-4 border-none bg-emerald-500/10 text-emerald-700">
+            <span className="mr-2 h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            Live Travel Dispatch
+          </Badge>
           <h1 className="text-5xl font-bold mb-6 tracking-tight">
             The <span className="text-primary italic">TravelGateway</span> Journal
           </h1>
@@ -647,6 +680,59 @@ export default function Blog() {
         </div>
 
         <section className="mb-16">
+          <div className="mb-8 overflow-hidden rounded-2xl border border-emerald-500/20 bg-slate-950 text-white shadow-xl">
+            <div className="flex flex-col gap-5 p-5 md:flex-row md:items-center md:justify-between md:px-7">
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-300">
+                  <Radio className="h-5 w-5 animate-pulse" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.24em] text-emerald-300">
+                    Live newsroom
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-white/80">
+                    {newsStatus === "loading"
+                      ? "Refreshing current travel headlines..."
+                      : latestLiveArticle
+                        ? `Latest: ${latestLiveArticle.title}`
+                        : "Waiting for the next travel update"}
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-3 text-center">
+                <div className="rounded-xl bg-white/5 px-4 py-3">
+                  <p className="text-xl font-black">{liveArticles.length}</p>
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-white/55">Stories</p>
+                </div>
+                <div className="rounded-xl bg-white/5 px-4 py-3">
+                  <p className="text-xl font-black">{liveCategories.length}</p>
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-white/55">Sections</p>
+                </div>
+                <div className="rounded-xl bg-white/5 px-4 py-3">
+                  <p className="text-xl font-black">5m</p>
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-white/55">Refresh</p>
+                </div>
+              </div>
+            </div>
+            {liveArticles.length > 0 && (
+              <div className="border-t border-white/10 bg-white/5 px-5 py-3 md:px-7">
+                <div className="flex gap-8 overflow-hidden whitespace-nowrap text-xs font-semibold text-white/70">
+                  {liveArticles.slice(0, 4).map((article) => (
+                    <button
+                      key={article.id}
+                      type="button"
+                      onClick={() => setSelectedLiveId(article.id)}
+                      className="transition-colors hover:text-emerald-300"
+                    >
+                      <span className="mr-2 text-emerald-400">LIVE</span>
+                      {article.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between mb-6">
             <div>
               <Badge className="mb-3 bg-emerald-500/10 text-emerald-700 border-none">
@@ -654,10 +740,6 @@ export default function Blog() {
                 Real-time news feed
               </Badge>
               <h2 className="text-3xl font-bold tracking-tight">Live Travel News</h2>
-              <p className="text-muted-foreground mt-2 max-w-2xl">
-                India travel and aviation updates first, followed by live global airline,
-                hotel, cruise, and tourism stories refreshed every five minutes.
-              </p>
             </div>
             <div className="flex flex-wrap items-center gap-3">
               {lastUpdated && (
@@ -778,15 +860,36 @@ export default function Blog() {
                         <Clock className="h-3.5 w-3.5" />
                         {formatDateTime(selectedLiveArticle.seenAt)}
                       </span>
+                      <span className="flex items-center gap-1 text-emerald-700">
+                        <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                        Live feed
+                      </span>
                     </div>
                     <h3 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight">
                       {selectedLiveArticle.title}
                     </h3>
-                    <p className="mt-4 text-muted-foreground leading-relaxed">
-                      {selectedLiveArticle.summary}
-                    </p>
+                    <div className="mt-6 grid gap-4 md:grid-cols-2">
+                      <div className="rounded-xl border bg-muted/20 p-5">
+                        <div className="mb-3 flex items-center gap-2 text-primary">
+                          <Newspaper className="h-4 w-4" />
+                          <h4 className="text-xs font-black uppercase tracking-[0.18em]">News brief</h4>
+                        </div>
+                        <p className="text-sm leading-6 text-muted-foreground">
+                          {selectedLiveArticle.summary}
+                        </p>
+                      </div>
+                      <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-5">
+                        <div className="mb-3 flex items-center gap-2 text-amber-700">
+                          <Sparkles className="h-4 w-4" />
+                          <h4 className="text-xs font-black uppercase tracking-[0.18em]">Why it matters</h4>
+                        </div>
+                        <p className="text-sm leading-6 text-muted-foreground">
+                          {getNewsImpact(selectedLiveArticle.category)}
+                        </p>
+                      </div>
+                    </div>
                     <div className="mt-6 rounded-lg bg-muted/40 p-5">
-                      <h4 className="font-bold mb-3">Advisor action checklist</h4>
+                      <h4 className="font-bold mb-3">What travelers should check next</h4>
                       <ul className="space-y-3">
                         {selectedLiveArticle.checks.map((check) => (
                           <li key={check} className="flex gap-3 text-sm text-foreground/80">
@@ -807,7 +910,7 @@ export default function Blog() {
                         <ExternalLink className="ml-2 h-4 w-4" />
                       </a>
                       <span className="text-xs text-muted-foreground">
-                        Source country: {selectedLiveArticle.sourceCountry}
+                        Feed: {feedSource} / Source country: {selectedLiveArticle.sourceCountry}
                       </span>
                     </div>
                   </div>

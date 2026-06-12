@@ -46,10 +46,10 @@ export default function About() {
               <span className="text-primary italic">by Vishal Harlalka</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              TravelGateway was founded by Vishal Harlalka with a simple yet powerful mission: to bring the "personal" back into travel planning. In an era of automated booking engines, we believe that true luxury lies in human connection and expert curation.
+              Travel Gateway is run from Ahmedabad for travelers who want a human planner before they commit money to flights, hotels, visas, and ground arrangements. Vishal Harlalka stays close to the planning conversation so the trip is built around real constraints, not brochure promises.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Vishal and his handpicked team of travel specialists work closely with each client to understand their unique preferences, ensuring that every itinerary is a reflection of their individual personality and travel style.
+              The team starts with practical questions: who is traveling, how fast they like to move, what comfort level matters, where flexibility is needed, and which parts of the trip should be handled privately.
             </p>
           </motion.div>
         </div>
@@ -67,7 +67,7 @@ export default function About() {
               Our Mission
             </h2>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              To transform the way Indian travelers experience the world by providing unparalleled personalization, expert local insights, and a seamless journey from inception to completion.
+              To help Indian and inbound travelers make confident travel decisions with clear advice, realistic routing, verified suppliers, and support that continues after the booking is made.
             </p>
           </motion.div>
           <motion.div 
@@ -82,7 +82,7 @@ export default function About() {
               Our Vision
             </h2>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              To be the most trusted name in boutique travel consultancy, recognized for our integrity, creativity, and the deep human connections we foster across the globe.
+              To become the Ahmedabad travel-planning team clients return to when they need careful judgment, transparent coordination, and trips that feel manageable from the first call.
             </p>
           </motion.div>
         </div>
@@ -92,7 +92,7 @@ export default function About() {
           <div className="text-center mb-10">
             <h2 className="text-4xl font-bold mb-4 tracking-tight">Our Core Values</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              These principles guide every decision we make and every itinerary we craft.
+              These are the standards we use when comparing hotels, guides, routes, and supplier options.
             </p>
           </div>
 
@@ -100,18 +100,18 @@ export default function About() {
             {[
               {
                 icon: <Heart className="w-10 h-10 text-primary" />,
-                title: "Passion for Excellence",
-                description: "We don't settle for 'good enough'. We strive for perfection in every detail, from hotel selection to airport transfers.",
+                title: "Clear Advice",
+                description: "We explain tradeoffs before booking, including route timing, hotel location, comfort level, and what is worth upgrading.",
               },
               {
                 icon: <ShieldCheck className="w-10 h-10 text-primary" />,
-                title: "Uncompromising Integrity",
-                description: "We work on a foundation of trust. Our recommendations are always based on what's best for you, not our bottom line.",
+                title: "Transparent Choices",
+                description: "Recommendations are kept practical and easy to compare, so clients understand why an option is being suggested.",
               },
               {
                 icon: <Award className="w-10 h-10 text-primary" />,
-                title: "Exclusivity & Discretion",
-                description: "We provide high-value travelers with the privacy and exclusive access they deserve, handled with utmost care.",
+                title: "Discreet Handling",
+                description: "Family details, budgets, passports, and preferences are handled carefully and shared only where the booking requires it.",
               },
             ].map((value, index) => (
               <motion.div
@@ -167,19 +167,19 @@ export default function About() {
                 <div>
                   <h3 className="text-xl font-bold mb-2 text-primary">Decades of Discovery</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Vishal Harlalka brings over 20 years of intensive travel consultancy experience. Having explored over 50 countries personally, he doesn't just read about destinations; he knows them.
+                    Vishal Harlalka has spent years helping Gujarat-based travelers compare destinations, hotels, visa requirements, and seasonal routes. The advice is grounded in what clients actually ask before they book.
                   </p>
                 </div>
                 <div>
                   <h3 className="text-xl font-bold mb-2 text-primary">Global Network</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Our team maintains direct relationships with boutique hoteliers, private guides, and local fixers worldwide. This network ensures our clients get treatment that standard booking engines can't provide.
+                    The team coordinates with hotels, destination partners, transport teams, and local guides so itinerary details are checked before the traveler is on the road.
                   </p>
                 </div>
                 <div>
                   <h3 className="text-xl font-bold mb-2 text-primary">Relentless Curation</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    We spend hundreds of hours every year researching new trends, visiting new properties, and refining our itineraries. If it's on a TravelGateway trip, it's been vetted.
+                    Suggested routes are reviewed for season, travel time, comfort, supplier reliability, and whether the pace makes sense for the people traveling.
                   </p>
                 </div>
               </div>
@@ -201,7 +201,7 @@ export default function About() {
             <div className="max-w-3xl mb-12 text-center mx-auto">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">The Boutique Advantage</h2>
               <p className="text-slate-400 text-xl leading-relaxed">
-                We go beyond booking. We curate experiences that are defined by their depth, precision, and personal touch.
+                We help turn broad travel ideas into workable plans, with fewer surprises between inquiry, booking, departure, and return.
               </p>
             </div>
 
@@ -210,22 +210,22 @@ export default function About() {
                 {
                   icon: <Award className="w-12 h-12 text-primary" />,
                   title: "Expertise",
-                  description: "Leverage 20 years of boots-on-the-ground knowledge. We find the soul of a destination, not just its surface."
+                  description: "Get route, season, hotel, and transport guidance before the itinerary is finalized."
                 },
                 {
                   icon: <UserCheck className="w-12 h-12 text-primary" />,
                   title: "Personalization",
-                  description: "Every second reflects your rhythm. Your itinerary is a unique fingerprint, never duplicated for another client."
+                  description: "Keep the trip paced for your family, group size, comfort level, and budget."
                 },
                 {
                   icon: <Crown className="w-12 h-12 text-primary" />,
-                  title: "Exclusive Access",
-                  description: "Unlock private views, sold-out venues, and invitation-only events through our elite global partnerships."
+                  title: "Supplier Coordination",
+                  description: "Work with one planning team while hotels, guides, transfers, and local partners are coordinated in the background."
                 },
                 {
                   icon: <Zap className="w-12 h-12 text-primary" />,
                   title: "Proactive Ease",
-                  description: "Travel with absolute peace of mind. We monitor your journey 24/7, handling details before you even notice them."
+                  description: "Have a reachable team for changes, local timing questions, and travel-day clarifications."
                 }
               ].map((benefit, index) => (
                 <motion.div
@@ -253,12 +253,12 @@ export default function About() {
             <div className="max-w-2xl">
               <h2 className="text-4xl font-bold mb-4 tracking-tight">Why Choose Travel Gateway</h2>
               <p className="text-muted-foreground text-lg">
-                We don't just book trips; we craft legacies of discovery and wonder.
+                A closer look at the planning habits that make trips easier to understand before you pay.
               </p>
             </div>
             <div className="hidden md:block h-px flex-grow bg-border mx-8 mb-4 opacity-50" />
             <div className="text-primary font-serif italic text-xl whitespace-nowrap mb-2">
-              Experience the Vishal Harlalka standard.
+              Practical, personal, accountable.
             </div>
           </div>
 
@@ -267,25 +267,25 @@ export default function About() {
               {
                 icon: <Compass className="w-8 h-8" />,
                 title: "Expert Guidance",
-                description: "Over two decades of travel expertise distilled into every itinerary we create.",
+                description: "Destination advice shaped by client questions, seasonal constraints, and route logic.",
                 color: "bg-blue-50 text-blue-600"
               },
               {
                 icon: <Gem className="w-8 h-8" />,
-                title: "Exclusive Access",
-                description: "From private museum tours to hidden villas, we open doors others didn't know existed.",
+                title: "Better Fit",
+                description: "Hotels, guides, and activities are chosen for the traveler, not just the destination name.",
                 color: "bg-purple-50 text-purple-600"
               },
               {
                 icon: <ShieldCheck className="w-8 h-8" />,
-                title: "Total Peace of Mind",
-                description: "Meticulous planning and 24/7 support mean you only have to worry about where to look next.",
+                title: "Travel-Day Support",
+                description: "Key contacts and changes stay organized so travelers are not left guessing.",
                 color: "bg-emerald-50 text-emerald-600"
               },
               {
                 icon: <MapPin className="w-8 h-8" />,
                 title: "Local Depth",
-                description: "Our global network of local insiders ensures you see the soul of a place, not just its surface.",
+                description: "Local partners help check timing, transport, and on-ground practicality.",
                 color: "bg-orange-50 text-orange-600"
               }
             ].map((usp, index) => (

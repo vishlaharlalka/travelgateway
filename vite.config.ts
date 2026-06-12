@@ -31,7 +31,14 @@ type InquiryPayload = {
   email?: string;
   phone?: string;
   destination?: string;
+  travel_date?: string;
   travel_month?: string;
+  urgency?: string;
+  adults?: string;
+  children?: string;
+  infants?: string;
+  wheelchair_support?: string;
+  special_assistance?: string;
   budget_per_person?: string;
   preferred_contact?: string;
   message?: string;
@@ -128,12 +135,12 @@ function travelNewsApiPlugin(): Plugin {
         try {
           const inquiry = await readJsonBody<InquiryPayload>(request);
 
-          if (!inquiry.name || !inquiry.email || !inquiry.phone) {
+          if (!inquiry.name || !inquiry.email || !inquiry.phone || !inquiry.travel_date) {
             response.statusCode = 400;
             response.end(
               JSON.stringify({
                 ok: false,
-                error: 'Name, email, and phone are required to send an inquiry.',
+                error: 'Name, email, phone, and exact travel date are required to send an inquiry.',
               })
             );
             return;
@@ -146,7 +153,7 @@ function travelNewsApiPlugin(): Plugin {
               Accept: 'application/json',
             },
             body: JSON.stringify({
-              _subject: `New Travel Gateway Inquiry: ${inquiry.destination || 'Custom trip request'}`,
+              _subject: `${inquiry.urgency === 'Same-day travel' || inquiry.urgency === 'Within 72 hours' ? `[URGENT: ${inquiry.urgency.toUpperCase()}] ` : ''}Travel Gateway Inquiry: ${inquiry.destination || 'Custom trip request'} - ${inquiry.travel_date}`,
               _template: 'table',
               _captcha: 'false',
               _replyto: inquiry.email,
@@ -154,7 +161,14 @@ function travelNewsApiPlugin(): Plugin {
               email: inquiry.email,
               phone: inquiry.phone,
               destination: inquiry.destination || 'Not specified',
+              exact_travel_date: inquiry.travel_date,
               travel_month: inquiry.travel_month || 'Not specified',
+              urgency: inquiry.urgency || 'Planning ahead',
+              adults: inquiry.adults || '1',
+              children: inquiry.children || '0',
+              infants: inquiry.infants || '0',
+              wheelchair_support: inquiry.wheelchair_support || 'Not required',
+              special_assistance: inquiry.special_assistance || 'None shared',
               budget_per_person: inquiry.budget_per_person || 'Not specified',
               preferred_contact: inquiry.preferred_contact || 'Not specified',
               message: inquiry.message || 'No additional notes shared.',

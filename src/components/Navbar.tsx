@@ -30,25 +30,47 @@ const tourPackageMenuLinks = [
   { name: "Wildlife & Safari Tours", href: "/destinations?scope=International&search=safari" },
 ];
 
-function DestinationMegaMenu({ useSolidHeader }: { useSolidHeader: boolean }) {
+function TourPackagesMegaMenu({ useSolidHeader }: { useSolidHeader: boolean }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className="group/menu relative">
-      <Link
-        to="/destinations"
-        className="flex items-center gap-1.5 whitespace-nowrap text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors relative"
+    <div
+      className="relative"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+      onFocus={() => setIsOpen(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          setIsOpen(false);
+        }
+      }}
+    >
+      <button
+        type="button"
+        aria-expanded={isOpen}
+        aria-haspopup="menu"
+        onClick={() => setIsOpen((current) => !current)}
+        className="relative flex items-center gap-1.5 whitespace-nowrap text-sm font-bold uppercase tracking-widest transition-colors hover:text-primary focus:text-primary focus:outline-none"
       >
         Tour Packages
-        <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover/menu:rotate-180" />
-        <span className="absolute -bottom-2 left-0 h-1 w-0 bg-primary transition-all duration-300 group-hover/menu:w-full" />
-      </Link>
+        <ChevronDown className={cn("h-4 w-4 transition-transform duration-300", isOpen && "rotate-180")} />
+        <span className={cn("absolute -bottom-2 left-0 h-1 bg-primary transition-all duration-300", isOpen ? "w-full" : "w-0")} />
+      </button>
 
-      <div className="pointer-events-none absolute left-0 top-full z-50 w-80 translate-y-2 pt-5 opacity-0 transition-all duration-200 group-hover/menu:pointer-events-auto group-hover/menu:opacity-100 group-hover/menu:translate-y-0 group-focus-within/menu:pointer-events-auto group-focus-within/menu:opacity-100 group-focus-within/menu:translate-y-0">
+      <div
+        className={cn(
+          "absolute left-0 top-full z-50 w-80 pt-5 transition-all duration-200",
+          isOpen ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none translate-y-2 opacity-0"
+        )}
+      >
         <div className="border border-slate-100 bg-white py-4 text-slate-950 shadow-[0_24px_70px_rgba(15,23,42,0.16)]">
-          <div className="flex flex-col">
+          <div className="flex flex-col" role="menu" aria-label="Tour packages">
             {tourPackageMenuLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.href}
+                role="menuitem"
+                onClick={() => setIsOpen(false)}
                 className="whitespace-nowrap px-7 py-3 text-[1rem] font-black text-[#17143d] transition-colors hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary focus:outline-none"
               >
                 {link.name}
@@ -137,9 +159,9 @@ export default function Navbar() {
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-7 xl:gap-10">
           {navLinks.map((link) =>
-            link.name === "Destinations" ? (
+            link.name === "Tour Packages" ? (
               <div key={link.name}>
-                <DestinationMegaMenu useSolidHeader={useSolidHeader} />
+                <TourPackagesMegaMenu useSolidHeader={useSolidHeader} />
               </div>
             ) : (
               <Link
@@ -197,22 +219,54 @@ export default function Navbar() {
                 </div>
 
                 <nav className="flex flex-col gap-2">
-                  {navLinks.map((link) => (
-                    <SheetClose key={link.name}>
-                      <Link
-                        to={link.href}
-                        className={cn(
-                          "group flex items-center justify-between rounded-2xl px-4 py-3 text-lg font-black uppercase tracking-tight transition-all",
-                          location.pathname === link.href
-                            ? "bg-[#0B2147] text-white shadow-lg shadow-slate-900/15"
-                            : "text-[#07111f] hover:bg-slate-100 hover:text-primary"
-                        )}
-                      >
-                        <span>{link.name}</span>
-                        <ArrowRight className="h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
-                      </Link>
-                    </SheetClose>
-                  ))}
+                  {navLinks.map((link) =>
+                    link.name === "Tour Packages" ? (
+                      <div key={link.name}>
+                        <SheetClose>
+                          <Link
+                            to={link.href}
+                            className={cn(
+                              "group flex items-center justify-between rounded-2xl px-4 py-3 text-lg font-black uppercase tracking-tight transition-all",
+                              location.pathname === link.href
+                                ? "bg-[#0B2147] text-white shadow-lg shadow-slate-900/15"
+                                : "text-[#07111f] hover:bg-slate-100 hover:text-primary"
+                            )}
+                          >
+                            <span>{link.name}</span>
+                            <ArrowRight className="h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
+                          </Link>
+                        </SheetClose>
+
+                        <div className="ml-4 mt-1 flex flex-col border-l border-slate-200 pl-3">
+                          {tourPackageMenuLinks.map((menuLink) => (
+                            <SheetClose key={menuLink.name}>
+                              <Link
+                                to={menuLink.href}
+                                className="block rounded-xl px-4 py-2.5 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-100 hover:text-primary"
+                              >
+                                {menuLink.name}
+                              </Link>
+                            </SheetClose>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <SheetClose key={link.name}>
+                        <Link
+                          to={link.href}
+                          className={cn(
+                            "group flex items-center justify-between rounded-2xl px-4 py-3 text-lg font-black uppercase tracking-tight transition-all",
+                            location.pathname === link.href
+                              ? "bg-[#0B2147] text-white shadow-lg shadow-slate-900/15"
+                              : "text-[#07111f] hover:bg-slate-100 hover:text-primary"
+                          )}
+                        >
+                          <span>{link.name}</span>
+                          <ArrowRight className="h-4 w-4 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
+                        </Link>
+                      </SheetClose>
+                    )
+                  )}
                 </nav>
 
                 <div className="mt-8 rounded-[1.6rem] border border-slate-200 bg-slate-50 p-4">

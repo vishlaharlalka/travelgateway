@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowLeft, Download, MapPin, Clock, Star, 
@@ -11,13 +11,14 @@ import { Badge } from "@/components/ui/badge";
 import { 
   Accordion, AccordionContent, AccordionItem, AccordionTrigger 
 } from "@/components/ui/accordion";
-import { curatedImageForText, destinationPath, findDestinationByRouteParam } from "@/lib/data";
+import { curatedImageForText, destinationPath, destinations, findDestinationByRouteParam, shouldFitWholeImage } from "@/lib/data";
 import { GoogleGenAI, Type } from "@google/genai";
 import { generateDestinationPDF } from "@/lib/pdf";
 import CurrencyConverter from "@/components/CurrencyConverter";
-import { parseInrPrice } from "@/lib/pricing";
+import { displayInr, parseInrPrice } from "@/lib/pricing";
 import SEO from "@/components/SEO";
 import { graphSchema, pageSchema, siteUrl } from "@/lib/seo";
+import VietnamEVisaGuide from "@/components/VietnamEVisaGuide";
 
 const geminiApiKey = process.env.GEMINI_API_KEY || "";
 const destinationImageFallback = "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=1000";
@@ -35,6 +36,15 @@ export default function ItineraryDetail() {
   const navigate = useNavigate();
   const [isGeneratingTips, setIsGeneratingTips] = useState(false);
   const [aiTips, setAiTips] = useState<{ title: string; content: string }[]>([]);
+  const [quickBookingForm, setQuickBookingForm] = useState({
+    name: "",
+    phone: "",
+    travelDate: "",
+    guests: "2",
+    urgency: "Planning ahead",
+    wheelchairSupport: false,
+    hotelStyle: "Comfort",
+  });
 
   const destination = useMemo(() => {
     return findDestinationByRouteParam(id);
@@ -184,6 +194,43 @@ export default function ItineraryDetail() {
   const detailTitle = `${destination.name} Tour Package | Travel Gateway`;
   const detailDescription = destination.longDescription || destination.description;
   const detailUrl = new URL(detailPath, siteUrl).toString();
+  const isAndamanOffer = destination.id === 37;
+  const andamanAvailabilityUrl = `https://wa.me/919898111689?text=${encodeURIComponent(
+    `Hi Travel Gateway, I want to check June availability and the current value quote for ${destination.name}. Page: ${detailUrl}`
+  )}`;
+  const shouldShowVietnamVisaGuide = destination.country.toLowerCase() === "vietnam";
+  const relatedDestinations = destinations
+    .filter((candidate) => candidate.id !== destination.id)
+    .filter((candidate) => candidate.country === destination.country || candidate.regionId === destination.regionId)
+    .slice(0, 3);
+  const todayInputDate = new Date(Date.now() - new Date().getTimezoneOffset() * 60_000).toISOString().slice(0, 10);
+  const handleQuickBookingSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const isUrgent = quickBookingForm.urgency === "Same-day travel" || quickBookingForm.urgency === "Within 72 hours";
+    const messageLines = [
+      isUrgent
+        ? `URGENT TRAVEL REQUEST - ${quickBookingForm.urgency.toUpperCase()}`
+        : `Travel Gateway booking request: ${destination.name}`,
+      `Package: ${destination.name}`,
+      `Location: ${locationLabel || destination.country}`,
+      `Indicative price: ${destination.price} per person`,
+      `Name: ${quickBookingForm.name}`,
+      `Phone: ${quickBookingForm.phone}`,
+      `Exact travel date: ${quickBookingForm.travelDate}`,
+      `Urgency: ${quickBookingForm.urgency}`,
+      `Guests: ${quickBookingForm.guests}`,
+      `Wheelchair support: ${quickBookingForm.wheelchairSupport ? "Required" : "Not required"}`,
+      `Hotel style: ${quickBookingForm.hotelStyle}`,
+      `Page: ${detailUrl}`,
+    ];
+
+    window.open(
+      `https://wa.me/919898111689?text=${encodeURIComponent(messageLines.join("\n"))}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -204,12 +251,19 @@ export default function ItineraryDetail() {
             description: detailDescription,
             image: destination.image,
             touristType: ["Indian travelers", "Families", "Couples", "Inbound guests"],
-            itinerary: itineraryItems.map((item, index) => ({
+            itinerary: {
               "@type": "ItemList",
-              position: index + 1,
-              name: item.title,
-              description: item.description,
-            })),
+              itemListElement: itineraryItems.map((item, index) => ({
+                "@type": "ListItem",
+                position: index + 1,
+                name: item.title,
+                item: {
+                  "@type": "TouristAttraction",
+                  name: item.title,
+                  description: item.description,
+                },
+              })),
+            },
             offers: {
               "@type": "Offer",
               priceCurrency: "INR",
@@ -228,6 +282,17 @@ export default function ItineraryDetail() {
               { "@type": "ListItem", position: 3, name: destination.name, item: detailUrl },
             ],
           },
+          {
+            "@type": "FAQPage",
+            mainEntity: faqItems.map((faq) => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.answer,
+              },
+            })),
+          },
         ])}
       />
       {/* Hero Section */}
@@ -238,7 +303,7 @@ export default function ItineraryDetail() {
           transition={{ duration: 10 }}
           src={destination.image}
           alt={destination.name}
-          className="w-full h-full object-cover"
+          className={`h-full w-full object-cover ${shouldFitWholeImage(destination.image) ? "object-[center_28%]" : ""}`}
           referrerPolicy="no-referrer"
           onError={(event) => {
             if (event.currentTarget.src !== destinationImageFallback) {
@@ -266,6 +331,11 @@ export default function ItineraryDetail() {
               <Badge className="bg-primary text-white border-none py-1 px-4 text-xs font-bold uppercase tracking-wider">
                 {destination.category}
               </Badge>
+              {isAndamanOffer && (
+                <Badge className="border border-white/30 bg-white/15 py-1 px-4 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md">
+                  June value window
+                </Badge>
+              )}
               <div className="flex items-center gap-1 text-yellow-400 font-bold bg-black/40 backdrop-blur-md py-1 px-3 rounded-full text-xs">
                 <Star className="w-4 h-4 fill-current" />
                 <span>{destination.rating}</span>
@@ -305,6 +375,74 @@ export default function ItineraryDetail() {
               </p>
             </section>
 
+            {isAndamanOffer && (
+              <section className="overflow-hidden rounded-[2rem] border border-primary/20 bg-gradient-to-br from-primary/15 via-cyan-500/10 to-background p-6 md:p-8">
+                <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
+                  <div>
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Travel in June 2026</p>
+                    <h2 className="mt-3 text-3xl font-black uppercase tracking-tight">Ask for the current off-season value</h2>
+                    <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+                      June sits inside the available off-season travel window for this compact island route. Share your dates now and we will check the best current hotel and ferry combination before quoting, with no assumptions about availability or weather-dependent activities.
+                    </p>
+                  </div>
+                  <Button asChild className="h-auto rounded-full px-7 py-4 font-black uppercase tracking-tight">
+                    <a href={andamanAvailabilityUrl} target="_blank" rel="noreferrer">
+                      Check June dates now
+                      <Send className="ml-2 h-4 w-4" />
+                    </a>
+                  </Button>
+                </div>
+              </section>
+            )}
+
+            {shouldShowVietnamVisaGuide && <VietnamEVisaGuide compact />}
+
+            {relatedDestinations.length > 0 && (
+              <section className="space-y-6">
+                <div className="flex items-end justify-between border-b-2 border-primary/20 pb-4">
+                  <div className="inline-block">
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2">Compare Nearby Options</p>
+                    <h2 className="text-3xl font-black uppercase tracking-tight">
+                      {destination.country === "Vietnam" ? "Other Vietnam Routes" : "Related Journeys"}
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="grid gap-5 md:grid-cols-3">
+                  {relatedDestinations.map((related) => (
+                    <button
+                      key={related.id}
+                      type="button"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                        navigate(destinationPath(related));
+                      }}
+                      className="overflow-hidden rounded-[1.8rem] border border-slate-200 bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                    >
+                      <div className="aspect-[4/3] overflow-hidden">
+                        <img
+                          src={related.image}
+                          alt={related.name}
+                          className={`h-full w-full ${shouldFitWholeImage(related.image) ? "object-contain bg-slate-100" : "object-cover"}`}
+                          loading="lazy"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                      <div className="p-5">
+                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-primary">{related.category}</p>
+                        <h3 className="mt-2 text-xl font-black tracking-tight">{related.name}</h3>
+                        <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">{related.description}</p>
+                        <div className="mt-4 flex items-center justify-between gap-4">
+                          <span className="text-sm font-black text-primary">{displayInr(related.price)}*</span>
+                          <span className="text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">Compare route</span>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
+
             {/* Visual Gallery */}
             <section className="space-y-6">
               <div className="flex items-end justify-between border-b-2 border-primary/20 pb-4">
@@ -331,7 +469,7 @@ export default function ItineraryDetail() {
                       <img
                         src={image.url}
                         alt={image.alt}
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        className={`h-full w-full transition-transform duration-700 group-hover:scale-105 ${shouldFitWholeImage(image) ? "object-contain bg-slate-100" : "object-cover"}`}
                         loading="lazy"
                         referrerPolicy="no-referrer"
                         onError={(event) => {
@@ -381,7 +519,7 @@ export default function ItineraryDetail() {
                           alt={image.alt}
                           loading="lazy"
                           referrerPolicy="no-referrer"
-                          className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                          className={`h-full w-full transition-transform duration-700 hover:scale-105 ${shouldFitWholeImage(image) ? "object-contain bg-slate-100" : "object-cover"}`}
                           onError={(event) => {
                             if (event.currentTarget.src !== destinationImageFallback) {
                               event.currentTarget.src = destinationImageFallback;
@@ -575,13 +713,128 @@ export default function ItineraryDetail() {
                   <div>
                     <p className="text-sm text-muted-foreground uppercase tracking-widest font-bold mb-2">Package Investment</p>
                     <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-black text-primary">{destination.price}*</span>
+                      <span className="text-4xl font-black text-primary">{displayInr(destination.price)}*</span>
                       <span className="text-muted-foreground font-light text-sm italic">per person</span>
                     </div>
                     <p className="mt-2 text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">T&C apply</p>
                   </div>
 
                   <CurrencyConverter amountInInr={parseInrPrice(destination.price)} />
+
+                  <form className="space-y-4 rounded-3xl border border-primary/10 bg-background/80 p-5" onSubmit={handleQuickBookingSubmit}>
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-primary">
+                        {isAndamanOffer ? "Check Andaman dates now" : "Quick booking request"}
+                      </p>
+                      <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                        {isAndamanOffer
+                          ? "Send your dates for a current June value and ferry availability check."
+                          : "Send the key operational details for availability and next steps."}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-3">
+                      <label className="space-y-1.5 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                        Name
+                        <input
+                          value={quickBookingForm.name}
+                          onChange={(event) => setQuickBookingForm((current) => ({ ...current, name: event.target.value }))}
+                          required
+                          placeholder="Your name"
+                          className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm font-medium normal-case tracking-normal text-foreground outline-none transition focus:border-primary"
+                        />
+                      </label>
+
+                      <label className="space-y-1.5 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                        Phone / WhatsApp
+                        <input
+                          value={quickBookingForm.phone}
+                          onChange={(event) => setQuickBookingForm((current) => ({ ...current, phone: event.target.value.replace(/\D/g, "") }))}
+                          required
+                          type="tel"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          placeholder="9898111689"
+                          className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm font-medium normal-case tracking-normal text-foreground outline-none transition focus:border-primary"
+                        />
+                      </label>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <label className="space-y-1.5 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                          Date
+                          <input
+                            type="date"
+                            min={todayInputDate}
+                            value={quickBookingForm.travelDate}
+                            onChange={(event) => setQuickBookingForm((current) => ({ ...current, travelDate: event.target.value }))}
+                            required
+                            className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm font-medium normal-case tracking-normal text-foreground outline-none transition focus:border-primary"
+                          />
+                        </label>
+
+                        <label className="space-y-1.5 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                          Guests
+                          <input
+                            type="number"
+                            min="1"
+                            value={quickBookingForm.guests}
+                            onChange={(event) => setQuickBookingForm((current) => ({ ...current, guests: event.target.value }))}
+                            className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm font-medium normal-case tracking-normal text-foreground outline-none transition focus:border-primary"
+                          />
+                        </label>
+                      </div>
+
+                      <label className="space-y-1.5 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                        Urgency
+                        <select
+                          value={quickBookingForm.urgency}
+                          onChange={(event) => setQuickBookingForm((current) => ({
+                            ...current,
+                            urgency: event.target.value,
+                            travelDate: event.target.value === "Same-day travel" ? todayInputDate : current.travelDate,
+                          }))}
+                          className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm font-medium normal-case tracking-normal text-foreground outline-none transition focus:border-primary"
+                        >
+                          <option>Planning ahead</option>
+                          <option>Within 7 days</option>
+                          <option>Within 72 hours</option>
+                          <option>Same-day travel</option>
+                        </select>
+                      </label>
+
+                      <label className="space-y-1.5 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                        Stay style
+                        <select
+                          value={quickBookingForm.hotelStyle}
+                          onChange={(event) => setQuickBookingForm((current) => ({ ...current, hotelStyle: event.target.value }))}
+                          className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm font-medium normal-case tracking-normal text-foreground outline-none transition focus:border-primary"
+                        >
+                          <option>Comfort</option>
+                          <option>Premium</option>
+                          <option>Luxury</option>
+                          <option>Flexible</option>
+                        </select>
+                      </label>
+
+                      <label className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-white p-3 text-xs font-bold uppercase tracking-[0.12em] text-muted-foreground">
+                        <input
+                          type="checkbox"
+                          className="mt-0.5"
+                          checked={quickBookingForm.wheelchairSupport}
+                          onChange={(event) => setQuickBookingForm((current) => ({ ...current, wheelchairSupport: event.target.checked }))}
+                        />
+                        Wheelchair support required
+                      </label>
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="h-auto w-full rounded-full bg-primary py-4 text-sm font-black uppercase tracking-tight hover:bg-primary/90"
+                    >
+                      {isAndamanOffer ? "Check availability on WhatsApp" : "Send on WhatsApp"}
+                      <Send className="ml-2 h-4 w-4" />
+                    </Button>
+                  </form>
 
                   <div className="space-y-4">
                     <h4 className="text-sm font-bold uppercase tracking-[0.2em] flex items-center gap-2">

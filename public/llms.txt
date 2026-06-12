@@ -1,0 +1,25 @@
+# Travel Gateway
+
+Travel Gateway is a boutique travel agency in Ahmedabad, India, planning India tours, international holidays, luxury train journeys, safaris, visa-ready travel, and bespoke booking support.
+
+## Core Pages
+
+- [Home](https://travelgateway.in/)
+- [Tour packages](https://travelgateway.in/destinations)
+- [Services](https://travelgateway.in/services)
+- [About](https://travelgateway.in/about)
+- [Travel blog](https://travelgateway.in/blog)
+- [FAQ](https://travelgateway.in/faq)
+- [Contact](https://travelgateway.in/contact)
+- [Privacy policy](https://travelgateway.in/privacy-policy)
+- [Terms and conditions](https://travelgateway.in/terms-of-service)
+
+## Discovery
+
+- [Sitemap](https://travelgateway.in/sitemap.xml)
+- [Robots](https://travelgateway.in/robots.txt)
+
+## Contact
+
+- Email: inquiry@travelgateway.in
+- Phone: +91 9898111689

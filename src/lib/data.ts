@@ -45,6 +45,17 @@ export function curatedImageForText(text: string): DestinationImage | undefined 
   };
 }
 
+export function shouldFitWholeImage(image: Pick<DestinationImage, "url" | "alt" | "caption"> | string) {
+  const value = typeof image === "string" ? image : `${image.url} ${image.alt} ${image.caption}`;
+  const normalized = decodeURIComponent(value).toLowerCase().replace(/[_-]+/g, " ");
+
+  return (
+    normalized.includes("statue of unity") ||
+    normalized.includes("dwarkadhish temple") ||
+    normalized.includes("dwarka gujarat")
+  );
+}
+
 function curatedGalleryForPackage(row: { name: string; state: string; city: string; highlights: string[]; image: string }) {
   const candidates = [
     ...row.highlights.map((highlight) => curatedImageForText(highlight) || curatedImageForText(`${highlight} ${row.city}`)),
@@ -87,7 +98,7 @@ const baseDestinations: Destination[] = [
       { day: "Day 7-8", title: "Ho Chi Minh City & Cu Chi Tunnels", description: "War Remnants Museum and the incredible underground tunnel network. Farewell dinner on a river cruise." }
     ],
     faqs: [
-      { question: "Do Indian citizens need a visa for Vietnam?", answer: "Yes, Indian passport holders require a visa. You can apply for an E-visa online or get a visa on arrival with a pre-approval letter." },
+      { question: "Do Indian citizens need a visa for Vietnam?", answer: "Yes, Indian passport holders normally need a Vietnam visa before entering mainland Vietnam. The e-visa is usually the most practical tourism route, with passport details, photo, travel dates, entry and exit ports, and stay address checked carefully before applying." },
       { question: "What is the best time to visit Vietnam?", answer: "The best time is generally from November to April when the weather is moderate and pleasant across most regions." },
       { question: "Is Indian food easily available in Vietnam?", answer: "Yes, major cities like Hanoi and Ho Chi Minh City have several excellent Indian restaurants catering to both veg and non-veg preferences." },
       { question: "What currency is used in Vietnam?", answer: "The official currency is the Vietnamese Dong (VND). US Dollars are also accepted in some tourist areas, but it's best to carry local currency." }
@@ -115,6 +126,7 @@ const baseDestinations: Destination[] = [
       { day: "Day 5-6", title: "Hue Tombs & Departure", description: "Explore the majestic tombs of Emperors Minh Mang and Khai Dinh. Afternoon flight back from Da Nang." }
     ],
     faqs: [
+      { question: "Do Indian travelers need a Vietnam e-visa for this route?", answer: "Yes. Since this route uses mainland Vietnam cities such as Da Nang, Hoi An, and Hue, Indian passport holders should plan for a Vietnam e-visa unless official rules for their passport and travel date say otherwise." },
       { question: "How far is Da Nang from Hoi An?", answer: "Da Nang is approximately 30km from Hoi An, roughly a 45-minute drive." },
       { question: "Is the Golden Bridge located in Da Nang?", answer: "The Golden Bridge is part of the Ba Na Hills mountain resort, which is about 35km from Da Nang city center." },
       { question: "What should I wear when visiting temples in Hue?", answer: "Respectful attire is required; shoulders and knees should be covered when entering pagodas and the Imperial City." }
@@ -142,7 +154,7 @@ const baseDestinations: Destination[] = [
       { day: "Day 7", title: "Last Dip & Departure", description: "Enjoy a final morning on the beach before your flight back to Ho Chi Minh City for connection." }
     ],
     faqs: [
-      { question: "Is Phu Quoc visa-free for Indians?", answer: "Phu Quoc has a special 30-day visa-free policy for all foreigners, but this usually only applies if you fly directly to Phu Quoc from another country. Since most flights from India transit through HCMC or Hanoi, you will likely need a Vietnam E-visa." },
+      { question: "Is Phu Quoc visa-free for Indians?", answer: "Phu Quoc can be visa-free for up to 30 days when it is your only Vietnam destination and you enter, stay, and exit under that island-only route. This itinerary also includes Ho Chi Minh City and the Mekong Delta, so Indian passport holders should plan for a Vietnam e-visa." },
       { question: "What is the best month for Phu Quoc?", answer: "The dry season from November to April is the best time for clear skies and calm seas in Phu Quoc." },
       { question: "Are there good veg food options in Phu Quoc?", answer: "While seafood is dominant, luxury resorts and the night market offer plenty of delicious options including morning glory, tofu dishes, and tropical fruits." }
     ]
@@ -1051,19 +1063,18 @@ const baseDestinations: Destination[] = [
     category: "Coastal",
     price: "₹64,900",
     rating: 4.9,
-    description: "An island-hopping India beach holiday through Port Blair, Havelock, and Neil Island.",
-    longDescription: "The Andamans are perfect for travelers who want Maldives-like water while staying within India. This itinerary balances Port Blair history with Havelock beaches, Radhanagar sunset, optional scuba or snorkeling, and Neil Island's slower reef-and-beach atmosphere.",
-    services: ["Beach Resort Stays", "Inter-island Ferry Tickets", "Airport Transfers", "Radhanagar Beach Visit", "Snorkeling or Scuba Add-on"],
+    description: "A compact Andaman island escape through Port Blair, Havelock, and Neil Island, with a timely June value window.",
+    longDescription: "Make the most of Andaman's off-season value with a well-paced 3-night escape covering Port Blair, Havelock, and a Neil Island day trip. June departures are available on request, with current hotel and ferry options checked before you commit. Expect Cellular Jail history, Radhanagar Beach, quieter island moments, and smooth inter-island planning in one compact holiday.",
+    services: ["3 Nights Hotel Stay", "Daily Breakfast", "Inter-island Ferry Planning", "Airport and Jetty Transfers", "Port Blair, Havelock and Neil Sightseeing"],
     itinerary: [
-      { day: "Day 1", title: "Port Blair Arrival", description: "Arrive in Port Blair, visit Cellular Jail, and attend the evening light and sound show if operational." },
-      { day: "Day 2", title: "Ferry to Havelock", description: "Take a ferry to Havelock Island and relax at your beach resort." },
-      { day: "Day 3", title: "Radhanagar Beach & Leisure", description: "Visit Radhanagar Beach, enjoy a slow island day, and add scuba or snorkeling if desired." },
-      { day: "Day 4", title: "Neil Island", description: "Transfer to Neil Island for Bharatpur Beach, Natural Bridge area, and relaxed coastal exploration." },
-      { day: "Day 5", title: "Return to Port Blair", description: "Ferry back to Port Blair with time for local market shopping." },
-      { day: "Day 6", title: "Departure", description: "Transfer to Port Blair airport for departure." }
+      { day: "Day 1", title: "Port Blair Arrival & Cellular Jail", description: "Arrive in Port Blair, settle in, then visit Cellular Jail and attend the evening light and sound show if operational." },
+      { day: "Day 2", title: "Havelock Beaches", description: "Take a morning ferry to Havelock, unwind at Kalapathar Beach, and finish the day at Radhanagar Beach." },
+      { day: "Day 3", title: "Neil Island Day Trip", description: "Travel via Neil Island for Bharatpur Beach, the Natural Bridge area, and Laxmanpur Beach before returning to Port Blair in the evening." },
+      { day: "Day 4", title: "Port Blair Departure", description: "Enjoy breakfast, check out, and transfer to Port Blair airport with your island highlights packed into one easy escape." }
     ],
     faqs: [
       { question: "Are ferries included?", answer: "Yes, standard inter-island ferry planning is included, subject to seat availability and weather operations." },
+      { question: "Why consider Andaman in June?", answer: "June falls within the current off-season value window, so it can be a smart time to request a better-value island plan. Hotels, ferries, sightseeing, and weather-dependent activities are reconfirmed for your exact dates before booking." },
       { question: "Is Andaman good for honeymoon travelers?", answer: "Yes. Havelock and Neil Island are excellent for couples seeking beaches, water activities, and quiet resort time." },
       { question: "Do Indian citizens need permits?", answer: "Indian citizens generally do not need special permits for the main tourist islands, but some areas remain restricted." }
     ]
@@ -2459,7 +2470,7 @@ const seasonalIndiaPackages: Destination[] = [
     ],
     faqs: [
       { question: "Is monsoon travel safe?", answer: "Yes with flexible routing, good vehicles, and weather monitoring. Some outdoor activities may change." },
-      { question: "Why Ayurveda in monsoon?", answer: "Many guests prefer monsoon for wellness because the climate supports slower restorative stays." }
+      { question: "Why Ayurveda in monsoon?", answer: "Kerala Tourism describes monsoon as the best season for rejuvenation therapies, with the southwest monsoon arriving in June and the northeast monsoon returning around mid-October. That makes this package a stronger fit for slower wellness stays than for rushed sightseeing." }
     ]
   },
   {
@@ -2518,7 +2529,7 @@ const pilgrimageIndiaPackages: Destination[] = [
       { day: "Day 8-10", title: "Badrinath & Return", description: "Complete Badrinath darshan, Mana village if possible, and return via Rishikesh." }
     ],
     faqs: [
-      { question: "When is Char Dham possible?", answer: "It follows the official opening season and depends on weather, road, and temple schedules." },
+      { question: "When is Char Dham possible?", answer: "Travel follows the official opening season and depends on weather, road, and temple schedules. On the Uttarakhand Tourism registration portal, the 2026 opening dates shown are April 19 for Yamunotri and Gangotri, April 22 for Kedarnath, and April 23 for Badrinath, but registrations and route conditions should still be reconfirmed before final booking." },
       { question: "Can senior citizens travel?", answer: "Yes, but medical fitness, slower pacing, and helicopter/porter planning should be discussed." }
     ]
   },

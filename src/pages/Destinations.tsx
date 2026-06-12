@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import SEO from "@/components/SEO";
-import { destinationPath, destinations as globalDestinations } from "@/lib/data";
+import { destinationPath, destinations as globalDestinations, shouldFitWholeImage } from "@/lib/data";
 import { generateDestinationPDF } from "@/lib/pdf";
+import { displayInr } from "@/lib/pricing";
 import { Destination } from "@/lib/types";
 import { defaultSeoImage, graphSchema, pageSchema, siteUrl } from "@/lib/seo";
 
@@ -30,7 +31,6 @@ interface DestinationCardProps {
 
 function DestinationCard({ dest, index, onSelect }: DestinationCardProps) {
   const locationLabel = [dest.city, dest.state, dest.country].filter(Boolean).join(", ");
-  const itineraryCount = dest.itinerary?.length || 0;
   const displayType = isIndiaDestination(dest) && dest.type === "Domestic" ? "INDIA" : dest.type;
 
   return (
@@ -49,7 +49,7 @@ function DestinationCard({ dest, index, onSelect }: DestinationCardProps) {
               alt={dest.name}
               loading="lazy"
               referrerPolicy="no-referrer"
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className={`h-full w-full transition-transform duration-700 group-hover:scale-105 ${shouldFitWholeImage(dest.image) ? "object-contain bg-slate-100" : "object-cover"}`}
               onError={(event) => {
                 if (event.currentTarget.src !== destinationImageFallback) {
                   event.currentTarget.src = destinationImageFallback;
@@ -78,7 +78,7 @@ function DestinationCard({ dest, index, onSelect }: DestinationCardProps) {
             <div>
               <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">Starting from</p>
               <div className="mt-1 flex flex-wrap items-baseline gap-2">
-                <p className="text-2xl font-black text-primary">{dest.price}*</p>
+                <p className="text-2xl font-black text-primary">{displayInr(dest.price)}*</p>
                 <span className="text-[11px] font-black uppercase tracking-[0.16em] text-slate-500">T&C apply</span>
               </div>
             </div>
@@ -91,7 +91,7 @@ function DestinationCard({ dest, index, onSelect }: DestinationCardProps) {
           <p className="line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-slate-600">{dest.description}</p>
 
           <div className="mt-6 flex flex-wrap gap-2 text-xs font-bold text-slate-500">
-            {itineraryCount > 0 && <span className="rounded-full bg-slate-100 px-3 py-1.5">{itineraryCount} day plan</span>}
+            <span className="rounded-full bg-slate-100 px-3 py-1.5">Customizable pace</span>
             <span className="rounded-full bg-slate-100 px-3 py-1.5">{displayType}</span>
             {dest.state && <span className="rounded-full bg-slate-100 px-3 py-1.5">{dest.state}</span>}
           </div>
@@ -102,7 +102,7 @@ function DestinationCard({ dest, index, onSelect }: DestinationCardProps) {
               onClick={() => onSelect(dest)}
               className="h-11 flex-1 rounded-full bg-[#0B2147] font-bold text-white hover:bg-primary"
             >
-              View Itinerary
+              View Journey
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button
@@ -149,13 +149,6 @@ export default function Destinations() {
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    document.title = "Explore World Destinations | Bespoke Travel Packages | TravelGateway";
-    document
-      .querySelector('meta[name="description"]')
-      ?.setAttribute("content", "Discover curated India and international itineraries with TravelGateway.");
-  }, []);
 
   useEffect(() => {
     const scope = searchParams.get("scope");
@@ -372,21 +365,39 @@ export default function Destinations() {
                 Journeys Designed To Be Remembered
               </h1>
               <p className="mt-6 max-w-72 text-base leading-7 text-white/78 sm:max-w-2xl sm:text-lg sm:leading-8">
-                An editorial travel catalogue for India and international journeys, built around strong visuals, clear choices, and polished itinerary discovery.
+                An editorial travel catalogue for India and international journeys, built around strong visuals, clear choices, and polished trip discovery.
               </p>
               <div className="mt-8 grid max-w-72 grid-cols-1 gap-3 sm:max-w-2xl sm:grid-cols-3">
                 <div className="rounded-2xl border border-white/15 bg-[#07111f]/70 p-4 shadow-lg backdrop-blur-md">
-                  <p className="text-2xl font-black">{destinations.filter(isIndiaDestination).length}</p>
-                  <p className="text-xs font-bold uppercase tracking-widest text-white/65">India</p>
+                  <p className="text-2xl font-black">Tailor-made</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-white/65">Routes</p>
                 </div>
                 <div className="rounded-2xl border border-white/15 bg-[#07111f]/70 p-4 shadow-lg backdrop-blur-md">
-                  <p className="text-2xl font-black">{destinations.filter((dest) => !isIndiaDestination(dest)).length}</p>
-                  <p className="text-xs font-bold uppercase tracking-widest text-white/65">Global</p>
+                  <p className="text-2xl font-black">Clear</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-white/65">Choices</p>
                 </div>
                 <div className="rounded-2xl border border-white/15 bg-[#07111f]/70 p-4 shadow-lg backdrop-blur-md">
-                  <p className="text-2xl font-black">{destinations.filter((dest) => dest.type === "Luxury Train").length}</p>
-                  <p className="text-xs font-bold uppercase tracking-widest text-white/65">Luxury Rail</p>
+                  <p className="text-2xl font-black">Premium</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-white/65">Support</p>
                 </div>
+              </div>
+              <div className="mt-8 flex max-w-4xl flex-wrap gap-3">
+                {[
+                  { label: "Vietnam Packages", href: "/destinations/vietnam" },
+                  { label: "Pilgrimage Routes", href: "/destinations?scope=INDIA&experience=Pilgrimage" },
+                  { label: "Seasonal India", href: "/destinations?scope=INDIA&experience=Seasonal" },
+                  { label: "Luxury Trains", href: "/destinations?experience=Luxury%20Train" },
+                  { label: "Safari Holidays", href: "/destinations?scope=International&search=safari" },
+                ].map((link) => (
+                  <Button
+                    key={link.href}
+                    variant="outline"
+                    className="rounded-full border-white/20 bg-white/10 text-white hover:bg-white/20"
+                    onClick={() => navigate(link.href)}
+                  >
+                    {link.label}
+                  </Button>
+                ))}
               </div>
             </motion.div>
 
@@ -402,7 +413,7 @@ export default function Destinations() {
                   <h2 className="mt-1 text-2xl font-black">Browse with purpose</h2>
                 </div>
                 <Badge variant="outline" className="rounded-full border-slate-200 px-3 py-1">
-                  {filteredDestinations.length} shown
+                  Smart filters
                 </Badge>
               </div>
 
@@ -417,7 +428,7 @@ export default function Destinations() {
                 <label className="space-y-2">
                   <span className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">Destination</span>
                   <select value={selectedDestinationId} onChange={(event) => setSelectedDestinationId(event.target.value)} className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm font-bold outline-none focus:border-primary">
-                    <option value="All Destinations">{tripScope === "INDIA" ? "All India Itineraries" : "All International Itineraries"}</option>
+                    <option value="All Destinations">{tripScope === "INDIA" ? "All India Journeys" : "All International Journeys"}</option>
                     {tripScope === "INDIA"
                       ? (Object.entries(indiaDropdownGroups) as Array<[string, Destination[]]>).map(([state, stateDestinations]) => (
                           <optgroup key={state} label={state}>
@@ -476,10 +487,10 @@ export default function Destinations() {
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">{tripScope === "INDIA" ? "India collection" : "International collection"}</p>
-            <h2 className="mt-2 text-4xl font-black tracking-tight">Available Itineraries</h2>
+            <h2 className="mt-2 text-4xl font-black tracking-tight">Available Journeys</h2>
           </div>
             <p className="max-w-xl text-sm leading-6 text-slate-600">
-            One card per itinerary, with brochure download kept as a secondary action for a calm, premium browsing flow.
+            One card per journey, with brochure download kept as a secondary action for a calm, premium browsing flow.
           </p>
         </div>
 
@@ -527,7 +538,7 @@ export default function Destinations() {
           {visibleCount < filteredDestinations.length ? (
             <div ref={loadMoreRef}>
               <Button onClick={() => setVisibleCount((prev) => prev + 6)} disabled={loadingMore} variant="outline" className="h-14 rounded-full border-2 border-primary/20 px-10 text-base font-black hover:border-primary hover:bg-primary/5">
-                {loadingMore ? "Curating More..." : "Load More Itineraries"}
+                {loadingMore ? "Curating More..." : "Load More Journeys"}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
@@ -540,7 +551,7 @@ export default function Destinations() {
       <section className="mx-auto mt-16 max-w-7xl px-6">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: <Sparkles className="h-6 w-6" />, title: "Curated Portfolio", description: "Hand-picked itineraries with clearer destination grouping." },
+            { icon: <Sparkles className="h-6 w-6" />, title: "Curated Portfolio", description: "Hand-picked journeys with clearer destination grouping." },
             { icon: <Users className="h-6 w-6" />, title: "India Expertise", description: "Journeys prepared for domestic and international travellers." },
             { icon: <Headphones className="h-6 w-6" />, title: "Travel Support", description: "Guidance before and during the trip." },
             { icon: <ShieldCheck className="h-6 w-6" />, title: "Verified Partners", description: "Reliable hotels, guides, and local operators." },

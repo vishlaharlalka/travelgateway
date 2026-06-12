@@ -11,7 +11,7 @@ export const businessSchema = {
   telephone: "+91 9898111689",
   email: "inquiry@travelgateway.in",
   image: defaultSeoImage,
-  logo: `${siteUrl}/`,
+  logo: `${siteUrl}/favicon.svg`,
   priceRange: "$$",
   address: {
     "@type": "PostalAddress",
@@ -39,6 +39,12 @@ export const websiteSchema = {
   name: siteName,
   url: siteUrl,
   publisher: { "@id": `${siteUrl}/#travelagency` },
+  inLanguage: "en-IN",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: `${siteUrl}/destinations?search={search_term_string}`,
+    "query-input": "required name=search_term_string",
+  },
 };
 
 export function pageSchema(path: string, title: string, description: string, image = defaultSeoImage) {

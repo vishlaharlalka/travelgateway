@@ -25,6 +25,11 @@ export function formatInr(value: number) {
   }).format(value);
 }
 
+export function displayInr(value: string) {
+  const parsed = parseInrPrice(value);
+  return parsed ? formatInr(parsed) : value.replace(/Ã¢â€šÂ¹|ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¹|â‚¹/g, "₹");
+}
+
 export function formatForeignCurrency(value: number, currency: SupportedCurrency) {
   return new Intl.NumberFormat("en", {
     style: "currency",

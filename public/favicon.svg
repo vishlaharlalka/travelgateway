@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Travel Gateway">
+  <defs>
+    <linearGradient id="sky" x1="36" y1="38" x2="116" y2="118" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#39C6F4"/>
+      <stop offset="1" stop-color="#0B2147"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="28" y1="40" x2="132" y2="124" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF1D6"/>
+      <stop offset="1" stop-color="#D9B56D"/>
+    </linearGradient>
+  </defs>
+  <rect x="14" y="14" width="132" height="132" rx="36" fill="url(#gold)" stroke="#0B2147" stroke-width="4"/>
+  <circle cx="80" cy="86" r="39" fill="url(#sky)"/>
+  <path d="M44 99c14-12 38-18 72-2v18H44Z" fill="#12824B"/>
+  <path d="M58 107V76c0-11 9-20 20-20h4c11 0 20 9 20 20v31" fill="none" stroke="#0B2147" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M65 107V80c0-7 6-13 13-13h4c7 0 13 6 13 13v27" fill="none" stroke="#F3C33C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M72 107V90a8 8 0 0 1 16 0v17Z" fill="#0B2147"/>
+  <path d="M32 72c19-27 48-36 79-23 11 5 21 13 29 24" fill="none" stroke="#FF8A1F" stroke-width="9" stroke-linecap="round"/>
+  <path d="m111 58 25-6-8 16 18 7-27 7-7 18-8-11 5-16-15-8Z" fill="#FF8A1F" stroke="#0B2147" stroke-width="3" stroke-linejoin="round"/>
+</svg>

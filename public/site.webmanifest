@@ -1,0 +1,18 @@
+{
+  "name": "Travel Gateway",
+  "short_name": "Travel Gateway",
+  "description": "Curated India and international journeys planned from Ahmedabad.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0B2147",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

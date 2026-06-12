@@ -58,26 +58,41 @@ export async function onRequestPost(context: any) {
   const email = clean(payload.email);
   const phone = clean(payload.phone);
   const destination = clean(payload.destination) || "Not specified";
+  const travelDate = clean(payload.travel_date) || "Not specified";
   const travelMonth = clean(payload.travel_month) || "Not specified";
+  const urgency = clean(payload.urgency) || "Planning ahead";
+  const adults = clean(payload.adults) || "1";
+  const children = clean(payload.children) || "0";
+  const infants = clean(payload.infants) || "0";
+  const wheelchairSupport = clean(payload.wheelchair_support) || "Not required";
+  const specialAssistance = clean(payload.special_assistance) || "None shared";
   const budget = clean(payload.budget_per_person) || "Not specified";
   const preferredContact = clean(payload.preferred_contact) || "Not specified";
   const message = clean(payload.message) || "No additional notes shared.";
   const sourcePage = clean(payload.source_page) || "Website contact form";
   const submittedAt = clean(payload.submitted_at) || new Date().toISOString();
 
-  if (!name || !email || !phone) {
-    return jsonResponse({ ok: false, error: "Name, email, and phone are required." }, 400);
+  if (!name || !email || !phone || travelDate === "Not specified") {
+    return jsonResponse({ ok: false, error: "Name, email, phone, and exact travel date are required." }, 400);
   }
 
-  const subject = `New Travel Gateway Inquiry: ${name} - ${destination}`;
+  const urgentPrefix = urgency === "Same-day travel" || urgency === "Within 72 hours"
+    ? `[URGENT: ${urgency.toUpperCase()}] `
+    : "";
+  const subject = `${urgentPrefix}Travel Gateway Inquiry: ${name} - ${destination} - ${travelDate}`;
   const text = [
-    "New Travel Gateway Inquiry",
+    urgentPrefix ? `${urgentPrefix.trim()} TRAVEL REQUEST` : "New Travel Gateway Inquiry",
     "",
     `Name: ${name}`,
     `Email: ${email}`,
     `Phone: ${phone}`,
     `Destination: ${destination}`,
+    `Exact Travel Date: ${travelDate}`,
     `Travel Month: ${travelMonth}`,
+    `Urgency: ${urgency}`,
+    `Passengers: ${adults} adult(s), ${children} child(ren), ${infants} infant(s)`,
+    `Wheelchair Support: ${wheelchairSupport}`,
+    `Special Assistance: ${specialAssistance}`,
     `Budget Per Person: ${budget}`,
     `Preferred Contact: ${preferredContact}`,
     `Message: ${message}`,
@@ -90,7 +105,12 @@ export async function onRequestPost(context: any) {
     ["Email", email],
     ["Phone", phone],
     ["Destination", destination],
+    ["Exact Travel Date", travelDate],
     ["Travel Month", travelMonth],
+    ["Urgency", urgency],
+    ["Passengers", `${adults} adult(s), ${children} child(ren), ${infants} infant(s)`],
+    ["Wheelchair Support", wheelchairSupport],
+    ["Special Assistance", specialAssistance],
     ["Budget Per Person", budget],
     ["Preferred Contact", preferredContact],
     ["Message", message],
@@ -100,7 +120,7 @@ export async function onRequestPost(context: any) {
 
   const html = `
     <div style="font-family:Arial,sans-serif;color:#0f172a;line-height:1.5">
-      <h2 style="margin:0 0 16px">New Travel Gateway Inquiry</h2>
+      <h2 style="margin:0 0 16px;color:${urgentPrefix ? "#b91c1c" : "#0f172a"}">${urgentPrefix ? escapeHtml(`${urgentPrefix.trim()} TRAVEL REQUEST`) : "New Travel Gateway Inquiry"}</h2>
       <table style="border-collapse:collapse;width:100%;max-width:720px">
         ${rows
           .map(

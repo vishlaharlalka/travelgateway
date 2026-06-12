@@ -84,8 +84,30 @@
   body {
     @apply bg-background text-foreground font-sans;
   }
+  :focus-visible {
+    @apply outline-3 outline-offset-4 outline-ring;
+  }
   h1, h2, h3, h4, h5, h6 {
     @apply font-sans tracking-tight;
+  }
+}
+
+.skip-link {
+  @apply fixed left-4 top-4 z-[100] -translate-y-24 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-xl transition-transform;
+}
+
+.skip-link:focus {
+  @apply translate-y-0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

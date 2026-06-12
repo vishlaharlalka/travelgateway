@@ -14,6 +14,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import Payment from "./pages/Payment";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="terms-of-service" element={<TermsOfService />} />
           <Route path="terms" element={<TermsOfService />} />
           <Route path="terms-and-conditions" element={<TermsOfService />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -9,38 +9,38 @@ const services = [
   {
     icon: <Map className="w-10 h-10" />,
     title: "Custom Travel Planning",
-    description: "We design unique itineraries based on your preferences, budget, and travel style.",
-    details: ["Personalized route mapping", "Activity recommendations", "Local guide connections"],
+    description: "We compare route options, trip length, comfort level, and budget before building the final plan.",
+    details: ["Route and night-by-night planning", "Activity fit checks", "Guide and transfer coordination"],
   },
   {
     icon: <Plane className="w-10 h-10" />,
     title: "Flight & Transport",
-    description: "Seamless booking for international flights, private jets, and local transportation.",
-    details: ["Best fare guarantee", "Private transfer arrangements", "Car rental coordination"],
+    description: "Flight timings, layovers, baggage needs, and ground transfers are reviewed together.",
+    details: ["Flight option comparison", "Private transfer arrangements", "Car rental coordination"],
   },
   {
     icon: <Hotel className="w-10 h-10" />,
     title: "Luxury Accommodations",
-    description: "Access to exclusive hotels, private villas, and boutique stays worldwide.",
-    details: ["VIP room upgrades", "Complimentary breakfast", "Late check-out options"],
+    description: "Hotel choices are shortlisted by location, room type, meal plan, service style, and trip purpose.",
+    details: ["Room category guidance", "Breakfast and meal-plan checks", "Early check-in or late check-out requests"],
   },
   {
     icon: <Shield className="w-10 h-10" />,
     title: "Visa & Documentation",
-    description: "Expert assistance with visa applications and all necessary travel documents.",
-    details: ["Fast-track processing", "Document verification", "Entry requirement updates"],
+    description: "We help organize visa requirements, passport validity, insurance, and entry-rule checks.",
+    details: ["Document checklist", "Application support", "Entry requirement updates"],
   },
   {
     icon: <Users className="w-10 h-10" />,
     title: "Group & Family Tours",
-    description: "Curated experiences for families and groups that cater to all ages and interests.",
-    details: ["Kid-friendly activities", "Private group dining", "Multi-room coordination"],
+    description: "Plans account for age mix, walking comfort, meal preferences, rooming, and realistic daily pacing.",
+    details: ["Child and senior-friendly pacing", "Private group dining", "Multi-room coordination"],
   },
   {
     icon: <Briefcase className="w-10 h-10" />,
     title: "Corporate Travel",
-    description: "Efficient and professional travel management for businesses and executives.",
-    details: ["24/7 travel support", "Expense management", "Meeting room bookings"],
+    description: "Business trips are kept practical with clear timings, stay options, transfers, and backup contacts.",
+    details: ["Travel-day support", "Expense-friendly documentation", "Meeting room bookings"],
   },
 ];
 
@@ -69,7 +69,7 @@ export default function Services() {
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-6 tracking-tight">Our Services</h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            We provide end-to-end travel solutions to ensure your journey is as smooth as it is memorable.
+            Travel planning support for flights, hotels, visas, group movement, and on-ground coordination from one Ahmedabad-based team.
           </p>
         </div>
 
@@ -112,9 +112,9 @@ export default function Services() {
               <Headphones className="w-6 h-6" />
               <span>24/7 Concierge Support</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 tracking-tight">We're with you every step of the way.</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 tracking-tight">Support stays available while you travel.</h2>
             <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
-              Our dedicated support team is available around the clock to assist you with any changes, emergencies, or special requests during your trip.
+              If timing changes, a pickup needs checking, or a hotel has a practical question, the Travel Gateway team remains reachable during the journey.
             </p>
             <Button size="lg" className="rounded-full px-8">Learn More About Support</Button>
           </div>

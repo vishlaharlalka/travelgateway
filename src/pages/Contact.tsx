@@ -18,7 +18,14 @@ type InquiryRequest = {
   email: string;
   phone: string;
   destination: string;
+  travel_date: string;
   travel_month: string;
+  urgency: string;
+  adults: string;
+  children: string;
+  infants: string;
+  wheelchair_support: string;
+  special_assistance: string;
   budget_per_person: string;
   preferred_contact: string;
   message: string;
@@ -38,18 +45,31 @@ function buildInquiryLines(formData: {
   email: string;
   phone: string;
   destination: string;
-  travelMonth: string;
+  travelDate: string;
+  urgency: string;
+  adults: string;
+  children: string;
+  infants: string;
+  wheelchairSupport: boolean;
+  specialAssistance: string;
   budget: string;
   preferredContact: string;
   message: string;
 }) {
+  const passengerSummary = `${formData.adults || "0"} adult(s), ${formData.children || "0"} child(ren), ${formData.infants || "0"} infant(s)`;
+  const isUrgent = formData.urgency === "Same-day travel" || formData.urgency === "Within 72 hours";
+
   return [
-    "New Travel Gateway Inquiry",
+    isUrgent ? `URGENT TRAVEL REQUEST - ${formData.urgency.toUpperCase()}` : "New Travel Gateway Inquiry",
     `Name: ${formData.name}`,
     `Email: ${formData.email}`,
     `Phone: ${formData.phone}`,
     `Destination: ${formData.destination || "Not specified"}`,
-    `Travel Month: ${formData.travelMonth || "Not specified"}`,
+    `Exact Travel Date: ${formData.travelDate || "Not specified"}`,
+    `Urgency: ${formData.urgency}`,
+    `Passengers: ${passengerSummary}`,
+    `Wheelchair Support: ${formData.wheelchairSupport ? "Required" : "Not required"}`,
+    `Special Assistance: ${formData.specialAssistance || "None shared"}`,
     `Budget: ${formData.budget || "Not specified"}`,
     `Preferred Contact: ${formData.preferredContact}`,
     `Message: ${formData.message || "No additional notes shared."}`,
@@ -61,7 +81,13 @@ function buildWhatsAppUrl(formData: {
   email: string;
   phone: string;
   destination: string;
-  travelMonth: string;
+  travelDate: string;
+  urgency: string;
+  adults: string;
+  children: string;
+  infants: string;
+  wheelchairSupport: boolean;
+  specialAssistance: string;
   budget: string;
   preferredContact: string;
   message: string;
@@ -106,7 +132,7 @@ async function sendInquiry(payload: InquiryRequest) {
   }
 
   await postJson(formSubmitEndpoint, {
-    _subject: `New Travel Gateway Inquiry: ${payload.destination || "Custom trip request"}`,
+    _subject: `${payload.urgency === "Same-day travel" || payload.urgency === "Within 72 hours" ? `[URGENT: ${payload.urgency.toUpperCase()}] ` : ""}Travel Gateway Inquiry: ${payload.destination || "Custom trip request"} - ${payload.travel_date}`,
     _template: "table",
     _captcha: "false",
     _replyto: payload.email,
@@ -114,7 +140,14 @@ async function sendInquiry(payload: InquiryRequest) {
     email: payload.email,
     phone: payload.phone,
     destination: payload.destination,
+    travel_date: payload.travel_date,
     travel_month: payload.travel_month,
+    urgency: payload.urgency,
+    adults: payload.adults,
+    children: payload.children,
+    infants: payload.infants,
+    wheelchair_support: payload.wheelchair_support,
+    special_assistance: payload.special_assistance,
     budget_per_person: payload.budget_per_person,
     preferred_contact: payload.preferred_contact,
     message: payload.message,
@@ -131,7 +164,13 @@ export default function Contact() {
     email: "",
     phone: "",
     destination: prefilledDestination,
-    travelMonth: "",
+    travelDate: "",
+    urgency: "Planning ahead",
+    adults: "1",
+    children: "0",
+    infants: "0",
+    wheelchairSupport: false,
+    specialAssistance: "",
     budget: "",
     preferredContact: "WhatsApp",
     message: "",
@@ -175,7 +214,17 @@ export default function Contact() {
         email: formData.email,
         phone: formData.phone,
         destination: formData.destination || "Not specified",
-        travel_month: formData.travelMonth || "Not specified",
+        travel_date: formData.travelDate,
+        travel_month: new Date(`${formData.travelDate}T00:00:00`).toLocaleDateString("en-IN", {
+          month: "long",
+          year: "numeric",
+        }),
+        urgency: formData.urgency,
+        adults: formData.adults,
+        children: formData.children,
+        infants: formData.infants,
+        wheelchair_support: formData.wheelchairSupport ? "Required" : "Not required",
+        special_assistance: formData.specialAssistance || "None shared",
         budget_per_person: formData.budget || "Not specified",
         preferred_contact: formData.preferredContact,
         message: formData.message || "No additional notes shared.",
@@ -191,7 +240,7 @@ export default function Contact() {
         const whatsappUrl = buildWhatsAppUrl(formData);
         window.open(whatsappUrl, "_blank", "noopener,noreferrer");
       } else if (typeof window !== "undefined") {
-        const subject = `Travel Gateway Inquiry - ${formData.name || "Website Lead"}`;
+        const subject = `${formData.urgency === "Same-day travel" || formData.urgency === "Within 72 hours" ? `[URGENT: ${formData.urgency.toUpperCase()}] ` : ""}Travel Gateway Inquiry - ${formData.name || "Website Lead"}`;
         const body = buildInquiryLines(formData).join("\n");
         window.open(`mailto:${inquiryDeliveryEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, "_blank");
       }
@@ -204,6 +253,8 @@ export default function Contact() {
       );
     }
   };
+  const todayInputDate = new Date(Date.now() - new Date().getTimezoneOffset() * 60_000).toISOString().slice(0, 10);
+  const isUrgentRequest = formData.urgency === "Same-day travel" || formData.urgency === "Within 72 hours";
 
   return (
     <div className="pt-24 pb-16 px-6 bg-background">
@@ -312,7 +363,7 @@ export default function Contact() {
               <CardContent className="p-6 md:p-10">
                 <h3 className="text-3xl font-bold mb-5 tracking-tight">Plan Your Trip with Experts</h3>
                 <p className="text-muted-foreground mb-7">
-                  Fill out the form below, and our team will get back to you with a customized itinerary within 24 hours.
+                  Share the operational details below so our team can quickly check availability, assistance, and next steps. Same-day and near-term requests are clearly flagged for priority review.
                 </p>
                 <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -359,16 +410,49 @@ export default function Contact() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-sm font-semibold ml-1">Preferred Travel Month</label>
-                      <Input
-                        placeholder="e.g. October 2026"
-                        className="rounded-2xl h-14 border-muted"
-                        value={formData.travelMonth}
-                        onChange={(e) => setFormData(prev => ({ ...prev, travelMonth: e.target.value }))}
-                      />
+                  <div className="rounded-3xl border border-primary/15 bg-primary/5 p-5 md:p-6">
+                    <div className="mb-5">
+                      <h4 className="font-bold">Travel timing and urgency</h4>
+                      <p className="mt-1 text-sm text-muted-foreground">Use the exact departure date. Urgent requests will be clearly marked in the message our team receives.</p>
                     </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div className="space-y-2">
+                        <label className="text-sm font-semibold ml-1">Exact Travel Date</label>
+                        <Input
+                          type="date"
+                          min={todayInputDate}
+                          className="rounded-2xl h-14 border-muted bg-background"
+                          value={formData.travelDate}
+                          onChange={(e) => setFormData(prev => ({ ...prev, travelDate: e.target.value }))}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-semibold ml-1">How urgent is this request?</label>
+                        <select
+                          className="h-14 w-full rounded-2xl border border-muted bg-background px-4 text-sm"
+                          value={formData.urgency}
+                          onChange={(e) => setFormData(prev => ({
+                            ...prev,
+                            urgency: e.target.value,
+                            travelDate: e.target.value === "Same-day travel" ? todayInputDate : prev.travelDate,
+                          }))}
+                        >
+                          <option>Planning ahead</option>
+                          <option>Within 7 days</option>
+                          <option>Within 72 hours</option>
+                          <option>Same-day travel</option>
+                        </select>
+                      </div>
+                    </div>
+                    {isUrgentRequest && (
+                      <p className="mt-4 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900">
+                        This will be marked as an urgent travel request. For immediate help, call or WhatsApp +91 9898111689 after submitting.
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-sm font-semibold ml-1">Budget Per Person</label>
                       <Input
@@ -392,11 +476,59 @@ export default function Contact() {
                     </div>
                   </div>
 
+                  <div className="rounded-3xl border border-muted p-5 md:p-6">
+                    <div className="mb-5">
+                      <h4 className="font-bold">Passengers and assistance</h4>
+                      <p className="mt-1 text-sm text-muted-foreground">Passenger ages and mobility needs help us check the right fares, rooms, transfers, and support.</p>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {[
+                        ["Adults", "adults"],
+                        ["Children (2-11)", "children"],
+                        ["Infants (under 2)", "infants"],
+                      ].map(([label, field]) => (
+                        <div className="space-y-2" key={field}>
+                          <label className="text-sm font-semibold ml-1">{label}</label>
+                          <Input
+                            type="number"
+                            min={field === "adults" ? "1" : "0"}
+                            max="30"
+                            className="rounded-2xl h-14 border-muted"
+                            value={formData[field as "adults" | "children" | "infants"]}
+                            onChange={(e) => setFormData(prev => ({ ...prev, [field]: e.target.value }))}
+                            required
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <label className="mt-5 flex items-start gap-3 rounded-2xl bg-muted/60 p-4 text-sm">
+                      <input
+                        type="checkbox"
+                        className="mt-1"
+                        checked={formData.wheelchairSupport}
+                        onChange={(e) => setFormData(prev => ({ ...prev, wheelchairSupport: e.target.checked }))}
+                      />
+                      <span>
+                        <strong className="block text-foreground">Wheelchair support required</strong>
+                        <span className="text-muted-foreground">We will account for airport, transfer, hotel, and sightseeing accessibility.</span>
+                      </span>
+                    </label>
+                    <div className="mt-5 space-y-2">
+                      <label className="text-sm font-semibold ml-1">Other Special Assistance</label>
+                      <Input
+                        placeholder="e.g. senior traveler support, reduced mobility, dietary or medical context"
+                        className="rounded-2xl h-14 border-muted"
+                        value={formData.specialAssistance}
+                        onChange={(e) => setFormData(prev => ({ ...prev, specialAssistance: e.target.value }))}
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
                     <label className="text-sm font-semibold ml-1">Tell Vishal about your dream trip</label>
                     <textarea 
                       className="w-full min-h-[120px] rounded-2xl border border-muted bg-background px-4 py-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-shadow"
-                      placeholder="Share your preferences, dates, budget, or any special requests..."
+                      placeholder="Share route preferences, booking status, hotel needs, or any other useful context..."
                       value={formData.message}
                       onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
                     />

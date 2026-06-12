@@ -1,13 +1,16 @@
 import { motion } from "framer-motion";
-import { MapPin, Clock, CheckCircle2, Star, ArrowRight, Plane, Hotel, Utensils, PhoneCall, FileText } from "lucide-react";
+import { MapPin, Clock, CheckCircle2, Star, ArrowRight, Plane, Hotel, Utensils, PhoneCall, FileText, Sparkles, Waves, Landmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { useEffect } from "react";
 import { destinations } from "@/lib/data";
 import { useNavigate } from "react-router-dom";
 import { generateDestinationPDF } from "@/lib/pdf";
+import VietnamEVisaGuide from "@/components/VietnamEVisaGuide";
+import SEO from "@/components/SEO";
+import { displayInr } from "@/lib/pricing";
+import { defaultSeoImage, graphSchema, pageSchema, siteUrl } from "@/lib/seo";
 import {
   Carousel,
   CarouselContent,
@@ -19,22 +22,22 @@ import {
 export default function Vietnam() {
   const navigate = useNavigate();
   const vietnamDestination = destinations.find((destination) => destination.link === "/destinations/vietnam");
-  const inquiryPath = "/contact?destination=Vietnam%20Wonders";
-  const whatsappMessage = encodeURIComponent(
-    "Hi Vishal, I'm interested in the Vietnam Wonders package from Travel Gateway. Please share the itinerary and best available quote."
+  const vietnamPackages = destinations.filter((destination) =>
+    ["Vietnam Wonders", "Central Vietnam Charm", "Southern Vietnam & Phu Quoc Escape"].includes(destination.name)
   );
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    document.title = "Vietnam Tour Package from South Bopal, Ahmedabad | TravelGateway";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute(
-        "content",
-        "Book the best Vietnam tour package from South Bopal, Ahmedabad. Personalized itineraries by Vishal Harlalka at TravelGateway. Explore Ha Long Bay, Hanoi, and more."
-      );
-    }
-  }, []);
+  const inquiryPath = "/contact?destination=Vietnam";
+  const whatsappMessage = encodeURIComponent(
+    "Hi Vishal, I'm comparing Travel Gateway's Vietnam packages. Please help me choose the best option and share the quote."
+  );
+  const packageInquiryPath = (packageName: string) => `/contact?destination=${encodeURIComponent(packageName)}`;
+  const packageWhatsAppLink = (packageName: string) =>
+    `https://wa.me/919898111689?text=${encodeURIComponent(
+      `Hi Vishal, I'm interested in the ${packageName} package from Travel Gateway. Please share the itinerary and best available quote.`
+    )}`;
+  const vietnamPageTitle = "Vietnam Tour Packages from Ahmedabad | Compare Vietnam Routes with Travel Gateway";
+  const vietnamPageDescription =
+    "Compare Travel Gateway's Vietnam tour packages from Ahmedabad, including classic north-to-south routes, Central Vietnam, and Ho Chi Minh City with Phu Quoc.";
+  const vietnamPagePath = "/destinations/vietnam";
 
   const handleDownloadItinerary = async () => {
     if (!vietnamDestination) return;
@@ -72,8 +75,95 @@ export default function Vietnam() {
     },
   ];
 
+  const packageHighlights = {
+    "Vietnam Wonders": {
+      icon: <Sparkles className="w-5 h-5" />,
+      days: "8 Days / 7 Nights",
+      bestFor: "First-time Vietnam travelers",
+      route: "Hanoi, Ha Long Bay, Hoi An, Ho Chi Minh City",
+      promise: "The complete north-to-south introduction with the country icons covered smoothly.",
+      cta: "Inquire for Vietnam Wonders",
+    },
+    "Central Vietnam Charm": {
+      icon: <Landmark className="w-5 h-5" />,
+      days: "6 Days / 5 Nights",
+      bestFor: "Culture, photography, relaxed couples",
+      route: "Da Nang, Hoi An, Ba Na Hills, Hue",
+      promise: "A tighter, more atmospheric holiday built around Golden Bridge, lantern evenings, and heritage towns.",
+      cta: "Inquire for Central Vietnam",
+    },
+    "Southern Vietnam & Phu Quoc Escape": {
+      icon: <Waves className="w-5 h-5" />,
+      days: "7 Days / 6 Nights",
+      bestFor: "Beach lovers, honeymooners, premium leisure",
+      route: "Ho Chi Minh City, Mekong Delta, Phu Quoc",
+      promise: "City energy, river life, and a proper island finish at Phu Quoc instead of another rushed sightseeing day.",
+      cta: "Inquire for Phu Quoc Escape",
+    },
+  };
+
   return (
     <div className="pt-20 pb-16 bg-background">
+      <SEO
+        title={vietnamPageTitle}
+        description={vietnamPageDescription}
+        canonicalPath={vietnamPagePath}
+        image={vietnamDestination?.image || defaultSeoImage}
+        imageAlt="Vietnam travel packages by Travel Gateway"
+        keywords="Vietnam tour package from Ahmedabad, Vietnam holiday packages India, Vietnam e-visa for Indians, Ha Long Bay package, Phu Quoc package, Travel Gateway Vietnam"
+        structuredData={graphSchema([
+          pageSchema(vietnamPagePath, vietnamPageTitle, vietnamPageDescription, vietnamDestination?.image || defaultSeoImage),
+          {
+            "@type": "BreadcrumbList",
+            "@id": `${siteUrl}${vietnamPagePath}#breadcrumb`,
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+              { "@type": "ListItem", position: 2, name: "Destinations", item: `${siteUrl}/destinations` },
+              { "@type": "ListItem", position: 3, name: "Vietnam", item: `${siteUrl}${vietnamPagePath}` },
+            ],
+          },
+          {
+            "@type": "ItemList",
+            "@id": `${siteUrl}${vietnamPagePath}#packages`,
+            name: "Travel Gateway Vietnam packages",
+            itemListElement: vietnamPackages.map((destination, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              url: new URL(destination.link || `/destinations/${destination.id}`, siteUrl).toString(),
+              name: destination.name,
+            })),
+          },
+          {
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "What is the best time to book a Vietnam tour package from Ahmedabad?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "November to April is usually the strongest sightseeing window across much of Vietnam. Value-focused departures can also work in shoulder months such as May or October depending on the route.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Is a visa required for Indians visiting Vietnam?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Indian passport holders normally need a Vietnam visa, and the official e-visa is usually the simplest option for tourism when mainland Vietnam is included.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "How many days are ideal for a complete Vietnam experience?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Seven to ten days is usually the sweet spot for a first Vietnam trip, giving enough time to mix scenery, culture, and a manageable pace.",
+                },
+              },
+            ],
+          },
+        ])}
+      />
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
@@ -92,11 +182,11 @@ export default function Vietnam() {
           >
             <Badge className="mb-4 bg-primary text-white border-none px-4 py-1">Top Trending Destination</Badge>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase mb-6">
-              Vietnam Tour Package <br />
-              <span className="text-primary italic">from South Bopal, Ahmedabad</span>
+              Vietnam Tour Packages <br />
+              <span className="text-primary italic">from Ahmedabad</span>
             </h1>
             <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto mb-8 leading-relaxed">
-              Explore Vietnam with a thoughtfully planned journey that balances headline sights, smooth logistics, and local guidance so your holiday feels polished from the moment you leave Ahmedabad.
+              Compare Travel Gateway's Vietnam routes in one place, from the classic Vietnam Wonders circuit to Central Vietnam Charm and the beach-led Southern Vietnam & Phu Quoc Escape.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button
@@ -104,7 +194,7 @@ export default function Vietnam() {
                 className="rounded-full px-8 py-6 text-lg font-bold"
                 onClick={() => navigate(inquiryPath)}
               >
-                Get My Quote
+                Compare Vietnam Packages
               </Button>
               <Button
                 size="lg"
@@ -123,9 +213,9 @@ export default function Vietnam() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2 space-y-16">
             <section>
-              <h2 className="text-3xl font-bold mb-6 tracking-tight">Why Choose Our Vietnam Tour Package?</h2>
+              <h2 className="text-3xl font-bold mb-6 tracking-tight">Vietnam, Planned Around the Right Route</h2>
               <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                Travel Gateway designs Vietnam holidays for travelers who want more than a generic online package. We help you move comfortably between Hanoi, Ha Long Bay, Central Vietnam, and Ho Chi Minh City with hotel choices, sightseeing pace, and meal planning that work especially well for Indian couples, families, and first-time Southeast Asia travelers.
+                Travel Gateway designs Vietnam holidays for travelers who want more than a generic online package. Choose the complete Vietnam Wonders circuit, slow down into Da Nang, Hoi An, and Hue with Central Vietnam Charm, or pair Ho Chi Minh City with Phu Quoc's beaches on the Southern Vietnam & Phu Quoc Escape.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
@@ -142,10 +232,123 @@ export default function Vietnam() {
               </div>
             </section>
 
+            <VietnamEVisaGuide />
+
             <section>
-              <h2 className="text-3xl font-bold mb-8 tracking-tight">The Ultimate 7-Day Itinerary</h2>
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                <div>
+                  <Badge variant="outline" className="mb-3 text-primary border-primary">
+                    Active Vietnam Options
+                  </Badge>
+                  <h2 className="text-3xl font-bold tracking-tight">Pick the Vietnam Holiday That Fits</h2>
+                </div>
+                <p className="text-muted-foreground max-w-xl">
+                  Each option has a different rhythm, budget profile, and emotional payoff. Tell us which one feels closest, and we will tune hotels, flights, meals, and pace around your dates.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                {vietnamPackages.map((destination) => {
+                  const details = packageHighlights[destination.name as keyof typeof packageHighlights];
+                  return (
+                    <Card key={destination.id} className="overflow-hidden border-none shadow-lg rounded-[2rem] h-full flex flex-col">
+                      <div className="relative h-52 overflow-hidden">
+                        <img
+                          src={destination.image}
+                          alt={destination.name}
+                          className="w-full h-full object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+                        <div className="absolute left-5 right-5 bottom-5 flex items-end justify-between gap-4">
+                          <div>
+                            <Badge className="mb-3 bg-white/90 text-[#0B2147] border-none">{details.days}</Badge>
+                            <h3 className="text-2xl font-black text-white leading-tight">{destination.name}</h3>
+                          </div>
+                          <div className="h-11 w-11 rounded-full bg-primary text-primary-foreground grid place-items-center shrink-0">
+                            {details.icon}
+                          </div>
+                        </div>
+                      </div>
+                      <CardContent className="p-6 flex flex-col flex-grow">
+                        <div className="flex items-center justify-between gap-4 mb-4">
+                          <div className="text-2xl font-black text-[#0B2147]">
+                            {displayInr(destination.price)}*
+                          </div>
+                          <div className="flex items-center gap-1.5 px-3 py-1 bg-primary/5 rounded-full">
+                            <Star className="w-3.5 h-3.5 text-yellow-500 fill-current" />
+                            <span className="text-sm font-bold">{destination.rating}</span>
+                          </div>
+                        </div>
+                        <p className="text-muted-foreground leading-relaxed mb-5">{details.promise}</p>
+                        <div className="space-y-3 text-sm mb-6">
+                          <div>
+                            <span className="font-bold text-[#0B2147]">Best for: </span>
+                            <span className="text-muted-foreground">{details.bestFor}</span>
+                          </div>
+                          <div>
+                            <span className="font-bold text-[#0B2147]">Route: </span>
+                            <span className="text-muted-foreground">{details.route}</span>
+                          </div>
+                          <div>
+                            <span className="font-bold text-[#0B2147]">Includes: </span>
+                            <span className="text-muted-foreground">{destination.services.slice(0, 3).join(", ")}</span>
+                          </div>
+                        </div>
+                        <div className="mt-auto grid gap-3">
+                          <Button
+                            className="rounded-full font-bold"
+                            onClick={() => navigate(packageInquiryPath(destination.name))}
+                          >
+                            {details.cta}
+                          </Button>
+                          <Button
+                            variant="secondary"
+                            className="rounded-full font-bold"
+                            onClick={() => navigate(destination.link || `/destinations/${destination.id}`)}
+                          >
+                            View Day-by-Day Package
+                          </Button>
+                          <a href={packageWhatsAppLink(destination.name)} target="_blank" rel="noopener noreferrer">
+                            <Button variant="outline" className="w-full rounded-full">
+                              WhatsApp This Option
+                            </Button>
+                          </a>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </section>
+
+            <section className="bg-[#0B2147] text-white p-8 md:p-10 rounded-[2rem]">
+              <h2 className="text-3xl font-bold mb-6 tracking-tight">Quick Package Difference</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="border border-white/15 rounded-2xl p-5 bg-white/5">
+                  <h3 className="font-bold text-xl mb-2">Vietnam Wonders</h3>
+                  <p className="text-white/75 text-sm leading-relaxed">
+                    Choose this when the brief is "show me Vietnam properly" with Hanoi, Ha Long Bay, Hoi An, and Ho Chi Minh City in one balanced first trip.
+                  </p>
+                </div>
+                <div className="border border-white/15 rounded-2xl p-5 bg-white/5">
+                  <h3 className="font-bold text-xl mb-2">Central Vietnam Charm</h3>
+                  <p className="text-white/75 text-sm leading-relaxed">
+                    Choose this for a shorter, richer cultural escape with Da Nang comfort, Hoi An evenings, Ba Na Hills, Golden Bridge, and Hue heritage.
+                  </p>
+                </div>
+                <div className="border border-white/15 rounded-2xl p-5 bg-white/5">
+                  <h3 className="font-bold text-xl mb-2">Southern Vietnam & Phu Quoc Escape</h3>
+                  <p className="text-white/75 text-sm leading-relaxed">
+                    Choose this when you want Ho Chi Minh City and Mekong Delta experiences, then a softer luxury beach finish on Phu Quoc.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section>
+              <h2 className="text-3xl font-bold mb-8 tracking-tight">Classic Vietnam Wonders Sample Route</h2>
               <p className="text-muted-foreground text-lg leading-relaxed mb-8">
-                This sample route is ideal for a classic first trip to Vietnam with a strong mix of scenery, culture, and breathing room. We can also tailor it for honeymoons, family travel, premium upgrades, or slower pacing.
+                This sample route is ideal for a classic first trip to Vietnam with a strong mix of scenery, culture, and breathing room. If Central Vietnam Charm or Southern Vietnam & Phu Quoc Escape is the better fit, we will build the day-by-day plan around that variant instead.
               </p>
               <div className="space-y-8">
                 {itinerary.map((item, i) => (
@@ -234,21 +437,21 @@ export default function Vietnam() {
           <div className="space-y-8">
             <Card className="border-none shadow-xl rounded-[2.5rem] bg-primary text-primary-foreground overflow-hidden sticky top-32">
               <CardContent className="p-8">
-                <h3 className="text-2xl font-bold mb-4">Book Your Vietnam Tour</h3>
+                <h3 className="text-2xl font-bold mb-4">Compare Vietnam Packages</h3>
                 <p className="mb-6 opacity-80">
-                  Share your dates, budget, and travel style to receive a practical itinerary and personalized quote from our team.
+                  Share your dates, budget, and travel style. We will recommend the right route and quote the exact option, not a vague Vietnam template.
                 </p>
                 <div className="space-y-4 mb-8">
                   <div className="flex items-center gap-3">
                     <Clock className="w-5 h-5 opacity-70" />
-                    <span>7 Days / 6 Nights</span>
+                    <span>6 to 8 day options</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Star className="w-5 h-5 text-yellow-400 fill-current" />
                     <span>4.9/5 (120+ Reviews)</span>
                   </div>
                   <div className="text-3xl font-bold">
-                    {"\u20B9"}75,000 <span className="text-sm font-normal opacity-70">/ person</span>
+                    {displayInr("₹68,500")} <span className="text-sm font-normal opacity-70">starting / person</span>
                   </div>
                 </div>
                 <Button
@@ -256,7 +459,7 @@ export default function Vietnam() {
                   className="w-full rounded-full py-7 text-lg font-bold mb-4"
                   onClick={() => navigate(inquiryPath)}
                 >
-                  Plan My Trip
+                  Help Me Choose
                 </Button>
                 <a
                   href={`https://wa.me/919898111689?text=${whatsappMessage}`}
@@ -273,6 +476,25 @@ export default function Vietnam() {
               </CardContent>
             </Card>
 
+            <Card className="border-none shadow-lg rounded-[2rem] overflow-hidden">
+              <CardContent className="p-8">
+                <h4 className="font-bold text-xl mb-4">Inquire by Package</h4>
+                <div className="space-y-3">
+                  {vietnamPackages.map((destination) => (
+                    <Button
+                      key={destination.id}
+                      variant="outline"
+                      className="w-full justify-between rounded-2xl h-auto py-4 text-left"
+                      onClick={() => navigate(packageInquiryPath(destination.name))}
+                    >
+                      <span className="font-bold">{destination.name}</span>
+                      <ArrowRight className="w-4 h-4 shrink-0" />
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
             <Card className="border-none shadow-lg rounded-[2.5rem] overflow-hidden">
               <CardContent className="p-8">
                 <h4 className="font-bold text-xl mb-4">Why TravelGateway?</h4>
@@ -280,7 +502,7 @@ export default function Vietnam() {
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-1" />
                     <span className="text-sm text-muted-foreground">
-                      Local support from our South Bopal, Ahmedabad team before and after booking.
+                      Local support from our Ahmedabad team before and after booking.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">

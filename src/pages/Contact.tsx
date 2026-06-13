@@ -1,11 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Phone, MapPin, Send, MessageSquare, Loader2 } from "lucide-react";
+import { Mail, Phone, MapPin, Send, MessageSquare, Loader2, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import SEO from "@/components/SEO";
 import { FormEvent, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { googleBusinessUrl, graphSchema, pageSchema } from "@/lib/seo";
 
 const inquiryEmail = "inquiry@travelgateway.in";
 const inquiryDeliveryEmail = "info@travelgateway.in";
@@ -263,22 +264,13 @@ export default function Contact() {
         description="Contact Travel Gateway in South Bopal, Ahmedabad for international holidays, India luxury journeys, visa guidance, family tours, honeymoon planning, and personalized booking support."
         canonicalPath="/contact"
         keywords="contact travel agent Ahmedabad, South Bopal travel agency, India holiday booking, international tour planner Gujarat, luxury travel consultant Ahmedabad"
-        structuredData={{
-          "@context": "https://schema.org",
-          "@type": "TravelAgency",
-          name: "Travel Gateway",
-          url: "https://travelgateway.in/contact",
-          telephone: "+91 9898111689",
-          email: inquiryEmail,
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "G 901, Samanvay Scintilla, VIP Road, South Bopal",
-            addressLocality: "Ahmedabad",
-            addressRegion: "Gujarat",
-            postalCode: "380058",
-            addressCountry: "IN",
-          },
-        }}
+        structuredData={graphSchema([
+          pageSchema(
+            "/contact",
+            "Contact Travel Gateway | Travel Agent in South Bopal Ahmedabad for India and International Bookings",
+            "Contact Travel Gateway in South Bopal, Ahmedabad for international holidays, India luxury journeys, visa guidance, family tours, honeymoon planning, and personalized booking support."
+          ),
+        ])}
       />
 
       <div className="max-w-7xl mx-auto">
@@ -333,6 +325,16 @@ export default function Contact() {
                     <p className="text-muted-foreground">AHMEDABAD, GUJARAT-380058</p>
                   </div>
                 </div>
+
+                <a
+                  href={googleBusinessUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex w-full items-center justify-center rounded-full border border-primary/20 px-5 py-3 text-sm font-bold text-primary transition-colors hover:bg-primary/5"
+                >
+                  View Travel Gateway on Google Maps
+                  <ExternalLink className="ml-2 h-4 w-4" />
+                </a>
               </CardContent>
             </Card>
 

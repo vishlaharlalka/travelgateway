@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { destinationPath, destinations, shouldFitWholeImage } from "@/lib/data";
-import { defaultSeoImage, graphSchema, pageSchema, siteUrl } from "@/lib/seo";
+import { defaultSeoImage, googleBusinessUrl, graphSchema, pageSchema, siteUrl } from "@/lib/seo";
 import { formatInr, parseInrPrice } from "@/lib/pricing";
 
 const heroImages = [
@@ -106,9 +106,9 @@ const reviewPlatforms = [
   {
     name: "Google",
     tone: "Public listing",
-    description: "Opens a Google search for Travel Gateway so travelers can confirm the current business listing before leaving feedback.",
-    actionLabel: "Open Google",
-    href: "https://www.google.com/search?q=Travel+Gateway+9898111689",
+    description: "Opens the verified Travel Gateway listing on Google Maps so travelers can view details, directions, and public feedback.",
+    actionLabel: "Open Google Maps",
+    href: googleBusinessUrl,
     accent: "border-[#4285F4]/25 bg-[#4285F4]/5",
   },
   {

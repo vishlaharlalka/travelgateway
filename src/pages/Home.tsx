@@ -13,92 +13,87 @@ import { formatInr, parseInrPrice } from "@/lib/pricing";
 
 const heroImages = [
   {
-    url: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Kutch_White_Rann_Tents_%288335851293%29.jpg",
-    location: "Dhordo, Kutch",
-    title: "Dordo Tent City",
+    url: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=85&w=2200",
+    location: "Jaipur, Rajasthan",
+    title: "Royal Rajasthan",
   },
   {
-    url: "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=2000",
-    location: "Maasai Mara, Kenya",
-    title: "Wild Majesty",
+    url: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=85&w=2200",
+    location: "Alleppey, Kerala",
+    title: "Kerala Backwaters",
   },
   {
-    url: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=2000",
-    location: "Ha Long Bay, Vietnam",
-    title: "Emerald Waters",
+    url: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&q=85&w=2200",
+    location: "Varanasi, Uttar Pradesh",
+    title: "India's Sacred Heart",
   },
   {
-    url: "https://images.unsplash.com/photo-1500835556837-99ac94a94552?auto=format&fit=crop&q=80&w=2000",
-    location: "Angkor Wat, Cambodia",
-    title: "Ancient Echoes",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&q=80&w=2000",
-    location: "Palawan, Philippines",
-    title: "Island Paradise",
+    url: "https://images.unsplash.com/photo-1578155173088-710a9aef3849?auto=format&fit=crop&q=85&w=2200",
+    location: "Rajasthan, India",
+    title: "Desert and Palace India",
   },
 ];
 
 const featuredDestinations = [
-  "Vietnam Wonders",
-  "Char Dham Yatra: Yamunotri, Gangotri, Kedarnath & Badrinath",
-  "Monsoon India: Kerala Ayurveda & Western Ghats",
-  "Golden Chariot",
+  "Rajasthan Grand Palace Journey",
+  "Gujarat Heritage, Kutch & Textile Trails",
+  "Kerala Backwaters",
+  "Golden Chariot - Pride of Karnataka",
 ]
   .map((name) => destinations.find((destination) => destination.name === name))
   .filter((destination) => Boolean(destination));
 
 const trendCards = [
   {
-    title: "Vietnam routes with clearer pacing",
+    title: "Your first journey through India",
     description:
-      "Travelers comparing value-led international trips are responding well to 7 to 10 day Vietnam itineraries with practical e-visa support and fewer rushed sector changes.",
-    href: "/destinations/vietnam",
-    label: "Compare Vietnam packages",
+      "A carefully paced introduction combining private guiding, iconic heritage, comfortable transfers, and enough time to experience India beyond a checklist.",
+    href: "/destinations?scope=INDIA",
+    label: "Explore India journeys",
   },
   {
-    title: "Pilgrimage journeys need detail, not generic copy",
+    title: "Palaces, desert and living heritage",
     description:
-      "Char Dham, Jyotirlinga, and Ayodhya-Varanasi style routes perform better when pacing, darshan support, and senior-traveler comfort are stated upfront.",
-    href: "/destinations?scope=INDIA&experience=Pilgrimage",
-    label: "Browse pilgrimage routes",
+      "Travel through Rajasthan with private guides, atmospheric heritage stays, craft encounters, desert sunsets, and a route designed around your pace.",
+    href: "/destinations?scope=INDIA&region=Rajasthan",
+    label: "Discover royal Rajasthan",
   },
   {
-    title: "Monsoon Kerala is a real seasonal product",
+    title: "Slow travel through southern India",
     description:
-      "Wellness-minded guests are actively looking for softer monsoon trips with Ayurveda, backwaters, and weather-aware routing instead of summer-style sightseeing checklists.",
-    href: "/destinations/monsoon-india-kerala-ayurveda-and-western-ghats-133",
-    label: "See monsoon Kerala",
+      "Balance Kerala's backwaters, spice country, wellness traditions, local cuisine, and unhurried stays for a softer side of India.",
+    href: "/destinations?scope=INDIA&region=Kerala",
+    label: "Experience Kerala",
   },
   {
-    title: "Luxury train and India inbound pages deserve prominence",
+    title: "India by luxury train",
     description:
-      "Higher-intent travelers still search for iconic rail journeys and guided India planning, especially when the route, service level, and next inquiry step are obvious.",
+      "See extraordinary regions without repacking every night, with refined onboard hospitality and curated excursions along the way.",
     href: "/destinations?experience=Luxury%20Train",
-    label: "View luxury trains",
+    label: "Explore luxury trains",
   },
 ];
 
 const services = [
   {
     icon: <Globe className="w-8 h-8 text-primary" />,
-    title: "Custom Itineraries",
-    description: "Route ideas, hotel styles, sightseeing pace, and rest days planned around how you actually like to travel.",
+    title: "Personally Designed",
+    description: "Your route, hotel style, interests, pace, and rest days are shaped around how you want to experience India.",
   },
   {
     icon: <Plane className="w-8 h-8 text-primary" />,
-    title: "Seamless Logistics",
-    description: "Flights, private transfers, local timings, and supplier confirmations kept in one coordinated plan.",
+    title: "Private, Smooth Travel",
+    description: "Airport assistance, private transfers, local timings, and confirmed arrangements are coordinated in one clear plan.",
   },
   {
     icon: <ShieldCheck className="w-8 h-8 text-primary" />,
-    title: "Travel Insurance",
-    description: "Insurance guidance and basic travel-risk checks are discussed before the final itinerary is confirmed.",
+    title: "Trusted Local Support",
+    description: "You have a direct India-based contact before and during the journey, with practical support when plans need attention.",
   },
   {
     icon: <Users className="w-8 h-8 text-primary" />,
-    title: "Group Expeditions",
-    description: "Small group and family departures planned with rooming, meals, comfort, and pace in mind.",
+    title: "Thoughtful Hospitality",
+    description: "English-speaking guides, carefully selected stays, dietary preferences, and comfort needs are discussed before booking.",
   },
 ];
 
@@ -168,8 +163,8 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       <SEO
-        title="Travel Gateway | Luxury Travel Agency in Ahmedabad for India and International Tours"
-        description="Travel Gateway is a boutique travel agency in Ahmedabad helping Indian travelers and international guests book curated holidays, India tours, luxury trains, safaris, and personalized trip planning."
+        title="Private India Tours Designed by a Local Travel Expert | Travel Gateway"
+        description="Discover India through personally designed private journeys, trusted local guides, exceptional stays, and direct support from Travel Gateway in Ahmedabad."
         canonicalPath="/"
         image={defaultSeoImage}
         imageAlt="Travel Gateway curated India and international journeys"
@@ -177,8 +172,8 @@ export default function Home() {
         structuredData={graphSchema([
           pageSchema(
             "/",
-            "Travel Gateway | Luxury Travel Agency in Ahmedabad for India and International Tours",
-            "Travel Gateway is a boutique travel agency in Ahmedabad helping Indian travelers and international guests book curated holidays, India tours, luxury trains, safaris, and personalized trip planning."
+            "Private India Tours Designed by a Local Travel Expert | Travel Gateway",
+            "Discover India through personally designed private journeys, trusted local guides, exceptional stays, and direct support from Travel Gateway in Ahmedabad."
           ),
           {
             "@type": "ItemList",
@@ -250,43 +245,43 @@ export default function Home() {
         <motion.div className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16 text-center text-white sm:pb-20">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <p className="mx-auto mb-6 max-w-72 rounded-full bg-white/18 px-4 py-2 text-center text-sm font-medium leading-snug text-white backdrop-blur-md sm:w-fit sm:max-w-[32rem]">
-              <span className="sm:hidden">Luxury holidays, planned from Ahmedabad</span>
-              <span className="hidden sm:inline">Luxury India and international holidays, planned from Ahmedabad</span>
+              <span className="sm:hidden">Private India journeys, personally designed</span>
+              <span className="hidden sm:inline">Private India journeys, personally designed by a local travel expert</span>
             </p>
             <h1 className="mx-auto mb-8 max-w-72 text-4xl font-bold leading-[1.08] tracking-tight sm:w-auto sm:max-w-none sm:text-5xl md:text-7xl lg:text-8xl">
               <span className="hidden sm:inline">
-                Bespoke India and <br />
-                <span className="text-primary italic">World Journeys</span>
+                India, Personally <br />
+                <span className="text-primary italic">Designed For You</span>
               </span>
               <span className="sm:hidden">
-                Bespoke India <br />
-                <span className="text-primary italic">and World</span>
+                India, Personally <br />
+                <span className="text-primary italic">Designed</span>
                 <br />
-                <span className="text-primary italic">Journeys</span>
+                <span className="text-primary italic">For You</span>
               </span>
             </h1>
             <p className="mx-auto mb-10 max-w-72 text-base leading-relaxed text-white/80 sm:max-w-2xl sm:text-lg md:text-xl">
-              Travel Gateway is a boutique travel company in Ahmedabad for Indian travelers going abroad and international guests booking curated India trips, luxury trains, safaris, family holidays, and high-touch custom itineraries.
+              Private journeys, trusted local guides, exceptional stays, and thoughtful support from the moment you arrive until the journey home.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
                 to="/contact"
                 className="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-lg font-medium text-primary-foreground shadow-2xl shadow-primary/20 transition-colors hover:bg-primary/90"
               >
-                Plan Your Trip
+                Design My India Journey
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
                 to="/destinations"
                 className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-8 py-4 text-lg font-medium text-white backdrop-blur-md transition-colors hover:bg-white/20"
               >
-                Explore Destinations
+                Explore Private India Tours
               </Link>
             </div>
             <div className="mx-auto mt-6 flex max-w-72 flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center text-[0.62rem] font-bold uppercase tracking-[0.12em] text-white/70 sm:max-w-full sm:text-xs sm:tracking-[0.24em]">
-              <span>India bookings</span>
-              <span>International holidays</span>
-              <span>Inbound luxury travel</span>
+              <span>Private drivers</span>
+              <span>English-speaking guides</span>
+              <span>Direct local support</span>
             </div>
           </motion.div>
         </motion.div>
@@ -298,24 +293,40 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="relative z-20 -mt-8 px-6">
+        <div className="mx-auto grid max-w-6xl gap-3 rounded-[2rem] border border-white/70 bg-background/95 p-4 shadow-2xl backdrop-blur md:grid-cols-4 md:p-6">
+          {[
+            ["One local contact", "Direct planning and on-trip support"],
+            ["Private by design", "Your pace, interests, and comfort"],
+            ["Carefully selected", "Guides, stays, and experiences"],
+            ["Clear before booking", "Practical details discussed upfront"],
+          ].map(([title, description]) => (
+            <div key={title} className="rounded-2xl bg-muted/40 px-5 py-4 text-center md:text-left">
+              <p className="font-bold text-foreground">{title}</p>
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">{description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="bg-muted/30 px-6 py-24">
         <div className="mx-auto max-w-4xl">
           <div className="flex flex-col items-center">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center">
-              <Badge className="mb-4 border-none bg-primary/10 text-primary">Meet the Founder</Badge>
-              <h2 className="mb-8 text-4xl font-bold tracking-tight md:text-5xl">Vishal Harlalka</h2>
+              <Badge className="mb-4 border-none bg-primary/10 text-primary">Your Local India Travel Expert</Badge>
+              <h2 className="mb-8 text-4xl font-bold tracking-tight md:text-5xl">Meet Vishal, your personal connection in India</h2>
               <p className="mb-6 text-xl italic leading-relaxed text-muted-foreground">
                 "A good holiday should feel calm before it begins. Our job is to ask the practical questions early, then shape a journey that fits the traveler, not a template."
               </p>
               <p className="mb-8 text-lg leading-relaxed text-muted-foreground">
-                Vishal Harlalka leads Travel Gateway from Ahmedabad with a hands-on planning style: destination shortlisting, hotel guidance, visa coordination, transfers, and on-trip support are discussed clearly before each booking moves ahead.
+                Based in Ahmedabad, Vishal brings local knowledge and hands-on planning to every journey. From choosing the right route and stays to coordinating guides, transfers, and on-trip support, you have one person who understands the complete plan.
               </p>
               <Button
                 render={<Link to="/about" />}
                 variant="outline"
                 className="rounded-full border-primary px-8 py-6 text-lg text-primary transition-all hover:bg-primary hover:text-white"
               >
-                Learn More About Our Approach
+                Meet Your India Travel Planner
               </Button>
             </motion.div>
           </div>
@@ -326,13 +337,14 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 flex flex-col items-end justify-between gap-6 md:flex-row">
             <div className="max-w-2xl">
-              <h2 className="mb-4 text-4xl font-bold tracking-tight">Handpicked Destinations</h2>
+              <Badge className="mb-4 border-none bg-primary/10 text-primary">Signature India Journeys</Badge>
+              <h2 className="mb-4 text-4xl font-bold tracking-tight">A beautiful starting point, never a fixed template</h2>
               <p className="text-lg text-muted-foreground">
-                A quick look at routes Indian travelers are actively comparing right now across international value trips, pilgrimage journeys, monsoon wellness, and premium rail holidays.
+                Begin with one of these distinctive India journeys, then let us adapt the route, pace, hotels, and experiences around you.
               </p>
             </div>
             <Button render={<Link to="/destinations" />} variant="ghost" className="group font-semibold text-primary">
-              View All Destinations
+              View All India Journeys
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
@@ -387,10 +399,10 @@ export default function Home() {
       <section className="bg-background px-6 pb-24">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
-            <Badge className="mb-4 border-none bg-primary/10 text-primary">What Is Trending For Us</Badge>
-            <h2 className="text-4xl font-bold tracking-tight">Travel themes worth surfacing earlier</h2>
+            <Badge className="mb-4 border-none bg-primary/10 text-primary">Find Your India</Badge>
+            <h2 className="text-4xl font-bold tracking-tight">What would make this journey unforgettable for you?</h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              These routes line up with current traveler demand for clearer planning, stronger practical detail, and destination pages that answer the booking question faster.
+              Choose the feeling that draws you to India. We will turn it into a route with the right rhythm, experiences, and level of comfort.
             </p>
           </div>
 
@@ -419,9 +431,10 @@ export default function Home() {
       <section className="bg-muted/30 px-6 py-24">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto mb-16 max-w-3xl text-center">
-            <h2 className="mb-6 text-4xl font-bold tracking-tight">The TravelGateway Difference</h2>
+            <Badge className="mb-4 border-none bg-primary/10 text-primary">Travel With Confidence</Badge>
+            <h2 className="mb-6 text-4xl font-bold tracking-tight">India feels easier with the right local team</h2>
             <p className="text-lg text-muted-foreground">
-              Practical planning help for travelers who want clear options, reliable coordination, and one team accountable for the details.
+              Thoughtful planning and dependable local coordination let you focus on the people, places, and moments that brought you here.
             </p>
           </div>
 
@@ -541,14 +554,14 @@ export default function Home() {
 
           <div className="relative z-10 max-w-2xl">
             <h2 className="mb-8 text-4xl font-bold leading-tight md:text-6xl">
-              Ready to plan a trip <br /> that feels clear?
+              Your India story <br /> starts with a conversation.
             </h2>
             <p className="mb-10 text-xl leading-relaxed text-primary-foreground/80">
-              Share your dates, travelers, comfort level, and rough budget. We will help you turn the idea into a practical route before you commit.
+              Tell us when you hope to travel, what inspires you, and how you like to explore. Vishal will help shape a private India journey around you.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
               <Button render={<Link to="/contact" />} size="lg" variant="secondary" className="rounded-full px-8 py-7 text-lg font-bold">
-                Get a Free Quote
+                Design My India Journey
               </Button>
               <Button
                 render={<Link to="/contact" />}
@@ -556,7 +569,7 @@ export default function Home() {
                 variant="outline"
                 className="rounded-full border-primary-foreground/30 px-8 py-7 text-lg text-primary-foreground hover:bg-primary-foreground/10"
               >
-                Contact Vishal Directly
+                Speak With Vishal
               </Button>
             </div>
           </div>

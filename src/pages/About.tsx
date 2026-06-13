@@ -192,7 +192,7 @@ export default function About() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="mb-16 -mx-6 md:-mx-12 lg:-mx-24 px-6 md:px-12 lg:px-24 py-16 bg-slate-950 text-white overflow-hidden relative"
+          className="mb-16 px-6 md:px-12 lg:px-16 py-16 bg-slate-950 text-white overflow-hidden relative rounded-[2rem]"
         >
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/15 rounded-full blur-[140px] -mr-64 -mt-64" />
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[140px] -ml-64 -mb-64" />

@@ -25,7 +25,7 @@ const curatedMediaRules: Array<{ keywords: string[]; url: string; caption: strin
   { keywords: ["goa", "beach"], url: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&q=80&w=1600", caption: "Goa coast" },
   { keywords: ["hampi"], url: mediaUrl("Stone Chariot, Hampi.jpg"), caption: "Hampi ruins" },
   { keywords: ["mysuru", "mysore"], url: mediaUrl("Mysore Palace, Karnataka.jpg"), caption: "Mysuru Palace" },
-  { keywords: ["coorg"], url: "https://images.unsplash.com/photo-1600100397608-f010c6744e0c?auto=format&fit=crop&q=80&w=1600", caption: "Coorg coffee country" },
+  { keywords: ["coorg"], url: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&q=80&w=1600", caption: "Coorg plantation country" },
   { keywords: ["kaziranga"], url: "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&q=80&w=1600", caption: "Kaziranga wildlife" },
   { keywords: ["tawang"], url: mediaUrl("Tawang Monastery Arunachal Pradesh.jpg"), caption: "Tawang Monastery" },
   { keywords: ["darjeeling"], url: mediaUrl("Darjeeling Himalayan Railway.jpg"), caption: "Darjeeling toy train" },
@@ -2126,7 +2126,7 @@ const premiumIndiaPackageRows = [
     price: "₹67,000",
     description: "A Karnataka story across UNESCO ruins, palace heritage, coffee estates, and gentle hill scenery.",
     highlights: ["Hampi ruins", "Mysuru Palace", "Coorg coffee estate"],
-    image: "https://images.unsplash.com/photo-1600100397608-f010c6744e0c?auto=format&fit=crop&q=80&w=1600"
+    image: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&q=80&w=1600"
   },
   {
     state: "Karnataka",
@@ -2226,7 +2226,7 @@ const statewiseIndiaRouteRows = [
   "Haryana|Gurugram, Kurukshetra, Sultanpur, Pinjore|Cultural|₹26,500|Delhi gateway escapes, Mahabharata heritage, birding, and palace gardens|Kurukshetra circuit|Sultanpur bird sanctuary|Pinjore gardens|https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=1600",
   "Himachal Pradesh|Shimla, Manali, Dharamshala, Dalhousie|Adventure|₹47,500|Himalayan hill stations, monasteries, valleys, and family-friendly mountain stays|Shimla colonial walk|Manali and Solang Valley|Dharamshala monasteries|https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=1600",
   "Jharkhand|Ranchi, Netarhat, Betla, Deoghar|Adventure|₹38,500|waterfalls, forests, plateau viewpoints, and pilgrimage|Ranchi waterfall trail|Netarhat sunrise|Betla and Deoghar|https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&q=80&w=1600",
-  "Karnataka|Bengaluru, Mysuru, Coorg, Hampi, Gokarna|Cultural|₹58,000|palaces, coffee estates, UNESCO ruins, beaches, and city culture|Mysuru Palace|Coorg plantations|Hampi ruins|https://images.unsplash.com/photo-1600100397608-f010c6744e0c?auto=format&fit=crop&q=80&w=1600",
+  "Karnataka|Bengaluru, Mysuru, Coorg, Hampi, Gokarna|Cultural|₹58,000|palaces, coffee estates, UNESCO ruins, beaches, and city culture|Mysuru Palace|Coorg plantations|Hampi ruins|https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&q=80&w=1600",
   "Kerala|Kochi, Munnar, Thekkady, Alleppey, Kovalam|Tropical|₹52,500|backwaters, tea hills, spice gardens, Ayurveda, and beach relaxation|Munnar tea country|Alleppey houseboat|Kochi heritage|https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=1600",
   "Madhya Pradesh|Bhopal, Sanchi, Khajuraho, Bandhavgarh, Orchha|Cultural|₹62,000|tiger reserves, temples, stupas, forts, and central India heritage|Sanchi stupa|Khajuraho temples|Bandhavgarh safari|https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=1600",
   "Maharashtra|Mumbai, Ajanta, Ellora, Nashik, Pune, Konkan|Cultural|₹56,000|Mumbai icons, cave heritage, vineyards, forts, and Konkan coastline|Mumbai heritage drive|Ajanta and Ellora|Nashik vineyards|https://images.unsplash.com/photo-1567157577867-05ccb1388e66?auto=format&fit=crop&q=80&w=1600",
@@ -2235,7 +2235,7 @@ const statewiseIndiaRouteRows = [
   "Mizoram|Aizawl, Reiek, Hmuifang, Champhai|Adventure|₹50,000|quiet hill towns, viewpoints, Mizo culture, and slow scenic drives|Aizawl viewpoints|Reiek village|Champhai valley|https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=1600",
   "Nagaland|Dimapur, Kohima, Khonoma, Dzukou Valley|Adventure|₹54,500|tribal culture, village stays, WWII history, and Dzukou Valley trekking|Kohima war cemetery|Khonoma village|Dzukou Valley trek|https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=1600",
   "Odisha|Bhubaneswar, Puri, Konark, Chilika, Raghurajpur|Cultural|₹44,500|temples, beaches, crafts, lake ecology, and classical culture|Konark Sun Temple|Puri and Raghurajpur|Chilika lagoon|https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&q=80&w=1600",
-  "Punjab|Amritsar, Chandigarh, Anandpur Sahib, Patiala|Cultural|₹36,500|Golden Temple, Sikh heritage, food trails, and border ceremony energy|Golden Temple|Wagah ceremony|Patiala heritage|https://images.unsplash.com/photo-1588096344356-9b497ca29f88?auto=format&fit=crop&q=80&w=1600",
+  "Punjab|Amritsar, Chandigarh, Anandpur Sahib, Patiala|Cultural|₹36,500|Golden Temple, Sikh heritage, food trails, and border ceremony energy|Golden Temple|Wagah ceremony|Patiala heritage|https://commons.wikimedia.org/wiki/Special:FilePath/Golden%20Temple%20Amritsar.jpg?width=1600",
   "Rajasthan|Jaipur, Jodhpur, Jaisalmer, Udaipur|Cultural|₹68,000|forts, palaces, desert camps, lakes, and royal hospitality|Jaipur forts|Jaisalmer desert|Udaipur lakes|https://images.unsplash.com/photo-1578155173088-710a9aef3849?auto=format&fit=crop&q=80&w=1600",
   "Sikkim|Gangtok, Tsomgo Lake, Pelling, Ravangla|Adventure|₹57,500|Himalayan monasteries, mountain viewpoints, lakes, and slow nature stays|Gangtok monasteries|Tsomgo Lake|Pelling views|https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=1600",
   "Tamil Nadu|Chennai, Mahabalipuram, Madurai, Rameswaram|Cultural|₹50,000|Dravidian temples, coastal heritage, classical culture, and cuisine|Mahabalipuram shore temples|Madurai Meenakshi|Rameswaram coast|https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&q=80&w=1600",

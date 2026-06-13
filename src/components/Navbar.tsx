@@ -187,6 +187,7 @@ export default function Navbar() {
               render={(props) => (
                 <Button
                   {...props}
+                  aria-label="Open navigation menu"
                   variant="ghost"
                   size="icon"
                   className={cn(

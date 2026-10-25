@@ -311,23 +311,23 @@ export default function About() {
           </div>
         </div>
 
-        {/* Stats */}
+        {/* Operating Signals */}
         <div className="bg-muted/50 rounded-[2rem] p-8 md:p-12 grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           <div>
-            <p className="text-5xl font-bold text-primary mb-2">5k+</p>
-            <p className="text-muted-foreground font-medium">Curated Trips</p>
+            <p className="text-2xl font-bold text-primary mb-2">India + world</p>
+            <p className="text-muted-foreground font-medium">Travel planning scope</p>
           </div>
           <div>
-            <p className="text-5xl font-bold text-primary mb-2">60+</p>
-            <p className="text-muted-foreground font-medium">Global Destinations</p>
+            <p className="text-2xl font-bold text-primary mb-2">Custom</p>
+            <p className="text-muted-foreground font-medium">Route and quote process</p>
           </div>
           <div>
-            <p className="text-5xl font-bold text-primary mb-2">100%</p>
-            <p className="text-muted-foreground font-medium">Personalized Attention</p>
+            <p className="text-2xl font-bold text-primary mb-2">Human-led</p>
+            <p className="text-muted-foreground font-medium">Planning and coordination</p>
           </div>
           <div>
-            <p className="text-5xl font-bold text-primary mb-2">24/7</p>
-            <p className="text-muted-foreground font-medium">Founder Support</p>
+            <p className="text-2xl font-bold text-primary mb-2">Clear</p>
+            <p className="text-muted-foreground font-medium">Terms and contact paths</p>
           </div>
         </div>
       </div>

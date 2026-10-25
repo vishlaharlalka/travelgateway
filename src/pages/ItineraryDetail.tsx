@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { 
   Accordion, AccordionContent, AccordionItem, AccordionTrigger 
 } from "@/components/ui/accordion";
-import { curatedImageForText, destinationPath, destinations, findDestinationByRouteParam, shouldFitWholeImage } from "@/lib/data";
+import { curatedImageForText, destinationPath, destinations, findDestinationByRouteParam, getDestinationFaqs, shouldFitWholeImage } from "@/lib/data";
 import { GoogleGenAI, Type } from "@google/genai";
 import { generateDestinationPDF } from "@/lib/pdf";
 import CurrencyConverter from "@/components/CurrencyConverter";
@@ -168,35 +168,17 @@ export default function ItineraryDetail() {
     ...itineraryVisuals,
     ...galleryImages,
   ].filter((image, index, images) => images.findIndex((candidate) => candidate.url === image.url) === index);
-  const faqItems = destination.faqs?.length
-    ? destination.faqs
-    : [
-        {
-          question: `What is the best way to book the ${destination.name} package?`,
-          answer: "Send an inquiry with your travel month, number of guests, budget, and preferred hotel style. Travel Gateway will reply with a personalized plan and current availability.",
-        },
-        {
-          question: "Can this itinerary be customized?",
-          answer: "Yes. The route, hotels, transfers, meal preferences, sightseeing pace, and add-on nights can be adjusted for families, couples, senior travelers, honeymooners, or group travel.",
-        },
-        {
-          question: "Are flights, hotels, and local transfers included?",
-          answer: "Package inclusions depend on the final quote. Share your requirements through the booking inquiry form and the team will clearly mention flights, hotels, transfers, guide services, meals, and exclusions.",
-        },
-        {
-          question: "How quickly will I receive the package details?",
-          answer: "After you submit the inquiry, the request goes to Travel Gateway's team so they can respond with practical details, current pricing, and the next booking steps.",
-        },
-      ];
+  const faqItems = getDestinationFaqs(destination);
   const packageReviewUrl = `/contact?destination=${encodeURIComponent(`${destination.name} package review`)}`;
   const bookingUrl = `/contact?destination=${encodeURIComponent(destination.name)}`;
   const detailPath = destinationPath(destination);
   const detailTitle = `${destination.name} Tour Package | Travel Gateway`;
-  const detailDescription = destination.longDescription || destination.description;
+  const detailDescription = destination.description;
+  const tripDescription = destination.longDescription || destination.description;
   const detailUrl = new URL(detailPath, siteUrl).toString();
   const isAndamanOffer = destination.id === 37;
   const andamanAvailabilityUrl = `https://wa.me/919898111689?text=${encodeURIComponent(
-    `Hi Travel Gateway, I want to check June availability and the current value quote for ${destination.name}. Page: ${detailUrl}`
+    `Hi Travel Gateway, I want to check current availability and the value quote for ${destination.name}. Page: ${detailUrl}`
   )}`;
   const shouldShowVietnamVisaGuide = destination.country.toLowerCase() === "vietnam";
   const relatedDestinations = destinations
@@ -248,7 +230,7 @@ export default function ItineraryDetail() {
             "@type": "TouristTrip",
             "@id": `${detailUrl}#tour`,
             name: destination.name,
-            description: detailDescription,
+            description: tripDescription,
             image: destination.image,
             touristType: ["Indian travelers", "Families", "Couples", "Inbound guests"],
             itinerary: {
@@ -268,8 +250,8 @@ export default function ItineraryDetail() {
               "@type": "Offer",
               priceCurrency: "INR",
               price: parseInrPrice(destination.price),
-              availability: "https://schema.org/InStock",
               url: detailUrl,
+              description: "Indicative starting price per person; final price and availability are confirmed for the selected dates and inclusions.",
             },
             provider: { "@id": `${siteUrl}/#travelagency` },
           },
@@ -333,7 +315,7 @@ export default function ItineraryDetail() {
               </Badge>
               {isAndamanOffer && (
                 <Badge className="border border-white/30 bg-white/15 py-1 px-4 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md">
-                  June value window
+                  Flexible off-season value
                 </Badge>
               )}
               <div className="flex items-center gap-1 text-yellow-400 font-bold bg-black/40 backdrop-blur-md py-1 px-3 rounded-full text-xs">
@@ -375,19 +357,37 @@ export default function ItineraryDetail() {
               </p>
             </section>
 
+            {destination.planningNotes?.length ? (
+              <section className="space-y-6">
+                <div className="inline-block">
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2">Plan Smarter</p>
+                  <h2 className="text-3xl font-black uppercase tracking-tight border-b-2 border-primary/20 pb-4">What To Check Right Now</h2>
+                </div>
+                <div className="grid gap-5 md:grid-cols-2">
+                  {destination.planningNotes.map((note) => (
+                    <article key={note.title} className="rounded-[1.8rem] border border-slate-200 bg-white p-6 shadow-sm">
+                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-primary">Current planning note</p>
+                      <h3 className="mt-3 text-xl font-black tracking-tight">{note.title}</h3>
+                      <p className="mt-3 text-sm leading-6 text-muted-foreground">{note.body}</p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
             {isAndamanOffer && (
               <section className="overflow-hidden rounded-[2rem] border border-primary/20 bg-gradient-to-br from-primary/15 via-cyan-500/10 to-background p-6 md:p-8">
                 <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
                   <div>
-                    <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Travel in June 2026</p>
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Flexible seasonal dates</p>
                     <h2 className="mt-3 text-3xl font-black uppercase tracking-tight">Ask for the current off-season value</h2>
                     <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-                      June sits inside the available off-season travel window for this compact island route. Share your dates now and we will check the best current hotel and ferry combination before quoting, with no assumptions about availability or weather-dependent activities.
+                      This compact island route can offer good off-season value when ferry operations, hotel availability, and weather-dependent activities line up. Share your dates and we will check the best current hotel and ferry combination before quoting, with no assumptions about availability.
                     </p>
                   </div>
                   <Button asChild className="h-auto rounded-full px-7 py-4 font-black uppercase tracking-tight">
                     <a href={andamanAvailabilityUrl} target="_blank" rel="noreferrer">
-                      Check June dates now
+                      Check current dates
                       <Send className="ml-2 h-4 w-4" />
                     </a>
                   </Button>
@@ -724,12 +724,12 @@ export default function ItineraryDetail() {
                   <form className="space-y-4 rounded-3xl border border-primary/10 bg-background/80 p-5" onSubmit={handleQuickBookingSubmit}>
                     <div>
                       <p className="text-xs font-black uppercase tracking-[0.18em] text-primary">
-                        {isAndamanOffer ? "Check Andaman dates now" : "Quick booking request"}
+                        {destination.ctaTitle || (isAndamanOffer ? "Check Andaman dates now" : "Quick booking request")}
                       </p>
                       <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                        {isAndamanOffer
-                          ? "Send your dates for a current June value and ferry availability check."
-                          : "Send the key operational details for availability and next steps."}
+                        {destination.ctaDescription || (isAndamanOffer
+                          ? "Send your dates for a current value and ferry availability check."
+                          : "Send the key operational details for availability and next steps.")}
                       </p>
                     </div>
 
@@ -865,7 +865,7 @@ export default function ItineraryDetail() {
                       <Send className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
                     </Button>
                     <p className="text-center text-xs font-semibold leading-5 text-muted-foreground">
-                      Opens the contact form for this package and sends your inquiry to info@travelgateway.in.
+                      {destination.ctaDescription || "Opens the contact form for this package and sends your inquiry to info@travelgateway.in."}
                     </p>
                     
                     <Button 

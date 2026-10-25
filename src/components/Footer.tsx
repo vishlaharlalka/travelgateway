@@ -1,5 +1,5 @@
 ﻿import { Link } from "react-router-dom";
-import { Facebook, Instagram, Mail, Phone, MapPin, Globe, Briefcase, User, BookOpen, HelpCircle, ShieldCheck, FileSignature, CreditCard } from "lucide-react";
+import { Facebook, Instagram, Mail, Phone, MapPin, Globe, Briefcase, User, BookOpen, HelpCircle, ShieldCheck, FileSignature, CreditCard, Building2 } from "lucide-react";
 import Logo from "./Logo";
 
 export default function Footer() {
@@ -101,6 +101,12 @@ export default function Footer() {
               <Link to="/payment" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group">
                 <CreditCard className="w-4 h-4 text-primary opacity-60 group-hover:opacity-100" />
                 <span>Payment Gateway</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/platform-overview" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group">
+                <Building2 className="w-4 h-4 text-primary opacity-60 group-hover:opacity-100" />
+                <span>Platform Overview</span>
               </Link>
             </li>
           </ul>

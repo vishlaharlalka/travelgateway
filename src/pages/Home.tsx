@@ -43,34 +43,52 @@ const featuredDestinations = [
   .map((name) => destinations.find((destination) => destination.name === name))
   .filter((destination) => Boolean(destination));
 
+const featuredInternationalDestinations = [
+  "Vietnam Wonders",
+  "South Korea Family Explorer: Busan, Jeju & Seoul",
+  "Dubai & Abu Dhabi Premium Escape",
+  "Thailand Islands & Bangkok Signature",
+]
+  .map((name) => destinations.find((destination) => destination.name === name))
+  .filter((destination) => Boolean(destination));
+
+const internationalHighlights = [
+  "Vietnam Wonders",
+  "Dubai & Abu Dhabi Premium Escape",
+  "Bali Bliss",
+  "South Korea Family Explorer: Busan, Jeju & Seoul",
+]
+  .map((name) => destinations.find((destination) => destination.name === name))
+  .filter((destination) => Boolean(destination));
+
 const trendCards = [
   {
-    title: "Your first journey through India",
+    title: "Himalayan pilgrimages with buffers",
     description:
-      "A carefully paced introduction combining private guiding, iconic heritage, comfortable transfers, and enough time to experience India beyond a checklist.",
-    href: "/destinations?scope=INDIA",
-    label: "Explore India journeys",
+      "Mountain weather, road conditions, registration checks, and buffer days make practical darshan planning more valuable than a rushed temple checklist.",
+    href: "/destinations?scope=INDIA&experience=Pilgrimage",
+    label: "Explore pilgrimage routes",
   },
   {
-    title: "Palaces, desert and living heritage",
+    title: "Festival trips built around real dates",
     description:
-      "Travel through Rajasthan with private guides, atmospheric heritage stays, craft encounters, desert sunsets, and a route designed around your pace.",
-    href: "/destinations?scope=INDIA&region=Rajasthan",
-    label: "Discover royal Rajasthan",
+      "Overlapping October celebrations reward a focused city and date-led route, with central stays and usable festival time ahead of an overpacked circuit.",
+    href: "/blog/october-2026-festival-travel-dates-and-pacing",
+    label: "Read festival planning brief",
   },
   {
-    title: "Slow travel through southern India",
+    title: "Luxury trains with fewer hotel changes",
     description:
-      "Balance Kerala's backwaters, spice country, wellness traditions, local cuisine, and unhurried stays for a softer side of India.",
-    href: "/destinations?scope=INDIA&region=Kerala",
-    label: "Experience Kerala",
-  },
-  {
-    title: "India by luxury train",
-    description:
-      "See extraordinary regions without repacking every night, with refined onboard hospitality and curated excursions along the way.",
+      "Premium travelers continue to ask for iconic India journeys that feel smoother, with heritage access and polished service without constant repacking.",
     href: "/destinations?experience=Luxury%20Train",
     label: "Explore luxury trains",
+  },
+  {
+    title: "Personalized short-haul Asia",
+    description:
+      "Families and couples are comparing Vietnam, Thailand, Korea, and island routes by entry rules, flight time, food comfort, wellness, and total trip effort.",
+    href: "/destinations?scope=International",
+    label: "Compare international routes",
   },
 ];
 
@@ -163,7 +181,7 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       <SEO
-        title="Private India Tours Designed by a Local Travel Expert | Travel Gateway"
+        title="Travel Agency in Ahmedabad for Private India Tours | Travel Gateway"
         description="Discover India through personally designed private journeys, trusted local guides, exceptional stays, and direct support from Travel Gateway in Ahmedabad."
         canonicalPath="/"
         image={defaultSeoImage}
@@ -172,7 +190,7 @@ export default function Home() {
         structuredData={graphSchema([
           pageSchema(
             "/",
-            "Private India Tours Designed by a Local Travel Expert | Travel Gateway",
+            "Travel Agency in Ahmedabad for Private India Tours | Travel Gateway",
             "Discover India through personally designed private journeys, trusted local guides, exceptional stays, and direct support from Travel Gateway in Ahmedabad."
           ),
           {
@@ -396,13 +414,132 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="bg-muted/30 px-6 py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
+            <div className="max-w-3xl">
+              <Badge className="mb-4 border-none bg-primary/10 text-primary">International Escapes</Badge>
+              <h2 className="mb-4 text-4xl font-bold tracking-tight">Beyond India, planned with the same personal care</h2>
+              <p className="text-lg text-muted-foreground">
+                Promote practical international holidays for Indian travelers, with visa notes, flight pacing, hotel location, food comfort, and private support discussed before booking.
+              </p>
+            </div>
+            <Button render={<Link to="/destinations?scope=International" />} variant="ghost" className="group font-semibold text-primary">
+              View International Tours
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {internationalHighlights.map((dest, index) => (
+              <motion.article
+                key={dest.id}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="group overflow-hidden rounded-3xl border border-border bg-background shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <img
+                    src={dest.image}
+                    alt={dest.name}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+                    <Badge className="border-none bg-white/90 text-black">{dest.country}</Badge>
+                    <Badge className="border-none bg-black/55 text-white backdrop-blur-sm">{dest.category}</Badge>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="mb-2 flex items-center gap-1 text-yellow-500">
+                    <Star className="h-4 w-4 fill-current" />
+                    <span className="text-sm font-bold">{dest.rating}</span>
+                  </div>
+                  <h3 className="text-xl font-black tracking-tight">{dest.name}</h3>
+                  <p className="mt-3 min-h-16 text-sm leading-6 text-muted-foreground">{dest.description}</p>
+                  <div className="mt-5 flex items-center justify-between gap-4">
+                    <p className="text-sm font-bold text-foreground">From {dest.price}*</p>
+                    <Link to={destinationPath(dest)} className="inline-flex items-center text-sm font-bold text-primary">
+                      View
+                      <ArrowRight className="ml-1.5 h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-background px-6 pb-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 flex flex-col items-end justify-between gap-6 md:flex-row">
+            <div className="max-w-2xl">
+              <Badge className="mb-4 border-none bg-primary/10 text-primary">International Journeys</Badge>
+              <h2 className="mb-4 text-4xl font-bold tracking-tight">Short-haul Asia and polished overseas escapes</h2>
+              <p className="text-lg text-muted-foreground">
+                Promote international trips alongside India with routes that are practical for families, couples, and Gujarati travelers comparing visas, flights, meals, and hotel comfort.
+              </p>
+            </div>
+            <Button render={<Link to="/destinations?scope=International" />} variant="ghost" className="group font-semibold text-primary">
+              View International Tours
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {featuredInternationalDestinations.map((dest, index) => (
+              <motion.article
+                key={dest.id}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl"
+              >
+                <Link to={destinationPath(dest)} className="block h-full">
+                  <div className="relative aspect-[5/3] overflow-hidden">
+                    <img
+                      src={dest.image}
+                      alt={dest.name}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+                    <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+                      <Badge className="border-none bg-white/90 text-black">{dest.country}</Badge>
+                      <Badge className="border-none bg-primary text-primary-foreground">{dest.category}</Badge>
+                    </div>
+                    <div className="absolute bottom-4 left-4 right-4 text-white">
+                      <h3 className="text-2xl font-black tracking-tight">{dest.name}</h3>
+                      <p className="mt-2 flex items-center gap-1 text-sm text-white/85">
+                        <MapPin className="h-3 w-3" /> Starting from {dest.price}*
+                      </p>
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    <p className="min-h-[4.5rem] text-sm leading-6 text-muted-foreground">{dest.description}</p>
+                    <span className="mt-5 inline-flex items-center text-sm font-bold text-primary">
+                      Plan this trip
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </Link>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-background px-6 pb-24">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 max-w-3xl">
             <Badge className="mb-4 border-none bg-primary/10 text-primary">Find Your India</Badge>
-            <h2 className="text-4xl font-bold tracking-tight">What would make this journey unforgettable for you?</h2>
+            <h2 className="text-4xl font-bold tracking-tight">Current travel-planning themes for 2026</h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Choose the feeling that draws you to India. We will turn it into a route with the right rhythm, experiences, and level of comfort.
+              Current travel signals favour decision-ready detail, festival dates and pacing, plus practical pilgrimage, rail, and short-haul Asia routes.
             </p>
           </div>
 
@@ -424,6 +561,22 @@ export default function Home() {
                 </Link>
               </motion.div>
             ))}
+          </div>
+
+          <div className="mt-8 rounded-[2rem] border border-primary/15 bg-primary/[0.03] p-6 md:p-8">
+            <div className="grid gap-6 md:grid-cols-[1.1fr_auto] md:items-center">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Fresh planning brief</p>
+                <h3 className="mt-3 text-3xl font-black tracking-tight">Build one festival trip around the dates that matter</h3>
+                <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground">
+                  Read the October 5 brief on overlapping festival dates, choosing a primary city, central stays, and protecting usable celebration time.
+                </p>
+              </div>
+              <Button render={<Link to="/blog/october-2026-festival-travel-dates-and-pacing" />} className="rounded-full px-7 py-6 text-sm font-black uppercase tracking-tight">
+                Read The Journal
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </section>

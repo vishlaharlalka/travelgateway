@@ -1,4 +1,4 @@
-import type { Destination, DestinationImage } from './types';
+import type { Destination, DestinationImage, FAQItem } from './types';
 
 const mediaUrl = (fileName: string) =>
   `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(fileName)}?width=1600`;
@@ -30,6 +30,10 @@ const curatedMediaRules: Array<{ keywords: string[]; url: string; caption: strin
   { keywords: ["tawang"], url: mediaUrl("Tawang Monastery Arunachal Pradesh.jpg"), caption: "Tawang Monastery" },
   { keywords: ["darjeeling"], url: mediaUrl("Darjeeling Himalayan Railway.jpg"), caption: "Darjeeling toy train" },
   { keywords: ["bodh gaya", "mahabodhi"], url: "https://images.unsplash.com/photo-1652288156243-a7505dcaa0ec?auto=format&fit=crop&q=80&w=1600", caption: "Bodh Gaya pilgrimage" },
+  { keywords: ["busan", "haedong", "haeundae", "gamcheon", "songdo", "chongsapo"], url: mediaUrl("Gamcheon Culture Village View 1.jpg"), caption: "Busan coastal culture and color" },
+  { keywords: ["jeju", "seongsan", "o'sulloc", "osulloc", "songak", "hallim", "cheonjeyeon", "jeolmul"], url: mediaUrl("Seongsan_Ilchulbong_from_the_air.jpg"), caption: "Jeju volcanic island scenery" },
+  { keywords: ["seoul", "gyeongbok", "myeongdong", "insadong", "n seoul", "namsan", "gwanghwamun", "cheonggyecheon"], url: mediaUrl("Gyeongbokgung Palace.png"), caption: "Seoul palaces and modern city energy" },
+  { keywords: ["nami", "rail bike", "ganchon", "gangchon"], url: mediaUrl("Nami island winter.jpg"), caption: "Nami Island day trip scenery" },
 ];
 
 export function curatedImageForText(text: string): DestinationImage | undefined {
@@ -121,7 +125,7 @@ const baseDestinations: Destination[] = [
     itinerary: [
       { day: "Day 1", title: "Da Nang Arrival & Marble Mountains", description: "Arrive in Da Nang and explore the limestone caves and pagodas of Marble Mountains before heading to Hoi An." },
       { day: "Day 2", title: "Hoi An Ancient Town & My Son Sanctuary", description: "Morning visit to My Son Sanctuary, an ancient Champa civilization site. Afternoon walking tour of Hoi An Ancient Town." },
-      { day: "Day 3", title: "Ba Na Hills & Golden Bridge", description: "Full day at Ba Na Hills. Experience the world's longest cable car and walk on the iconic Golden Bridge held by giant hands." },
+      { day: "Day 3", title: "Ba Na Hills & Golden Bridge", description: "Full day at Ba Na Hills with its dramatic cable-car ride and the iconic Golden Bridge, held by giant hands." },
       { day: "Day 4", title: "Hue Imperial City Journey", description: "Travel to Hue via the scenic Hai Van Pass. Visit the Imperial Citadel and Thien Mu Pagoda." },
       { day: "Day 5-6", title: "Hue Tombs & Departure", description: "Explore the majestic tombs of Emperors Minh Mang and Khai Dinh. Afternoon flight back from Da Nang." }
     ],
@@ -229,11 +233,11 @@ const baseDestinations: Destination[] = [
     price: "₹52,000",
     rating: 5.0,
     description: "The land of high passes, crystal clear lakes, and ancient Buddhist monasteries.",
-    longDescription: "Ladakh is like no other place on Earth. Our adventure tour takes you across the world's highest motorable passes to reach pristine high-altitude lakes and hidden valleys. You'll stay in boutique camps under the clearest night skies, visit millenia-old monasteries perched on jagged cliffs, and experience the unique Indo-Tibetan culture of the 'Little Tibet'.",
+    longDescription: "Ladakh is a high-altitude Himalayan journey of stark lakes, high passes, and Buddhist heritage. This adventure route pairs careful acclimatization with boutique camps, monastery visits, and the distinctive Indo-Tibetan culture of 'Little Tibet'.",
     services: ["Oxygen Backup & First Aid", "Luxury Tented Camps", "Inner Line Permits", "Motorcycle/SUV Options", "Monastery Entry Fees"],
     itinerary: [
       { day: "Day 1-2", title: "Leh Acclimatization", description: "Mandatory rest for acclimatization. Local sightseeing of Shanti Stupa, Leh Palace, and Magnetic Hill." },
-      { day: "Day 3", title: "Nubra Valley via Khardung La", description: "Drive through the world's highest motorable pass to Hunder sand dunes and see double-humped camels." },
+      { day: "Day 3", title: "Nubra Valley via Khardung La", description: "Cross the high-altitude Khardung La route to Hunder's sand dunes and Bactrian camels, subject to road and weather conditions." },
       { day: "Day 4", title: "Pangong Lake", description: "Experience the high-altitude lake that changes colors. Stay in luxury fixed tents near the lake." },
       { day: "Day 5-6", title: "Monastery Tour & Departure", description: "Visit Hemis, Thiksey, and Shey monasteries. Shopping at Leh market before departure." }
     ],
@@ -310,8 +314,8 @@ const baseDestinations: Destination[] = [
     category: "Metropolitan",
     price: "₹85,000",
     rating: 4.8,
-    description: "Experience the glitz of Dubai from the Burj Khalifa to camel treks in the desert.",
-    longDescription: "Dubai is a city of superlatives. Experience the world's tallest building, the most luxurious hotels, and heart-pounding adventures in the Sam Desert. Our Dubai package combines futuristic architecture with traditional Arabian hospitality, offering everything from high-end shopping to authentic bedouin experiences.",
+    description: "Pair the Burj Khalifa and Old Dubai with a dhow cruise and a licensed desert safari.",
+    longDescription: "Dubai pairs contemporary towers and family attractions with creek-side heritage districts, beaches, shopping, and desert excursions. This short route balances major city landmarks with Old Dubai, an evening cruise, and a safari arranged through a licensed local operator, with the final activity schedule confirmed for the selected dates.",
     services: ["Burj Khalifa Top Entry", "Desert Safari with Dinner", "Luxury City Transfers", "Guided Shopping Tour", "Dhow Cruise Dinner"],
     itinerary: [
       { day: "Day 1", title: "Arrival & Dhow Cruise", description: "Arrive in Dubai and enjoy a relaxing dinner cruise on the Creek or Marina." },
@@ -320,9 +324,15 @@ const baseDestinations: Destination[] = [
       { day: "Day 4", title: "Old Dubai & Gold Souk", description: "Explore Al Fahidi district, ride an abra across the Creek, and shop at the Gold Souk." }
     ],
     faqs: [
-      { question: "Do Indians need a visa for Dubai?", answer: "Yes, Indians need a pre-arranged visa. We can assist with the application process for 30-day or 60-day tourist visas." },
+      { question: "Do Indian passport holders need a visa for Dubai?", answer: "The correct UAE entry route depends on the traveler's documents. Many Indian passport holders need an advance tourist visa, while eligible ordinary-passport holders with qualifying visas or residence permits from countries listed by the UAE may use a conditional 14-day or 60-day entry-visa route. Verify current eligibility, passport validity, and the exact category with the official UAE or ICP service before ticketing." },
       { question: "What should I wear in Dubai?", answer: "Dubai is cosmopolitan, but modest attire is recommended in public places like malls and traditional districts out of respect for local culture." },
       { question: "Is alcohol available in Dubai?", answer: "Alcohol is served in licensed restaurants, bars, and hotels. It's important to respect local consumption laws." }
+    ],
+    planningNotes: [
+      {
+        title: "Check the UAE entry route before payment",
+        body: "UAE entry options for Indian passport holders are document-specific. Reconfirm the current category on the official UAE Government or Federal Authority for Identity, Citizenship, Customs and Port Security portal before any non-refundable booking.",
+      },
     ]
   },
   {
@@ -440,6 +450,16 @@ const baseDestinations: Destination[] = [
     rating: 4.8,
     description: "Experience the vibrant city life of Bangkok and the beautiful beaches of Pattaya.",
     longDescription: "Thailand is a land of smiles, offering a mix of modern cities and tropical paradises. This 6-day tour takes you through the bustling markets of Bangkok and the fun-filled beaches of Pattaya. Enjoy a coral island tour, visit the majestic Grand Palace, and witness the unique floating markets.",
+    planningNotes: [
+      {
+        title: "Check current entry rules before paying flight balances",
+        body: "Thailand's Cabinet approved a revision to visa-exemption and visa-on-arrival arrangements in May 2026. The Ministry of Foreign Affairs said the details would follow relevant Royal Gazette notices, so Indian travelers should reconfirm the entry route for their exact dates before issuing non-refundable tickets.",
+      },
+      {
+        title: "Bangkok plus Pattaya works best as a short-value break",
+        body: "This route suits travelers prioritizing easy flights, shopping, shows, and a beach add-on. Guests wanting a stronger island feel should compare it against Phuket and Krabi instead of treating all Thailand routes as interchangeable.",
+      },
+    ],
     services: ["4-Star Hotel Stays", "Coral Island Tour with Lunch", "Bangkok City Tour", "Airport Transfers", "Indian Dinners Included"],
     itinerary: [
       { day: "Day 1", title: "Bangkok Arrival & Pattaya Transfer", description: "Arrive in Bangkok and drive to Pattaya. Evening at the Alcazar Show." },
@@ -449,7 +469,7 @@ const baseDestinations: Destination[] = [
       { day: "Day 5-6", title: "Free Day & Departure", description: "Shopping at MBK Center or Siam Paragon before your flight home." }
     ],
     faqs: [
-      { question: "Is visa on arrival available for Indians in Thailand?", answer: "Yes, currently Thailand offers visa on arrival for Indian passport holders. Please check the latest guidelines for fee waivers." },
+      { question: "Do Indian travelers need to check Thailand visa rules before booking?", answer: "Yes. Thailand's entry rules for Indian passport holders have changed more than once, so travelers should verify the current visa-exemption or e-visa position for their exact travel dates before making non-refundable flight or hotel payments." },
       { question: "What is the currency of Thailand?", answer: "The currency is the Thai Baht (THB)." },
       { question: "Can we get Indian food in Pattaya?", answer: "Yes, Pattaya has a wide range of Indian restaurants along Beach Road and Walking Street." }
     ]
@@ -467,6 +487,12 @@ const baseDestinations: Destination[] = [
     rating: 4.9,
     description: "Indulge in an overwater villa experience in the turquoise waters of the Maldives.",
     longDescription: "Escape to a world of luxury and tranquility. Spend 4 nights in an overwater villa or a beach bungalow on a private island resort. Enjoy world-class snorkeling, sunset cruises, and spa treatments. This is the ultimate destination for honeymooners and those seeking complete relaxation.",
+    planningNotes: [
+      {
+        title: "Complete the official traveller declaration before departure",
+        body: "Maldives Immigration currently grants tourist visas on arrival subject to entry checks. Every foreign visitor must submit the free IMUGA Traveller Declaration electronically within 96 hours before arrival and carry confirmed accommodation and onward-travel details.",
+      },
+    ],
     services: ["Luxury Island Resort Stay", "Speedboat/Seaplane Transfers", "All-Inclusive Meal Plan", "Snorkeling Gear Provided", "Romantic Sunset Cruise"],
     itinerary: [
       { day: "Day 1", title: "Arrival & Island Transfer", description: "Welcome at Male airport and transfer to your resort via speedboat. Sunset dinner by the beach." },
@@ -476,7 +502,7 @@ const baseDestinations: Destination[] = [
       { day: "Day 5", title: "Last Dip & Departure", description: "Enjoy a final swim before your transfer back to Male for your flight home." }
     ],
     faqs: [
-      { question: "Do Indians need a visa for Maldives?", answer: "Indians get a free 30-day visa on arrival in the Maldives." },
+      { question: "How do Indian travelers prepare for Maldives immigration?", answer: "Tourist visas are granted on arrival subject to Maldives Immigration checks, so no tourist-visa pre-approval is normally required. Complete the free IMUGA Traveller Declaration within 96 hours before arrival and carry the current passport, accommodation, return-ticket, and onward-entry documents required for the trip." },
       { question: "Is the Maldives suitable for vegetarians?", answer: "Most luxury resorts offer extensive international buffets with plenty of vegetarian and even vegan options." },
       { question: "What is the best way to travel between islands?", answer: "Speedboats are most common for nearby islands, while seaplanes are used for more distant atolls." }
     ]
@@ -494,6 +520,16 @@ const baseDestinations: Destination[] = [
     rating: 4.7,
     description: "Discover the futuristic city of Singapore and the cultural mix of Malaysia.",
     longDescription: "This dual-nation tour combines the sparkling efficiency of Singapore with the scenic beauty and cultural diversity of Malaysia. Explore Sentosa Island, Universal Studios, and the Gardens by the Bay in Singapore, then head to the Genting Highlands and the iconic Petronas Towers in Kuala Lumpur.",
+    planningNotes: [
+      {
+        title: "Singapore and Malaysia have different entry steps",
+        body: "Indian passport holders currently need a Singapore entry visa. Malaysia's Immigration Department lists a temporary social-visit visa exemption for Indian citizens through December 31, 2026, while the Malaysia Digital Arrival Card remains a separate arrival step. Recheck both countries' official rules for the exact travel date.",
+      },
+      {
+        title: "A two-country week needs border-time discipline",
+        body: "Compare a coach with a flight using hotel-to-hotel time, baggage, immigration, and peak-date traffic—not just the scheduled journey time. For a very short break, staying in one country can create more usable holiday time.",
+      },
+    ],
     services: ["Centrally Located Hotels", "Universal Studios Tickets", "Batu Caves Visit", "Genting Cable Car Ride", "Night Safari Adventure"],
     itinerary: [
       { day: "Day 1-2", title: "Singapore Icons", description: "Arrival, Night Safari, and a city tour including Merlion Park and Gardens by the Bay." },
@@ -504,7 +540,7 @@ const baseDestinations: Destination[] = [
     ],
     faqs: [
       { question: "Can we travel from Singapore to Malaysia by road?", answer: "Yes, many travelers take comfortable air-conditioned coaches across the border. It takes about 5-6 hours." },
-      { question: "Is the Singapore visa separate from the Malaysian visa?", answer: "Yes, Indian citizens usually need separate E-visas for both countries." },
+      { question: "What entry steps apply to Indian travelers visiting Singapore and Malaysia in 2026?", answer: "Singapore currently requires an entry visa for Indian travel documents. Malaysia's Immigration Department currently lists Indian citizens as visa-exempt for eligible social visits through December 31, 2026, but travelers should still complete the required Malaysia Digital Arrival Card and verify both countries' official rules before payment." },
       { question: "What is the best time for Sentosa Island?", answer: "Sentosa is great year-round, but it's best to reach early in the morning to avoid long queues at Universal Studios." }
     ]
   },
@@ -778,7 +814,7 @@ const baseDestinations: Destination[] = [
       { day: "Day 6", title: "Farewell Maldives", description: "One final breakfast overlooking the lagoon before departing for Malé." }
     ],
     faqs: [
-      { question: "Is a visa required for Indians?", answer: "Maldives offers a free 30-day visa on arrival for Indian passport holders." },
+      { question: "What entry preparation is needed for the Maldives?", answer: "Tourist visas are granted on arrival subject to immigration checks. Complete the free IMUGA Traveller Declaration within 96 hours before arrival and carry the passport, confirmed resort booking, return journey, and other current entry documents listed by Maldives Immigration." },
       { question: "What is the best time to visit?", answer: "The dry season from November to April is the peak time, offering the best weather and visibility for snorkeling." },
       { question: "Is food widely available for vegetarians?", answer: "Yes, most luxury resorts in the Maldives are very well-equipped to handle vegetarian, vegan, and even Jain food requests." }
     ]
@@ -1063,8 +1099,8 @@ const baseDestinations: Destination[] = [
     category: "Coastal",
     price: "₹64,900",
     rating: 4.9,
-    description: "A compact Andaman island escape through Port Blair, Havelock, and Neil Island, with a timely June value window.",
-    longDescription: "Make the most of Andaman's off-season value with a well-paced 3-night escape covering Port Blair, Havelock, and a Neil Island day trip. June departures are available on request, with current hotel and ferry options checked before you commit. Expect Cellular Jail history, Radhanagar Beach, quieter island moments, and smooth inter-island planning in one compact holiday.",
+    description: "A compact Andaman island escape through Port Blair, Havelock, and Neil Island, with flexible off-season value checks.",
+    longDescription: "Make the most of Andaman's off-season value with a well-paced 3-night escape covering Port Blair, Havelock, and a Neil Island day trip. Current hotel, ferry, and weather-dependent sightseeing options are checked for your dates before you commit. Expect Cellular Jail history, Radhanagar Beach, quieter island moments, and smooth inter-island planning in one compact holiday.",
     services: ["3 Nights Hotel Stay", "Daily Breakfast", "Inter-island Ferry Planning", "Airport and Jetty Transfers", "Port Blair, Havelock and Neil Sightseeing"],
     itinerary: [
       { day: "Day 1", title: "Port Blair Arrival & Cellular Jail", description: "Arrive in Port Blair, settle in, then visit Cellular Jail and attend the evening light and sound show if operational." },
@@ -1074,7 +1110,7 @@ const baseDestinations: Destination[] = [
     ],
     faqs: [
       { question: "Are ferries included?", answer: "Yes, standard inter-island ferry planning is included, subject to seat availability and weather operations." },
-      { question: "Why consider Andaman in June?", answer: "June falls within the current off-season value window, so it can be a smart time to request a better-value island plan. Hotels, ferries, sightseeing, and weather-dependent activities are reconfirmed for your exact dates before booking." },
+      { question: "When can Andaman offer better off-season value?", answer: "Quieter or wetter travel periods can produce useful hotel value, but ferry schedules, sea conditions, and weather-dependent activities matter just as much as price. We reconfirm the complete plan for your exact dates before booking." },
       { question: "Is Andaman good for honeymoon travelers?", answer: "Yes. Havelock and Neil Island are excellent for couples seeking beaches, water activities, and quiet resort time." },
       { question: "Do Indian citizens need permits?", answer: "Indian citizens generally do not need special permits for the main tourist islands, but some areas remain restricted." }
     ]
@@ -1874,6 +1910,64 @@ const baseDestinations: Destination[] = [
     ]
   },
   {
+    id: 65,
+    name: "South Korea Family Explorer: Busan, Jeju & Seoul",
+    country: "South Korea",
+    state: "Busan, Jeju Island, Seoul",
+    city: "Busan, Jeju, Seoul",
+    type: "International",
+    region: "East Asia",
+    regionId: "east-asia",
+    image: mediaUrl("Gamcheon Culture Village View 1.jpg"),
+    category: "Cultural",
+    price: "₹94,500",
+    rating: 4.8,
+    description: "A sale-ready South Korea family route combining Busan beaches, Jeju island nature, Nami Island, and Seoul icons.",
+    longDescription: "Built from a real family travel brief for 6 adults plus 1 child, this 7-night South Korea package starts with Busan's coastal temples and colorful villages, continues to Jeju's volcanic landscapes and gardens, and ends in Seoul with palaces, markets, Nami Island, and N Seoul Tower. It is designed for Indian families who want a comfortable 3-star base, private transfers, guided sightseeing, and clear support for rooms, domestic sectors, and practical add-ons before they book.",
+    ctaTitle: "Plan this Korea family trip with real dates",
+    ctaDescription: "Share your departure date, 6-adult-plus-child rooming needs, hotel preference, and whether you want domestic Korea flights included. Travel Gateway will reply with a workable family quote, availability, and next booking steps.",
+    planningNotes: [
+      {
+        title: "Rooming and domestic sectors change the real quote",
+        body: "This route was built around 6 adults plus 1 child, so final pricing depends on the family's room split, child age, baggage, and whether Busan-Jeju and Jeju-Seoul sectors are ticketed separately or inside the package.",
+      },
+      {
+        title: "Meal planning matters more in Korea than many families expect",
+        body: "Vegetarian or Indian-meal support should be discussed before confirmation, especially for Jeju and full-day sightseeing stretches, because restaurant flexibility varies by area and timing.",
+      },
+    ],
+    galleryImages: [
+      { url: mediaUrl("Gamcheon Culture Village View 1.jpg"), alt: "Gamcheon Culture Village in Busan", caption: "Busan coastal culture and family sightseeing" },
+      { url: mediaUrl("Seongsan_Ilchulbong_from_the_air.jpg"), alt: "Seongsan Ilchulbong volcanic peak on Jeju Island", caption: "Jeju island nature and volcanic views" },
+      { url: mediaUrl("Gyeongbokgung Palace.png"), alt: "Gyeongbokgung Palace in Seoul", caption: "Seoul palace, market, and tower finale" },
+    ],
+    services: [
+      "3-Star Hotel Stay Planning",
+      "Private Airport and City Transfers",
+      "English-Speaking Driving Guide",
+      "KTX and Domestic Sector Coordination",
+      "Family Rooming Support",
+      "Entry Tickets for Listed Sightseeing"
+    ],
+    itinerary: [
+      { day: "Day 1", title: "Incheon Arrival, KTX to Busan", description: "Arrive in South Korea, connect by KTX toward Busan, and settle into your hotel. Early check-in can be requested where available." },
+      { day: "Day 2", title: "Busan Coastal Sightseeing", description: "Visit Haedong Yonggungsa Temple, Haeundae Beach Train, Chongsapo Skywalk Observatory, Haeundae Beach, APEC Nurimaru, and Dongbaekseom." },
+      { day: "Day 3", title: "Busan Culture and Flight to Jeju", description: "Ride the Songdo Cable Car, explore Gamcheon Culture Village, then transfer to Busan airport for the short flight to Jeju Island." },
+      { day: "Day 4", title: "Jeju West and South Island", description: "Explore O'Sulloc Tea Museum, Songak Mountain, Hyeopjae Beach, Hallim Park, and Cheonjeyeon Waterfall with private sightseeing support." },
+      { day: "Day 5", title: "Jeju East Island and Seoul Transfer", description: "Visit Seongeup Folk Village, Jeolmul Forest, and Seongsan Ilchulbong Peak before flying from Jeju to Seoul." },
+      { day: "Day 6", title: "Nami Island and Gangchon Rail Bike", description: "Take a scenic day trip from Seoul to Nami Island and enjoy the Gangchon Rail Bike experience, paced for a mixed-age family group." },
+      { day: "Day 7", title: "Seoul Palaces, Markets and Tower", description: "See Gyeongbokgung Palace with the guard ceremony when operating, the National Folk Museum, Cheonggyecheon, Gwanghwamun Square, Namsangol Hanok Village, Insadong or Myeongdong, and N Seoul Tower cable car." },
+      { day: "Day 8", title: "Seoul Departure", description: "Check out by noon, keep time for last-minute shopping if flights allow, and transfer privately to Incheon International Airport." }
+    ],
+    faqs: [
+      { question: "Is this package suitable for 6 adults plus 1 child?", answer: "Yes. The route was built around that family size, with rooming support, private transfers, and sightseeing pacing suitable for a multi-generation family." },
+      { question: "Are Korea domestic flights included?", answer: "The public package is shown as an indicative land arrangement. Busan-Jeju and Jeju-Seoul flights can be added in the final quote based on live fare and baggage needs." },
+      { question: "What hotel category is planned?", answer: "The brief is designed around comfortable 3-star hotels or similar, with upgrades available if the family wants a stronger location, breakfast spread, or larger rooms." },
+      { question: "Can vegetarian or Indian meals be managed?", answer: "Yes, but Korea needs advance planning for vegetarian preferences. Tell Travel Gateway the group's meal needs before booking so restaurant and hotel notes can be aligned." },
+      { question: "What is excluded from the indicative package?", answer: "International airfare, Korea domestic airfare unless added, visa charges, tips, personal expenses, meals not mentioned, early check-in, and services beyond the agreed sightseeing hours are normally quoted separately." }
+    ]
+  },
+  {
     id: 61,
     name: "Dubai & Abu Dhabi Premium Escape",
     country: "UAE",
@@ -1921,6 +2015,16 @@ const baseDestinations: Destination[] = [
     rating: 4.8,
     description: "A brighter Thailand holiday pairing Bangkok's energy with Phuket, Phi Phi, and Krabi island scenery.",
     longDescription: "This Thailand route is designed for travelers who want more than a basic Bangkok-Pattaya plan. It blends Bangkok markets and temples with Phuket nightlife, Phi Phi island waters, Krabi limestone cliffs, and enough resort time to feel like a proper tropical escape.",
+    planningNotes: [
+      {
+        title: "This is the stronger leisure upgrade over Bangkok-Pattaya",
+        body: "Travelers comparing Thailand routes for honeymoon, premium family time, or island scenery usually get a better product fit from Phuket and Krabi than from a fast Pattaya-heavy plan.",
+      },
+      {
+        title: "Sea conditions can reshape the island days",
+        body: "During wetter periods, boat timing and island operations can change quickly. Keep at least one flexible beach day rather than overpacking every island outing into a fixed timetable.",
+      },
+    ],
     galleryImages: [
       { url: "https://images.unsplash.com/photo-1504214208698-ea1916a2195a?auto=format&fit=crop&q=80&w=1600", alt: "Thai island coastline", caption: "Phuket and island-hopping waters" },
       { url: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&q=80&w=1600", alt: "Bangkok city at night", caption: "Bangkok city energy" }
@@ -1968,7 +2072,7 @@ const baseDestinations: Destination[] = [
     ],
     faqs: [
       { question: "Which meal plan is best?", answer: "All-inclusive is useful if you prefer predictable costs; half-board can work for lighter travelers." },
-      { question: "Do Indians need a visa?", answer: "Maldives usually offers visa on arrival for Indian passport holders, subject to valid documents." },
+      { question: "Do Indians need to arrange a Maldives tourist visa in advance?", answer: "Tourist visas are granted on arrival subject to immigration checks, so tourist-visa pre-approval is not normally required. Complete the free IMUGA Traveller Declaration within 96 hours before arrival and carry all current entry documents." },
       { question: "Can children join?", answer: "Yes, but this package is designed mainly for couples." }
     ]
   },
@@ -2434,13 +2538,14 @@ const seasonalIndiaPackages: Destination[] = [
     services: ["Acclimatization Planning", "SUV Transfers", "Permits Guidance", "Oxygen Backup Advice", "Monastery Visits", "Lake Camps"],
     itinerary: [
       { day: "Day 1-2", title: "Leh Acclimatization", description: "Settle in, rest, and visit Shanti Stupa, Leh Palace, and nearby monasteries." },
-      { day: "Day 3-4", title: "Nubra Valley", description: "Cross high passes into Nubra for dunes, villages, and boutique camps." },
-      { day: "Day 5", title: "Pangong Lake", description: "Drive to Pangong for changing lake colors and high-altitude scenery." },
-      { day: "Day 6-8", title: "Spiti Extension", description: "Add Kaza, Key Monastery, and Chandratal when roads and guest fitness allow." }
+      { day: "Day 3-4", title: "Nubra Valley", description: "Cross high passes into Nubra for dunes, villages, and boutique camps, only after checking the current road status and permits." },
+      { day: "Day 5", title: "Pangong Lake", description: "Drive to Pangong for changing lake colours and high-altitude scenery, with the day kept flexible for weather or road advisories." },
+      { day: "Day 6-8", title: "Spiti Extension", description: "Add Kaza, Key Monastery, and Chandratal only when roads are open, conditions are suitable, and every guest is coping well with altitude." }
     ],
     faqs: [
       { question: "Is this suitable for senior travelers?", answer: "It can be adapted, but altitude needs careful planning and slower pacing." },
-      { question: "Best months?", answer: "June to September is usually strongest for road-based high Himalayan routes." }
+      { question: "How should we plan around August mountain conditions?", answer: "Keep spare time in the route, avoid tight onward connections, and reconfirm road, weather, and local advisory updates shortly before every high-pass transfer. Ladakh Tourism publishes current travel advisories for visitors." },
+      { question: "Best months?", answer: "June to September is commonly used for road-based high Himalayan routes, but exact route viability depends on the current weather, road status, permits, and guest fitness." }
     ]
   },
   {
@@ -2458,6 +2563,20 @@ const seasonalIndiaPackages: Destination[] = [
     rating: 4.8,
     description: "A June to September wellness-focused monsoon package with Ayurveda, tea hills, spice country, and backwater stays.",
     longDescription: "Kerala's monsoon is ideal for travelers who want slower wellness, lush landscapes, fewer crowds, and restorative stays. This package balances Ayurveda, backwaters, tea estates, and cultural experiences with weather-aware scheduling.",
+    planningNotes: [
+      {
+        title: "Sell this around wellness, greenery, and softer pacing",
+        body: "Monsoon Kerala performs better when positioned as a restorative holiday with Ayurveda, rain-washed landscapes, and backwater downtime, not as a dry-season sightseeing checklist forced into wet weather.",
+      },
+      {
+        title: "Keep the plan weather-aware",
+        body: "June to September usually brings the southwest monsoon, while another lighter rainy phase often returns around October to November. That makes private transfers, flexible sightseeing order, and hotel quality more important than headline attraction count.",
+      },
+      {
+        title: "Check live weather alerts before hill and coast transfers",
+        body: "Review the latest IMD and local advisories close to departure. Keep Munnar, Thekkady, and backwater transfers flexible, and avoid selling this as a fixed outdoor checklist during active rain weeks.",
+      },
+    ],
     galleryImages: [
       { url: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=1600", alt: "Kerala backwaters and palm trees", caption: "Monsoon Kerala wellness journey" }
     ],
@@ -2486,21 +2605,31 @@ const seasonalIndiaPackages: Destination[] = [
     category: "Seasonal",
     price: "₹79,000",
     rating: 4.9,
-    description: "A September to November festival package covering Durga Puja, Garba nights, Diwali lights, and sacred river rituals.",
-    longDescription: "This festive-season package is designed for travelers who want India's cultural calendar at its brightest. It can be tailored around Durga Puja in Kolkata, Navratri in Gujarat, Diwali in Jaipur or Varanasi, and carefully managed crowd movement.",
+    description: "A date-led October to November cultural journey, tailored around one primary celebration such as Durga Puja, Navratri, or Diwali.",
+    longDescription: "This festive-season journey is designed around the celebration that matters most to you, rather than promising several cities at their peak on one fixed departure. In 2026, Navratri and Kolkata Durga Puja overlap in October, while Diwali is in November, so the final route should prioritise one festival city, realistic transfers, and carefully managed crowd movement.",
+    planningNotes: [
+      {
+        title: "Choose a primary festival before fixing the route",
+        body: "For 2026, Incredible India lists Navratri from October 11 to 19 and Kolkata Durga Puja from October 17 to 21, while its public-holiday listing places Diwali on November 8. We therefore build this as a custom, date-led journey rather than an all-festival fixed circuit.",
+      },
+      {
+        title: "Plan for late evenings and high-footfall city movement",
+        body: "Use a well-located hotel, keep event evenings lightly scheduled, and allow recovery time before long drives or flights. Local traffic plans, venue access, security rules, and event programmes should be checked again near departure.",
+      },
+    ],
     galleryImages: [
       { url: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=1600", alt: "Festive India city lights", caption: "Festival season India" }
     ],
     services: ["Festival Date Planning", "VIP-style Local Guidance", "Crowd Timing Support", "Cultural Hosts", "Premium City Hotels", "Photography Assistance"],
     itinerary: [
-      { day: "Day 1-2", title: "Kolkata Durga Puja", description: "Pandal walks, heritage food, and cultural interpretation with careful timing." },
-      { day: "Day 3-4", title: "Ahmedabad Navratri", description: "Garba night planning, textile stops, and heritage city walk." },
-      { day: "Day 5-6", title: "Varanasi or Jaipur Diwali", description: "Choose riverfront rituals or royal-city lights based on festival dates." },
-      { day: "Day 7", title: "Departure", description: "Flexible departure or extension to Agra, Udaipur, or Delhi." }
+      { day: "Day 1", title: "Arrival and festival orientation", description: "Arrive in the chosen celebration city, settle into a well-located hotel, and review the evening plan around live access and traffic conditions." },
+      { day: "Day 2-3", title: "Primary celebration city", description: "Focus on Kolkata Durga Puja or Ahmedabad Navratri with guided cultural time, realistic crowd pacing, and a lighter daytime schedule after late evenings." },
+      { day: "Day 4-5", title: "Slow city context or nearby extension", description: "Add heritage, food, craft, or a nearby stay only when it preserves time for the main celebration; avoid intercity transfers on peak event days." },
+      { day: "Day 6-7", title: "Optional second city or departure", description: "Use a second city only where the calendar and confirmed transport make it worthwhile; Diwali itineraries are normally planned as a separate November departure or extension." }
     ],
     faqs: [
-      { question: "Do festival dates change?", answer: "Yes. We align the final route to the relevant lunar-calendar dates for the travel year." },
-      { question: "Is it crowded?", answer: "Yes, so private guides, smart timing, and realistic expectations are essential." }
+      { question: "Can one 7-day route cover Navratri, Durga Puja, and Diwali at their peak?", answer: "Not reliably. In 2026, Navratri and Durga Puja overlap in October while Diwali is in November, so we recommend choosing one primary celebration and treating another city or Diwali as a separate date-led extension where the calendar genuinely permits it." },
+      { question: "Is it crowded?", answer: "Yes. Central hotels, private guides, flexible evening timing, and realistic expectations are essential; local access and security arrangements should be reconfirmed near travel." }
     ]
   }
 ];
@@ -2521,6 +2650,20 @@ const pilgrimageIndiaPackages: Destination[] = [
     rating: 4.9,
     description: "A carefully paced Uttarakhand Char Dham pilgrimage with route support, senior-friendly planning, and optional helicopter sectors.",
     longDescription: "This pilgrimage package supports one of India's most important Himalayan yatras with practical pacing, road-condition awareness, accommodation planning, and optional helicopter services where available. The route is best planned during the official Char Dham season.",
+    planningNotes: [
+      {
+        title: "Registration and official opening dates should be checked first",
+        body: "For the 2026 season, current Uttarakhand reporting tied to the state registration system listed Yamunotri and Gangotri opening on April 19, Kedarnath on April 22, and Badrinath on April 23. Even so, route, weather, and registration status should be reconfirmed before final payment.",
+      },
+      {
+        title: "Treat this as an operational pilgrimage, not a simple sightseeing loop",
+        body: "Medical fitness, realistic drive pacing, pony or palki support, porter help, and helicopter availability should be discussed early for senior travelers or anyone trying to keep Kedarnath more manageable.",
+      },
+      {
+        title: "Build in monsoon and mountain-weather buffers",
+        body: "In the monsoon part of the yatra season, keep extra buffer time for road movement, confirm the latest official and local advisories, and avoid tight same-day connections around Kedarnath sectors.",
+      },
+    ],
     services: ["Yatra Route Planning", "Private Vehicle", "Hotel & Dharamshala Options", "Helicopter Add-on Advice", "Senior-friendly Pacing", "Darshan Timing Support"],
     itinerary: [
       { day: "Day 1-2", title: "Haridwar to Yamunotri", description: "Begin with Haridwar/Rishikesh rituals and continue toward Yamunotri with planned halts." },
@@ -2651,6 +2794,33 @@ export const destinations = [
   ...seasonalIndiaPackages,
   ...pilgrimageIndiaPackages,
 ];
+
+export function getDestinationFaqs(destination: Pick<Destination, "name" | "faqs">): FAQItem[] {
+  if (destination.faqs?.length) return destination.faqs;
+
+  return [
+    {
+      question: `What is the best way to book the ${destination.name} package?`,
+      answer:
+        "Send an inquiry with your travel month, number of guests, budget, and preferred hotel style. Travel Gateway will reply with a personalized plan and current availability.",
+    },
+    {
+      question: "Can this itinerary be customized?",
+      answer:
+        "Yes. The route, hotels, transfers, meal preferences, sightseeing pace, and add-on nights can be adjusted for families, couples, senior travelers, honeymooners, or group travel.",
+    },
+    {
+      question: "Are flights, hotels, and local transfers included?",
+      answer:
+        "Package inclusions depend on the final quote. Share your requirements through the booking inquiry form and the team will clearly mention flights, hotels, transfers, guide services, meals, and exclusions.",
+    },
+    {
+      question: "How quickly will I receive the package details?",
+      answer:
+        "After you submit the inquiry, the request goes to Travel Gateway's team so they can respond with practical details, current pricing, and the next booking steps.",
+    },
+  ];
+}
 
 export function destinationSlug(destination: Pick<Destination, "id" | "name" | "link">) {
   if (destination.link) {

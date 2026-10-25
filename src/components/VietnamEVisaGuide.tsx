@@ -25,7 +25,7 @@ export default function VietnamEVisaGuide({ compact = false }: VietnamEVisaGuide
             Visa Notes for Indian Travelers
           </h2>
           <p className="mt-4 text-muted-foreground leading-relaxed">
-            Indian passport holders normally need a Vietnam visa before entering mainland Vietnam. The official e-visa is usually the simplest route for tourism, and Vietnam Immigration currently directs applications through <span className="font-semibold text-foreground">evisa.gov.vn</span> or <span className="font-semibold text-foreground">thithucdientu.gov.vn</span>, so match your passport details, travel dates, and entry ports carefully before flights are locked.
+            Indian passport holders normally need a Vietnam visa before entering mainland Vietnam. The official e-visa is usually the simplest route for tourism, and Vietnam Immigration currently directs applications through <a className="font-semibold text-primary underline underline-offset-4" href="https://evisa.gov.vn" target="_blank" rel="noreferrer">evisa.gov.vn</a> or <a className="font-semibold text-primary underline underline-offset-4" href="https://thithucdientu.gov.vn" target="_blank" rel="noreferrer">thithucdientu.gov.vn</a>, so match your passport details, travel dates, and entry ports carefully before flights are locked.
           </p>
         </div>
         <a href="/contact?destination=Vietnam%20visa-ready%20documents" className="shrink-0">

@@ -1,30 +1,43 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { ShieldCheck, CreditCard, Lock, CheckCircle2, AlertCircle } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ShieldCheck, CreditCard, Lock, CheckCircle2, AlertCircle, MessageCircle, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
 import { defaultSeoImage, graphSchema, pageSchema } from "@/lib/seo";
+
+const viteEnv = (import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env ?? {};
+const razorpayPaymentButtonId = viteEnv.VITE_RAZORPAY_PAYMENT_BUTTON_ID?.trim();
+const razorpayPaymentLink = viteEnv.VITE_RAZORPAY_PAYMENT_LINK?.trim();
+const paymentWhatsAppUrl = `https://wa.me/919898111689?text=${encodeURIComponent(
+  "Hello Travel Gateway, please share the secure Razorpay payment link for my confirmed booking."
+)}`;
 
 export default function Payment() {
   const paymentFormRef = useRef<HTMLFormElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [retryKey, setRetryKey] = useState(0);
 
   useEffect(() => {
+    if (!razorpayPaymentButtonId) return;
+
     // Prevent multiple loads
     if (!paymentFormRef.current) return;
     if (paymentFormRef.current.childNodes.length > 0) return;
 
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/payment-button.js";
-    script.setAttribute("data-payment_button_id", "pl_HplZK56YvO7ZkZ");
+    script.setAttribute("data-payment_button_id", razorpayPaymentButtonId);
     script.async = true;
     
     script.onload = () => {
+      setError(null);
       console.log("Razorpay script loaded successfully");
     };
 
     script.onerror = () => {
-      setError("Failed to load payment gateway. Please check your internet connection and refresh.");
+      setError("The secure payment gateway did not load. Please retry, or request a direct Razorpay payment link from Travel Gateway.");
     };
 
     paymentFormRef.current.appendChild(script);
@@ -32,7 +45,7 @@ export default function Payment() {
     return () => {
       // Leave the injected payment button in place during React StrictMode's dev-only effect replay.
     };
-  }, []);
+  }, [retryKey]);
 
   return (
     <div className="pt-24 pb-16 px-6 min-h-screen bg-background relative overflow-hidden">
@@ -108,7 +121,7 @@ export default function Payment() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5 }}
-            className="bg-white dark:bg-zinc-900 shadow-2xl rounded-[2rem] p-8 max-w-lg mx-auto border border-white/10"
+            className="mx-auto max-w-lg rounded-[2rem] border border-primary/10 bg-white p-8 shadow-2xl dark:bg-zinc-900"
           >
             <h2 className="text-2xl font-bold mb-8">Payment Details</h2>
             <div className="space-y-6 mb-10 text-left">
@@ -127,17 +140,54 @@ export default function Payment() {
             </div>
 
             <div className="flex flex-col items-center justify-center p-4 min-h-[100px]">
-              {error ? (
-                <div className="flex flex-col items-center gap-2 text-destructive">
+              {razorpayPaymentLink ? (
+                <Button render={<a href={razorpayPaymentLink} target="_blank" rel="noopener noreferrer" />} className="rounded-full px-8 py-6 text-base font-bold">
+                  Open Secure Payment
+                </Button>
+              ) : error ? (
+                <div className="flex w-full flex-col items-center gap-4 text-center">
                   <AlertCircle className="w-8 h-8" />
-                  <p className="text-sm font-medium">{error}</p>
+                  <p className="max-w-sm text-sm font-medium text-destructive">{error}</p>
+                  <div className="flex w-full flex-col justify-center gap-3 sm:flex-row">
+                    <Button
+                      type="button"
+                      className="rounded-full"
+                      onClick={() => {
+                        setError(null);
+                        setRetryKey((key) => key + 1);
+                      }}
+                    >
+                      <RefreshCw className="mr-2 h-4 w-4" />
+                      Retry Payment
+                    </Button>
+                    <Button render={<a href={paymentWhatsAppUrl} target="_blank" rel="noopener noreferrer" />} variant="outline" className="rounded-full">
+                      <MessageCircle className="mr-2 h-4 w-4" />
+                      Request Payment Link
+                    </Button>
+                  </div>
                 </div>
-              ) : (
+              ) : razorpayPaymentButtonId ? (
                 <form
+                  key={retryKey}
                   ref={paymentFormRef}
                   className="payment-button-container flex justify-center w-full min-h-[40px]"
                   aria-label="Razorpay payment form"
                 />
+              ) : (
+                <div className="text-center">
+                  <p className="mx-auto max-w-sm text-sm leading-6 text-muted-foreground">
+                    For security, payment links are shared against confirmed bookings. Request your secure Razorpay link and we will send the correct amount for your trip.
+                  </p>
+                  <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
+                    <Button render={<a href={paymentWhatsAppUrl} target="_blank" rel="noopener noreferrer" />} className="rounded-full">
+                      <MessageCircle className="mr-2 h-4 w-4" />
+                      Request Payment Link
+                    </Button>
+                    <Button render={<Link to="/contact?topic=payment-link" />} variant="outline" className="rounded-full">
+                      Contact Office
+                    </Button>
+                  </div>
+                </div>
               )}
             </div>
 

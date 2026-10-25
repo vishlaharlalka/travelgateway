@@ -2,28 +2,33 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { destinationPath, destinations } from "../src/lib/data";
+import { posts } from "../src/pages/Blog";
 
 const siteUrl = "https://travelgateway.in";
-const lastmod = new Date().toISOString().slice(0, 10);
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
 
 const staticRoutes = [
-  { path: "/", changefreq: "weekly", priority: "1.0" },
-  { path: "/services", changefreq: "monthly", priority: "0.9" },
-  { path: "/destinations", changefreq: "weekly", priority: "0.9" },
-  { path: "/contact", changefreq: "monthly", priority: "0.9" },
-  { path: "/about", changefreq: "monthly", priority: "0.8" },
-  { path: "/blog", changefreq: "daily", priority: "0.8" },
-  { path: "/faq", changefreq: "monthly", priority: "0.7" },
-  { path: "/privacy-policy", changefreq: "yearly", priority: "0.3" },
-  { path: "/terms-of-service", changefreq: "yearly", priority: "0.3" },
+  { path: "/" },
+  { path: "/services" },
+  { path: "/destinations" },
+  { path: "/destinations/vietnam" },
+  { path: "/destinations/golden-chariot" },
+  { path: "/destinations/palace-on-wheels" },
+  { path: "/contact" },
+  { path: "/about" },
+  { path: "/blog" },
+  { path: "/faq" },
+  { path: "/privacy-policy" },
+  { path: "/terms-of-service" },
 ];
 
 const destinationRoutes = Array.from(
   new Set(destinations.map((destination) => destinationPath(destination)))
 )
   .sort((a, b) => a.localeCompare(b))
-  .map((path) => ({ path, changefreq: "monthly", priority: "0.8" }));
+  .map((path) => ({ path }));
+
+const blogRoutes = posts.map((post) => ({ path: `/blog/${post.slug}` }));
 
 function xmlEscape(value: string) {
   return value
@@ -38,7 +43,10 @@ function loc(path: string) {
   return `${siteUrl}${path === "/" ? "" : path}`;
 }
 
-const urls = [...staticRoutes, ...destinationRoutes];
+const urls = Array.from(
+  new Map([...staticRoutes, ...blogRoutes, ...destinationRoutes].map((route) => [route.path, route])).values()
+);
+const lastmod = new Date().toISOString().slice(0, 10);
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls
@@ -46,8 +54,6 @@ ${urls
     (url) => `  <url>
     <loc>${xmlEscape(loc(url.path))}</loc>
     <lastmod>${lastmod}</lastmod>
-    <changefreq>${url.changefreq}</changefreq>
-    <priority>${url.priority}</priority>
   </url>`
   )
   .join("\n")}

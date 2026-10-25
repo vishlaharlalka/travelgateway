@@ -12,6 +12,18 @@
 /index.html
   Cache-Control: no-cache
 
+/payment
+  X-Robots-Tag: noindex, nofollow
+
+/payment/*
+  X-Robots-Tag: noindex, nofollow
+
+/platform-overview
+  X-Robots-Tag: noindex, nofollow
+
+/platform-overview/*
+  X-Robots-Tag: noindex, nofollow
+
 /sitemap.xml
   Cache-Control: public, max-age=3600
 

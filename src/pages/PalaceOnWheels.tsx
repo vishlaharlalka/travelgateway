@@ -1,6 +1,6 @@
 ﻿import { motion } from "framer-motion";
 import { 
-  MapPin, Clock, Star, CheckCircle2, 
+  MapPin, Clock, CheckCircle2, 
   Download, ArrowLeft, ShieldCheck, 
   Sparkles, Coffee, Train, Utensils, Music,
   Compass, Map, Gift
@@ -12,18 +12,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useEffect } from "react";
 import CurrencyConverter from "@/components/CurrencyConverter";
+import SEO from "@/components/SEO";
+import { graphSchema, pageSchema } from "@/lib/seo";
 
 export default function PalaceOnWheels() {
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = "Palace on Wheels: The Original Luxury Rail of India";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute("content", "Experience the official Palace on Wheels route: a 7 nights / 8 days luxury rail journey from New Delhi through Rajasthan, Bharatpur, and Agra.");
-    }
   }, []);
+
+  const pageTitle = "Palace on Wheels Luxury Train | Rajasthan Rail Journey";
+  const pageDescription =
+    "Discover the Palace on Wheels luxury rail journey from New Delhi through Jaipur, Ranthambhore, Udaipur, Jaisalmer, Jodhpur, Bharatpur, and Agra.";
 
   const itinerary = [
     { day: "Day 1", title: "New Delhi: Royal Welcome", description: "Board at Safdarjung Railway Station in New Delhi after the train's signature ceremonial welcome and settle into your cabin." },
@@ -38,6 +39,14 @@ export default function PalaceOnWheels() {
 
   return (
     <div className="min-h-screen bg-[#FFF9F2] text-[#2C1810]">
+      <SEO
+        title={pageTitle}
+        description={pageDescription}
+        canonicalPath="/destinations/palace-on-wheels"
+        structuredData={graphSchema([
+          pageSchema("/destinations/palace-on-wheels", pageTitle, pageDescription),
+        ])}
+      />
       {/* Hero Section */}
       <section className="relative h-[85vh] w-full overflow-hidden">
         <motion.img
@@ -70,8 +79,8 @@ export default function PalaceOnWheels() {
                 The Original Luxury Rail
               </Badge>
               <div className="flex items-center gap-2 text-white font-bold bg-black/40 backdrop-blur-md py-1.5 px-4 rounded-full text-xs border border-white/10">
-                <Star className="w-4 h-4 text-[#B58941] fill-current" />
-                <span>5.0 Iconic Status</span>
+                <Train className="w-4 h-4 text-[#B58941]" />
+                <span>Heritage luxury train</span>
               </div>
             </div>
             

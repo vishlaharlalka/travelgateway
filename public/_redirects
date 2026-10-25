@@ -6,5 +6,7 @@
 /category/uncategorized /blog 301
 /2024/02/18/hello-world/ / 301
 /2024/02/18/hello-world / 301
+/terms /terms-of-service 301
+/terms-and-conditions /terms-of-service 301
 
 /* /index.html 200

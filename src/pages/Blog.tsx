@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   AlertCircle,
   ArrowRight,
+  Archive,
   Calendar,
   Clock,
   ExternalLink,
@@ -12,6 +14,7 @@ import {
   Newspaper,
   Radio,
   RefreshCcw,
+  Search,
   Sparkles,
   Tag,
   User,
@@ -19,12 +22,13 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import SocialShare from "@/components/SocialShare";
 import SEO from "@/components/SEO";
 import { defaultSeoImage, graphSchema, pageSchema, siteUrl } from "@/lib/seo";
 
-type EditorialPost = {
+export type EditorialPost = {
   id: number;
   title: string;
   excerpt: string;
@@ -37,6 +41,7 @@ type EditorialPost = {
   tags: string[];
   body: string[];
   takeaways: string[];
+  sources?: Array<{ label: string; url: string }>;
 };
 
 type FeedArticle = {
@@ -143,6 +148,8 @@ const officialIndiaTravelUpdates: LiveArticle[] = [
 type NewsStatus = "idle" | "loading" | "success" | "error";
 
 const LIVE_NEWS_ENDPOINT = "/api/travel-news";
+const NEWS_ARCHIVE_STORAGE_KEY = "travelgateway.newsArchive.v1";
+const MAX_ARCHIVED_NEWS = 160;
 const NEWS_FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1000";
 
@@ -215,7 +222,225 @@ const blockedTitleTerms = [
   "top used suv",
 ];
 
-const posts: EditorialPost[] = [
+export const posts: EditorialPost[] = [
+  {
+    id: 11,
+    title: "October 2026: Build One Festival Trip Around the Dates That Matter",
+    excerpt:
+      "India's October festival calendar creates strong cultural travel opportunities, but overlapping dates and city-to-city transfers make a focused regional plan more useful than a rushed multi-city checklist.",
+    image:
+      "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=1000",
+    author: "Vishal Harlalka",
+    date: "October 5, 2026",
+    category: "Planning",
+    slug: "october-2026-festival-travel-dates-and-pacing",
+    readTime: "4 min read",
+    tags: ["Festival Travel", "India Travel", "Cultural Travel", "Trip Planning"],
+    body: [
+      "October's cultural calendar is a reason to plan precisely, not to overfill a route. Incredible India lists Navratri from October 11 to 19 in 2026, with Durga Puja in Kolkata from October 17 to 21; Diwali falls on November 8 in the national public-holiday listing. The overlap means a single 7-day departure cannot honestly promise every festival at its peak. Pick the ritual, city, and dates that matter most before building the rest of the holiday.",
+      "For Gujarat, a Navratri-first plan can use Ahmedabad as a base and leave enough time for event transport, hotel check-in, and late-night Garba timing. For Kolkata, a Durga Puja-first plan should favour a centrally located stay, realistic pandal movement, and lighter daytime sightseeing. These are high-footfall celebration periods, so local event access, security restrictions, traffic diversions, and venue rules need checking again close to travel.",
+      "A multi-city festival trip still works when it is presented as a date-led custom route rather than a fixed circuit. Start with confirmed arrival and departure cities, include a recovery morning after a late festival evening, and add flights only where they preserve useful time. If the goal is Diwali, keep it as a separate November departure or extension unless the calendar and travel dates genuinely align.",
+      "Travel Gateway can tailor a festival route around one primary celebration, hotel style, mobility needs, dietary preferences, and a dated quote. Starting prices and proposed event plans remain indicative: final transport, hotel space, local access, and any official event guidance must be reconfirmed before non-refundable payment.",
+    ],
+    takeaways: [
+      "Choose one primary festival and city before adding secondary stops.",
+      "Treat the 2026 Navratri, Durga Puja, and Diwali dates as planning anchors, then reconfirm local schedules and access.",
+      "Protect usable celebration time with central hotels, recovery time, and realistic intercity transfers.",
+    ],
+    sources: [
+      {
+        label: "Incredible India: Navratri 2026 dates and regional celebrations",
+        url: "https://www.incredibleindia.gov.in/en/festivals-and-events/navratri",
+      },
+      {
+        label: "Incredible India: Kolkata Durga Puja 2026 dates",
+        url: "https://www.incredibleindia.gov.in/en/festivals-and-events/durga-puja",
+      },
+      {
+        label: "Incredible India: 2026 public-holiday calendar",
+        url: "https://www.incredibleindia.gov.in/en/plan-your-trip/public-holidays",
+      },
+    ],
+  },
+  {
+    id: 10,
+    title: "September 2026: Price the Festive Trip Before You Add Stops",
+    excerpt:
+      "Festive demand is building earlier, but higher peak-date airfares and hotel pressure make route discipline, usable days, and a complete cost comparison essential.",
+    image:
+      "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=1000",
+    author: "Vishal Harlalka",
+    date: "September 10, 2026",
+    category: "Planning",
+    slug: "september-2026-festive-travel-full-cost-planning",
+    readTime: "4 min read",
+    tags: ["Festive Travel", "India Travel", "Family Travel", "Trip Budget"],
+    body: [
+      "India's festive travel window is starting earlier. The Economic Times reported on September 9 that travel-platform search volumes were up around 40–45% month on month and that many travelers were combining festivals, school holidays, and paid leave into 5–9-day domestic or international itineraries. These are company and hotel-sector signals rather than a promise about every route, but they make one planning step urgent: confirm the travel window before peak-date inventory narrows.",
+      "A second September market report points to the budget trade-off. ET TravelWorld reported elevated festive airfares, hotel costs, and currency pressure, with travelers considering value-oriented international choices or less obvious domestic destinations. That does not make one destination automatically cheaper. It means a fair comparison needs flights, baggage, transfers, visa or entry steps, meals, hotel location, taxes, and peak-date supplements in the same total.",
+      "For a 5–9-day family holiday, protect the days that guests can actually enjoy. A single-region India route or a well-connected short-haul circuit can outperform a longer destination list if extra flights, long drives, early check-outs, and repeated packing consume the leave. Families should also decide rooming, child ages, meal preferences, mobility needs, and any festival-day closures before asking suppliers to hold space.",
+      "Travel Gateway can compare a domestic route with a short-haul international option using the same dated brief. Starting prices on the site remain indicative; final fares, hotel space, visas, entry rules, and local operating conditions must be reconfirmed before non-refundable payment.",
+    ],
+    takeaways: [
+      "Fix the travel dates, rooming, and non-negotiable experiences before requesting a festive quote.",
+      "Compare the complete trip cost, including flights, baggage, transfers, taxes, entry steps, and peak-date supplements.",
+      "Protect usable holiday time by limiting unnecessary hotel changes, internal flights, and long transfer days.",
+    ],
+    sources: [
+      {
+        label: "The Economic Times: festive bookings and longer holiday demand",
+        url: "https://economictimes.indiatimes.com/industry/services/hotels-/-restaurants/festive-fever-checks-in-early-hotel-bookings-room-rates-rise-as-indians-plan-longer-getaways/articleshow/133939679.cms",
+      },
+      {
+        label: "ET TravelWorld: festive airfare and full-cost pressure",
+        url: "https://travel.economictimes.indiatimes.com/news/research-and-statistics/weaker-rupee-and-costly-airfares-make-seasonal-international-travel-unviable/133724910",
+      },
+    ],
+  },
+  {
+    id: 9,
+    title: "Late-August 2026: Plan the Long Weekend Before the Fare",
+    excerpt:
+      "Short breaks are growing, but a useful 2–3-day plan starts with leave, flight timing, transfers, and the right-sized route—not a cheap headline fare.",
+    image:
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=1000",
+    author: "Vishal Harlalka",
+    date: "August 30, 2026",
+    category: "Planning",
+    slug: "late-august-2026-long-weekend-micro-holiday-planning",
+    readTime: "4 min read",
+    tags: ["Long Weekends", "Short Breaks", "India Travel", "Short-Haul Asia"],
+    body: [
+      "India's late-August travel market is rewarding shorter, more intentional breaks. Business Standard, citing Pickyourtrail and Cleartrip data, reported 40% year-on-year growth in overseas long-weekend bookings and strong interest in nearby destinations such as the Maldives, Bali, Thailand, Singapore, and Sri Lanka. The useful lesson is not that every long weekend should become an international trip; it is that travelers are planning limited leave more deliberately.",
+      "Scapia's July platform report points in the same direction from a different angle. It described more frequent micro-holidays, an average domestic trip length of 1.7 nights, and more than one in three domestic air bookings made within three days of travel. Because these are company-platform signals rather than the whole market, treat them as directional—but they still explain why concise routes, fast quote turnaround, hotel location, child-friendly stays, and transfer time matter so much.",
+      "For a 2–3-day India break, choose one compact base or a single short circuit instead of turning the holiday into a chain of check-ins. For a short-haul international break, count immigration, airport transfers, entry forms, baggage rules, and flight timings before comparing the number of hotel nights. A late arrival and early departure can turn a four-night headline into only two useful destination days.",
+      "Travel Gateway can compare a compact domestic escape with a short-haul international option using the same checklist: door-to-door travel time, usable sightseeing time, hotel location, transfer mode, meals, entry requirements, weather dependency, and the full indicative trip cost. Live fares and supplier space still need to be reconfirmed before any non-refundable payment.",
+    ],
+    takeaways: [
+      "Build a short break around usable destination time, not only the advertised number of nights.",
+      "For 2–3-day routes, prefer one strong base over multiple hotel changes.",
+      "Compare the complete trip cost after flights, baggage, transfers, entry steps, and peak-date supplements.",
+    ],
+    sources: [
+      {
+        label: "Business Standard: long-weekend and festive travel demand",
+        url: "https://www.business-standard.com/industry/news/indians-long-weekend-travel-overseas-holidays-onam-raksha-bandhan-126082000290_1.html",
+      },
+      {
+        label: "Scapia: India's 2026 micro-holiday economy",
+        url: "https://www.scapia.cards/newsroom/india-enters-the-micro-holiday-economy-more-trips-higher-standards-new-destinations",
+      },
+    ],
+  },
+  {
+    id: 8,
+    title: "What India’s 2026 Travelers Need Before They Book",
+    excerpt:
+      "Current Google research points to longer, multi-touch planning journeys and record interest in group and slow travel—making practical package detail more valuable than generic inspiration.",
+    image:
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=1000",
+    author: "Vishal Harlalka",
+    date: "August 20, 2026",
+    category: "Trends",
+    slug: "india-2026-travel-search-booking-expectations",
+    readTime: "5 min read",
+    tags: ["India Travel", "Group Travel", "Slow Travel", "Planning"],
+    body: [
+      "Google and Kantar’s India traveler research says people use an average of seven inspiration touchpoints, while 44% take more than a week to plan and book a holiday. Search and YouTube remain central throughout the journey, especially when travelers compare reviews, hotel location, room availability, flights, and the details needed to make a confident decision.",
+      "That raises the standard for a useful tour page. A strong package should explain who the route suits, realistic pacing, hotel category, transport, meal support, inclusions, exclusions, starting-price context, entry-document checks, and what can change with dates or availability. Attractive imagery still matters, but it should lead into decision-ready detail rather than replace it.",
+      "Google’s 2026 travel-search review also found record interest in travel groups and tour groups, alongside an all-time high for slow travel. For a personal travel planner, the practical opportunity is not to force every guest into a fixed departure. It is to make private families, friends, senior travelers, solo guests seeking a group, and slower single-region journeys easier to compare before an inquiry.",
+      "Travel Gateway’s current package pages now emphasize route pacing, operational checks, indicative pricing, customization, and direct inquiry support. Travelers should still verify visas, government advisories, supplier availability, and transport schedules before non-refundable payments because those details can change after a page is published.",
+    ],
+    takeaways: [
+      "Answer hotel, transport, meal, pacing, inclusion, and exclusion questions before asking for a lead.",
+      "Offer a clear choice between private customization, small-group needs, and slower single-region travel.",
+      "Use current official sources for entry and operational facts, then reconfirm them before payment.",
+    ],
+    sources: [
+      {
+        label: "Think with Google: India traveler research for 2026",
+        url: "https://business.google.com/in/think/consumer-insights/travel-trends-marketing-india/",
+      },
+      {
+        label: "Google: 2026 travel search trends",
+        url: "https://blog.google/products-and-platforms/products/travel/2026-travel-trends/",
+      },
+    ],
+  },
+  {
+    id: 7,
+    title: "August 2026: Short-Haul Asia and Flexible India Holiday Planning",
+    excerpt:
+      "Why value, visa readiness, flexible routing, and a clear land-package quote matter when comparing India and short-haul Asia holidays.",
+    image:
+      "https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&q=80&w=1000",
+    author: "Vishal Harlalka",
+    date: "August 1, 2026",
+    category: "Planning",
+    slug: "august-2026-short-haul-asia-india-planning",
+    readTime: "4 min read",
+    tags: ["Short-Haul Asia", "Vietnam", "India", "Value"],
+    body: [
+      "Indian outbound demand continues to favour short- and medium-haul holidays that are easy to reach, offer clear value, and can be tailored around family needs. That makes a quick comparison of total trip effort more useful than comparing a headline package price alone: flight timing, baggage, airport transfers, hotel location, internal travel, food preferences, and entry documentation can change the experience substantially.",
+      "Vietnam remains a strong choice for travellers who want a multi-stop cultural and coastal route, but mainland itineraries need visa planning. Vietnam Immigration says its e-visa can be valid for up to 90 days with single or multiple entry; use the official portal and verify the correct entry port, passport details, and current requirements before any non-refundable payment.",
+      "For India, seasonal routes should be presented with operational honesty. Himalayan pilgrimages and monsoon hill or coastal itineraries need realistic drive times, weather-aware alternatives, and room to move a transfer when local conditions require it. The best quote is a transparent starting land-package estimate with inclusions, exclusions, peak-date supplements, and supplier confirmation made clear.",
+    ],
+    takeaways: [
+      "Compare total trip effort and inclusions, not only the starting fare.",
+      "Verify visas, passport details, entry ports, and airline rules before issuing non-refundable tickets.",
+      "Build weather buffers and flexible routing into mountain and monsoon journeys.",
+    ],
+  },
+  {
+    id: 6,
+    title: "June 2026 Monsoon and Short-Haul Asia Planning Checks",
+    excerpt:
+      "Current notes for travelers comparing monsoon India, Char Dham, Kerala wellness, Thailand entry rules, and practical short-haul Asia holidays.",
+    image:
+      "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=1000",
+    author: "Vishal Harlalka",
+    date: "June 24, 2026",
+    category: "Planning",
+    slug: "june-2026-monsoon-short-haul-asia-checks",
+    readTime: "5 min read",
+    tags: ["Monsoon", "Thailand", "Kerala", "Family Travel"],
+    body: [
+      "India travel planning needs more operational detail this week because active monsoon conditions can affect routes differently. IMD-linked June 23-24 updates warned of widespread rain, thunderstorms, and heavy spells across several regions, including Kerala, Uttarakhand, Goa, Karnataka, parts of Maharashtra, and the Northeast. That does not mean travelers should avoid every monsoon plan, but it does mean the itinerary should allow flexible sightseeing order, better vehicles, and buffer time around hill, coast, ferry, and pilgrimage sectors.",
+      "For Kerala, the stronger product is still wellness-first: Ayurveda, backwater resorts, tea landscapes, good hotels, and slower days. Trying to sell a dry-season sightseeing checklist during active rain weeks creates the wrong expectation. Travelers should be told upfront which activities are weather-dependent and which parts of the trip remain enjoyable even when it rains.",
+      "For Char Dham, June and early monsoon planning should be treated as an operational pilgrimage. Registration, medical fitness, road advisories, local weather, pony or palki support, porter help, and helicopter-sector uncertainty all need to be discussed before final payment, especially for senior travelers and families.",
+      "Short-haul Asia is also not just about the cheapest package. Current travel trend reporting for 2026 points toward more personalized, wellness-led, culinary, mountain, and multi-generational trips. At the same time, Thailand entry-rule reporting has been volatile, so Indian travelers comparing Thailand, Vietnam, South Korea, Singapore, and island holidays should verify visa or exemption rules, passport validity, baggage, hotel location, and internal transfers before issuing non-refundable tickets.",
+    ],
+    takeaways: [
+      "Add weather buffers to monsoon India, Char Dham, hill, coast, and ferry-based itineraries.",
+      "Position Kerala monsoon around wellness and comfort, not only sightseeing volume.",
+      "For short-haul Asia, compare entry rules, family comfort, food, pacing, and total travel effort before price.",
+    ],
+  },
+  {
+    id: 5,
+    title: "India Travel Planning Signals for Summer and Monsoon 2026",
+    excerpt:
+      "A practical read on why inbound India demand, Char Dham timing, and Kerala wellness travel deserve sharper planning language right now.",
+    image:
+      "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&q=80&w=1000",
+    author: "Vishal Harlalka",
+    date: "June 17, 2026",
+    category: "Trends",
+    slug: "india-travel-planning-signals-summer-monsoon-2026",
+    readTime: "6 min read",
+    tags: ["India", "Pilgrimage", "Kerala", "Planning"],
+    body: [
+      "India's Ministry of Tourism said on February 5, 2026 that international tourist arrivals in India reached 20.57 million in 2024, up 8.9 percent year on year. For a travel planner, that is not just a statistic. It is a reminder that India pages aimed at overseas guests need stronger route clarity, better comfort signals, and less generic package language.",
+      "At the same time, summer pilgrimage demand remains operationally sensitive. The official Uttarakhand registration portal for Char Dham and Hemkund is active, and successful planning depends on more than temple names. Guests need realistic drive times, health awareness, registration timing, and early discussion of helicopter sectors, pony or palki support, and hotel quality near key stops.",
+      "For monsoon travel, Kerala remains easier to position when the promise is wellness, softer pacing, greenery, and backwater downtime rather than nonstop sightseeing. That is especially relevant for couples, senior travelers, and guests who want a restorative India holiday instead of a checklist-heavy route in heavy rain.",
+      "The product lesson is simple: seasonal pages should lead with why this route makes sense now, what practical constraints matter, and which traveler profile it suits best. Better travel content does not guarantee rankings, but it does make the right inquiry easier to earn.",
+    ],
+    takeaways: [
+      "Use stronger premium-planning language on India pages because inbound demand has recovered materially.",
+      "Treat Char Dham as an operational product with registration, health, and pacing details surfaced early.",
+      "Sell monsoon Kerala around wellness and comfort instead of forcing dry-season sightseeing expectations.",
+    ],
+  },
   {
     id: 1,
     title: "Vietnam 2026 Planning Guide for Indian Travelers",
@@ -317,6 +542,10 @@ const posts: EditorialPost[] = [
     ],
   },
 ];
+
+export function editorialPostDate(value: string) {
+  return new Date(`${value} 12:00:00 UTC`).toISOString().slice(0, 10);
+}
 
 function cleanTitle(title: string) {
   return title
@@ -546,16 +775,98 @@ function dedupeArticles(articles: LiveArticle[]) {
   });
 }
 
+function normalizeStoredArticle(article: Omit<LiveArticle, "seenAt"> & { seenAt: Date | string }): LiveArticle {
+  return {
+    ...article,
+    seenAt: article.seenAt instanceof Date ? article.seenAt : new Date(article.seenAt),
+  };
+}
+
+function mergeArchivedArticles(current: LiveArticle[], incoming: LiveArticle[]) {
+  return dedupeArticles([...incoming, ...current].map(normalizeStoredArticle))
+    .sort((a, b) => b.seenAt.getTime() - a.seenAt.getTime())
+    .slice(0, MAX_ARCHIVED_NEWS);
+}
+
+function readNewsArchive() {
+  if (typeof window === "undefined") return [];
+
+  try {
+    const stored = window.localStorage.getItem(NEWS_ARCHIVE_STORAGE_KEY);
+    if (!stored) return [];
+
+    const parsed = JSON.parse(stored) as LiveArticle[];
+    if (!Array.isArray(parsed)) return [];
+
+    return parsed
+      .map(normalizeStoredArticle)
+      .filter((article) => article.title && article.url && !Number.isNaN(article.seenAt.getTime()));
+  } catch {
+    return [];
+  }
+}
+
+function writeNewsArchive(articles: LiveArticle[]) {
+  if (typeof window === "undefined") return;
+
+  try {
+    window.localStorage.setItem(NEWS_ARCHIVE_STORAGE_KEY, JSON.stringify(articles));
+  } catch {
+    // Private browsing and full storage should not break the live newsroom.
+  }
+}
+
+function matchesSearch(article: LiveArticle, query: string) {
+  const haystack = [
+    article.title,
+    article.summary,
+    article.source,
+    article.sourceCountry,
+    article.category,
+    ...article.checks,
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  return query
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean)
+    .every((term) => haystack.includes(term));
+}
+
 export default function Blog() {
+  const { slug } = useParams();
+  const navigate = useNavigate();
+  const routePost = posts.find((post) => post.slug === slug);
+  const isArticlePage = Boolean(routePost);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [selectedPostId, setSelectedPostId] = useState(posts[0].id);
+  const [selectedPostId, setSelectedPostId] = useState(routePost?.id ?? posts[0].id);
   const [liveArticles, setLiveArticles] = useState<LiveArticle[]>([]);
+  const [newsArchive, setNewsArchive] = useState<LiveArticle[]>([]);
+  const [newsSearch, setNewsSearch] = useState("");
   const [selectedLiveId, setSelectedLiveId] = useState<string | null>(null);
   const [newsStatus, setNewsStatus] = useState<NewsStatus>("idle");
   const [newsError, setNewsError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [feedSource, setFeedSource] = useState("Live travel feeds");
   const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+
+  useEffect(() => {
+    if (routePost) {
+      setSelectedPostId(routePost.id);
+      return;
+    }
+
+    if (slug) {
+      navigate("/blog", { replace: true });
+      return;
+    }
+
+    const hashSlug = window.location.hash.replace(/^#/, "");
+    const linkedPost = posts.find((post) => post.slug === hashSlug);
+    if (linkedPost) navigate(`/blog/${linkedPost.slug}`, { replace: true });
+  }, [navigate, routePost, slug]);
 
   const refreshLiveNews = useCallback(async () => {
     setNewsStatus("loading");
@@ -571,6 +882,11 @@ export default function Blog() {
       ).slice(0, 12);
 
       setLiveArticles(nextArticles);
+      setNewsArchive((current) => {
+        const nextArchive = mergeArchivedArticles(current, nextArticles);
+        writeNewsArchive(nextArchive);
+        return nextArchive;
+      });
       setSelectedLiveId((current) => {
         if (current && nextArticles.some((article) => article.id === current)) return current;
         return nextArticles[0]?.id ?? null;
@@ -580,6 +896,11 @@ export default function Blog() {
       setNewsStatus("success");
     } catch (error) {
       setLiveArticles(officialIndiaTravelUpdates);
+      setNewsArchive((current) => {
+        const nextArchive = mergeArchivedArticles(current, officialIndiaTravelUpdates);
+        writeNewsArchive(nextArchive);
+        return nextArchive;
+      });
       setSelectedLiveId(officialIndiaTravelUpdates[0]?.id ?? null);
       setLastUpdated(new Date());
       setNewsStatus("error");
@@ -590,6 +911,7 @@ export default function Blog() {
   }, []);
 
   useEffect(() => {
+    setNewsArchive(readNewsArchive());
     void refreshLiveNews();
     const interval = window.setInterval(() => {
       void refreshLiveNews();
@@ -622,8 +944,29 @@ export default function Blog() {
   }, [activeCategory, selectedPostId]);
 
   const selectedPost = posts.find((post) => post.id === selectedPostId) || posts[0];
+  const normalizedNewsSearch = newsSearch.trim();
+  const searchedArchive = normalizedNewsSearch
+    ? newsArchive.filter((article) => matchesSearch(article, normalizedNewsSearch))
+    : [];
+  const displayedLiveArticles = normalizedNewsSearch ? searchedArchive : liveArticles;
+
+  useEffect(() => {
+    if (normalizedNewsSearch) {
+      if (searchedArchive.length === 0) return;
+      if (selectedLiveId && searchedArchive.some((article) => article.id === selectedLiveId)) return;
+      setSelectedLiveId(searchedArchive[0].id);
+      return;
+    }
+
+    if (selectedLiveId && liveArticles.some((article) => article.id === selectedLiveId)) return;
+    setSelectedLiveId(liveArticles[0]?.id ?? null);
+  }, [liveArticles, normalizedNewsSearch, searchedArchive, selectedLiveId]);
+
   const selectedLiveArticle =
-    liveArticles.find((article) => article.id === selectedLiveId) || liveArticles[0];
+    displayedLiveArticles.find((article) => article.id === selectedLiveId) ||
+    liveArticles.find((article) => article.id === selectedLiveId) ||
+    displayedLiveArticles[0] ||
+    liveArticles[0];
   const latestLiveArticle = liveArticles[0];
   const liveCategories = Array.from(new Set(liveArticles.map((article) => article.category)));
   const showEditorialGrid = activeCategory !== "Live News";
@@ -633,19 +976,49 @@ export default function Blog() {
     document.getElementById("detailed-blog")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const articlePath = `/blog/${selectedPost.slug}`;
+  const articleSchema = {
+    "@type": "BlogPosting",
+    "@id": `${siteUrl}${articlePath}#article`,
+    headline: selectedPost.title,
+    description: selectedPost.excerpt,
+    image: selectedPost.image,
+    datePublished: editorialPostDate(selectedPost.date),
+    author: { "@type": "Person", name: selectedPost.author, url: `${siteUrl}/about` },
+    publisher: { "@id": `${siteUrl}/#travelagency` },
+    mainEntityOfPage: { "@id": `${siteUrl}${articlePath}#webpage` },
+    url: `${siteUrl}${articlePath}`,
+    articleSection: selectedPost.category,
+    keywords: selectedPost.tags.join(", "),
+  };
+
   return (
     <div className="pt-24 pb-16 px-6 bg-background">
       <SEO
-        title="Travel Gateway Blog | Live Travel News, Visa Alerts and Planning Guides"
-        description="Read Travel Gateway travel news, visa updates, airline stories, destination insights, and advisor-written planning guides for Indian and international travelers."
-        canonicalPath="/blog"
-        ogType="article"
-        image={defaultSeoImage}
-        imageAlt="Travel Gateway blog and live travel news"
-        keywords="travel blog India, travel news India, visa updates for Indian travelers, airline news, holiday planning guides"
-        structuredData={graphSchema([
-          pageSchema("/blog", "Travel Gateway Blog | Live Travel News, Visa Alerts and Planning Guides", "Read Travel Gateway travel news, visa updates, airline stories, destination insights, and advisor-written planning guides for Indian and international travelers."),
-          {
+        title={isArticlePage ? `${selectedPost.title} | Travel Gateway` : "Travel Gateway Blog | Live Travel News, Visa Alerts and Planning Guides"}
+        description={isArticlePage ? selectedPost.excerpt : "Read Travel Gateway travel news, visa updates, airline stories, destination insights, and advisor-written planning guides for Indian and international travelers."}
+        canonicalPath={isArticlePage ? articlePath : "/blog"}
+        ogType={isArticlePage ? "article" : "website"}
+        image={isArticlePage ? selectedPost.image : defaultSeoImage}
+        imageAlt={isArticlePage ? selectedPost.title : "Travel Gateway blog and live travel news"}
+        keywords={isArticlePage ? selectedPost.tags.join(", ") : "travel blog India, travel news India, visa updates for Indian travelers, airline news, holiday planning guides"}
+        structuredData={isArticlePage
+          ? graphSchema([
+              pageSchema(articlePath, selectedPost.title, selectedPost.excerpt, selectedPost.image),
+              articleSchema,
+              {
+                "@type": "BreadcrumbList",
+                "@id": `${siteUrl}${articlePath}#breadcrumb`,
+                itemListElement: [
+                  { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+                  { "@type": "ListItem", position: 2, name: "Journal", item: `${siteUrl}/blog` },
+                  { "@type": "ListItem", position: 3, name: selectedPost.title, item: `${siteUrl}${articlePath}` },
+                ],
+              },
+            ])
+          : graphSchema([
+              pageSchema("/blog", "Travel Gateway Blog | Live Travel News, Visa Alerts and Planning Guides", "Read Travel Gateway travel news, visa updates, airline stories, destination insights, and advisor-written planning guides for Indian and international travelers."),
+              {
             "@type": "Blog",
             "@id": `${siteUrl}/blog#blog`,
             name: "Travel Gateway Journal",
@@ -656,30 +1029,32 @@ export default function Blog() {
               headline: post.title,
               description: post.excerpt,
               image: post.image,
-              author: { "@type": "Person", name: post.author },
+              author: { "@type": "Person", name: post.author, url: `${siteUrl}/about` },
               publisher: { "@id": `${siteUrl}/#travelagency` },
               url: `${siteUrl}/blog/${post.slug}`,
+              articleSection: post.category,
               keywords: post.tags.join(", "),
             })),
-          },
-        ])}
+              },
+            ])}
       />
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-14">
           <Badge className="mb-4 border-none bg-emerald-500/10 text-emerald-700">
-            <span className="mr-2 h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            Live Travel Dispatch
+            {!isArticlePage && <span className="mr-2 h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />}
+            {isArticlePage ? selectedPost.category : "Live Travel Dispatch"}
           </Badge>
           <h1 className="text-5xl font-bold mb-6 tracking-tight">
-            The <span className="text-primary italic">TravelGateway</span> Journal
+            {isArticlePage ? selectedPost.title : <>The <span className="text-primary italic">TravelGateway</span> Journal</>}
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Real-time travel news, visa alerts, airline updates, and detailed advisor-written
-            planning briefs on one page.
+            {isArticlePage
+              ? selectedPost.excerpt
+              : "Real-time travel news, visa alerts, airline updates, and detailed advisor-written planning briefs on one page."}
           </p>
         </div>
 
-        <section className="mb-16">
+        {!isArticlePage && <section className="mb-16">
           <div className="mb-8 overflow-hidden rounded-2xl border border-emerald-500/20 bg-slate-950 text-white shadow-xl">
             <div className="flex flex-col gap-5 p-5 md:flex-row md:items-center md:justify-between md:px-7">
               <div className="flex items-center gap-4">
@@ -922,9 +1297,9 @@ export default function Blog() {
               )}
             </article>
           </div>
-        </section>
+        </section>}
 
-        <section className="flex flex-col items-center mb-12">
+        {!isArticlePage && <section className="flex flex-col items-center mb-12">
           <div className="flex items-center gap-2 mb-6 text-sm text-muted-foreground font-medium uppercase tracking-wider">
             <Filter className="w-4 h-4" />
             <span>Filter by Category</span>
@@ -947,7 +1322,7 @@ export default function Blog() {
               </Button>
             ))}
           </div>
-        </section>
+        </section>}
 
         {showEditorialGrid && (
           <section id="detailed-blog" className="mb-16 scroll-mt-28">
@@ -959,9 +1334,9 @@ export default function Blog() {
                 <h2 className="text-2xl font-bold mb-4">Advisor-Written Planning Briefs</h2>
                 <div className="space-y-3">
                   {filteredPosts.map((post) => (
-                    <button
+                    <Link
                       key={post.id}
-                      type="button"
+                      to={`/blog/${post.slug}`}
                       onClick={() => setSelectedPostId(post.id)}
                       className={cn(
                         "w-full rounded-lg border bg-background p-4 text-left transition-all hover:border-primary/40",
@@ -978,7 +1353,7 @@ export default function Blog() {
                       <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
                         {post.excerpt}
                       </p>
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -1010,10 +1385,10 @@ export default function Blog() {
                       {selectedPost.readTime}
                     </span>
                   </div>
-                  <h2 className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">
+                  {!isArticlePage && <h2 className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">
                     {selectedPost.title}
-                  </h2>
-                  <p className="mt-5 text-lg text-muted-foreground leading-relaxed">
+                  </h2>}
+                  <p className={cn("text-lg text-muted-foreground leading-relaxed", !isArticlePage && "mt-5")}>
                     {selectedPost.excerpt}
                   </p>
                   <div className="mt-7 flex flex-wrap gap-2">
@@ -1040,11 +1415,31 @@ export default function Blog() {
                       ))}
                     </ul>
                   </div>
+                  {selectedPost.sources?.length ? (
+                    <div className="mt-8 rounded-lg border border-primary/15 bg-primary/[0.03] p-5">
+                      <h3 className="mb-4 font-bold">Sources and further reading</h3>
+                      <ul className="space-y-3">
+                        {selectedPost.sources.map((source) => (
+                          <li key={source.url}>
+                            <a
+                              href={source.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+                            >
+                              {source.label}
+                              <ExternalLink className="h-3.5 w-3.5" />
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
                   <div className="mt-8 flex flex-wrap items-center justify-between gap-5 border-t pt-6">
                     <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                       Share article
                     </span>
-                    <SocialShare url={`${baseUrl}/blog/${selectedPost.slug}`} title={selectedPost.title} />
+                    <SocialShare url={`${baseUrl}${articlePath}`} title={selectedPost.title} />
                   </div>
                 </div>
               </article>
@@ -1096,15 +1491,14 @@ export default function Blog() {
                         {post.excerpt}
                       </p>
                       <div className="flex items-center justify-between gap-4 pt-5 border-t border-muted/20">
-                        <Button
-                          type="button"
-                          variant="link"
+                        <Link
+                          to={`/blog/${post.slug}`}
                           onClick={() => selectPost(post.id)}
-                          className="p-0 h-auto font-bold text-primary group/link"
+                          className={cn(buttonVariants({ variant: "link" }), "p-0 h-auto font-bold text-primary group/link")}
                         >
                           Read Detailed Blog
                           <ArrowRight className="ml-2 w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                        </Button>
+                        </Link>
                         <SocialShare url={`${baseUrl}/blog/${post.slug}`} title={post.title} />
                       </div>
                     </CardContent>

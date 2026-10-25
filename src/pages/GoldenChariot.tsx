@@ -1,6 +1,6 @@
 ﻿import { motion } from "framer-motion";
 import { 
-  MapPin, Clock, Star, CheckCircle2, 
+  MapPin, Clock, CheckCircle2, 
   Download, ArrowLeft, ShieldCheck, 
   Sparkles, Coffee, Train, Utensils, Music,
   Compass, Map, Gift
@@ -13,18 +13,19 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useEffect } from "react";
 import CurrencyConverter from "@/components/CurrencyConverter";
+import SEO from "@/components/SEO";
+import { graphSchema, pageSchema } from "@/lib/seo";
 
 export default function GoldenChariot() {
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = "Golden Chariot: Pride of Karnataka | Luxury Rail Journey";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute("content", "Experience IRCTC's Golden Chariot on the Pride of Karnataka route, a 5 nights / 6 days luxury rail journey through Karnataka and Goa.");
-    }
   }, []);
+
+  const pageTitle = "Golden Chariot Pride of Karnataka | Luxury Train Journey";
+  const pageDescription =
+    "Explore the Golden Chariot Pride of Karnataka luxury train route through Bengaluru, Bandipur, Mysuru, Hampi, Pattadakal, Aihole, and Goa.";
 
   const galleryImages = [
     { src: "https://www.goldenchariot.org/luxury-tourist-train-south-india/img/5.jpg", title: "Official Exterior", description: "The Golden Chariot's signature purple-and-gold exterior from the operator site." },
@@ -33,16 +34,25 @@ export default function GoldenChariot() {
   ];
 
   const itinerary = [
-    { day: "Day 1", title: "Bengaluru Departure", description: "Board the Golden Chariot in Bengaluru and settle in for the Pride of Karnataka journey as the train begins its luxury circuit." },
-    { day: "Day 2", title: "Bandipur & Mysuru", description: "Start with Bandipur Tiger Reserve's wilderness setting, then continue to Mysuru for the city's royal palace and heritage atmosphere." },
-    { day: "Day 3", title: "Halebidu & Chikkamagaluru", description: "Discover Hoysala-era temple artistry at Halebidu before heading through the lush coffee landscapes of Chikkamagaluru." },
-    { day: "Day 4", title: "Hampi", description: "Spend the day among the UNESCO-listed Vijayanagara ruins of Hampi, including its celebrated temple complexes and stone chariot precinct." },
-    { day: "Day 5", title: "Pattadakal, Aihole & Goa", description: "Explore the Chalukyan heritage corridor around Pattadakal and Aihole before the route extends onward toward Goa." },
-    { day: "Day 6", title: "Goa to Bengaluru", description: "Enjoy the final day of the circuit with Goa's heritage flavour before the return stretch to Bengaluru and disembarkation." }
+    { day: "Day 1", title: "Bengaluru to Bandipur", description: "Board at Yeshvantpur, travel via Nanjangud to Bandipur, and join the evening safari before the train continues to Mysuru." },
+    { day: "Day 2", title: "Mysuru", description: "Visit Mysore Palace, with an optional Srirangapatnam excursion available according to the operating itinerary." },
+    { day: "Day 3", title: "Halebidu & Chikkamagaluru", description: "Explore Halebidu's Hoysala temple architecture, then continue to Chikkamagaluru for plantation visits and coffee tasting." },
+    { day: "Day 4", title: "Hampi", description: "Explore the monumental Hampi ruins before returning to the train for the evening." },
+    { day: "Day 5", title: "Pattadakal & Aihole", description: "Visit Pattadakal and Aihole, with the Badami Caves offered as an optional excursion subject to the operating plan." },
+    { day: "Day 6", title: "Goa", description: "Discover North Goa churches and a museum, followed by the evening program before the train departs for Bengaluru." },
+    { day: "Day 7", title: "Bengaluru Arrival", description: "Breakfast onboard and trip conclusion in Bengaluru. Departure timing and excursions remain subject to the operator's final schedule." }
   ];
 
   return (
     <div className="min-h-screen bg-[#FDFCFB] text-[#1A1A1A]">
+      <SEO
+        title={pageTitle}
+        description={pageDescription}
+        canonicalPath="/destinations/golden-chariot"
+        structuredData={graphSchema([
+          pageSchema("/destinations/golden-chariot", pageTitle, pageDescription),
+        ])}
+      />
       {/* Hero Section */}
       <section className="relative h-[85vh] w-full overflow-hidden">
         <motion.img
@@ -75,8 +85,8 @@ export default function GoldenChariot() {
                 Luxury Train Journey
               </Badge>
               <div className="flex items-center gap-2 text-white font-bold bg-black/40 backdrop-blur-md py-1.5 px-4 rounded-full text-xs border border-white/10">
-                <Star className="w-4 h-4 text-[#D4AF37] fill-current" />
-                <span>5.0 Excellence Rating</span>
+                <Train className="w-4 h-4 text-[#D4AF37]" />
+                <span>Official published itinerary</span>
               </div>
             </div>
             
@@ -316,10 +326,10 @@ export default function GoldenChariot() {
                 Reserve Your <br/><span className="not-italic opacity-80">Royal Cabin</span>
               </h2>
               <p className="text-white/90 text-xl md:text-2xl font-light max-w-2xl mx-auto">
-                Limited departures strictly for the discerning traveler. Packages starting from ₹1,85,000* per person. T&C apply.
+                Published 2026-27 Deluxe Cabin tariff starts at ₹4,87,500 per person on twin sharing, plus applicable GST. Final fares and departures are confirmed by the operator.
               </p>
               <div className="mx-auto max-w-xl">
-                <CurrencyConverter amountInInr={185000} className="bg-white/95 text-left" />
+                <CurrencyConverter amountInInr={487500} className="bg-white/95 text-left" />
               </div>
             </div>
 

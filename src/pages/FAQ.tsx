@@ -26,7 +26,7 @@ export default function FAQ() {
     },
     {
       question: "Do you assist with Visa processing for Indian travelers?",
-      answer: "Absolutely. We provide comprehensive visa assistance, including E-visas for countries like Vietnam and sticker visas for Schengen, UK, USA, and others. Our team ensures your documentation is perfect to maximize approval chances."
+      answer: "Yes. We help travelers understand current document checklists and application steps for destinations such as Vietnam, the Schengen area, the UK, and the USA. Requirements can change, and approval is always decided by the relevant embassy or immigration authority, so no travel agent can guarantee a visa."
     },
     {
       question: "What makes TravelGateway different from online travel portals?",
@@ -71,7 +71,7 @@ export default function FAQ() {
             <HelpCircle className="w-16 h-16 text-primary mx-auto mb-6" />
             <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Frequently Asked Questions</h1>
             <p className="text-muted-foreground text-lg">
-              Everything you need to know about planning your next journey with the leading travel agent in South Bopal, Ahmedabad.
+              Practical answers for planning your next journey with our boutique travel agency in South Bopal, Ahmedabad.
             </p>
           </motion.div>
         </div>

@@ -1,7 +1,7 @@
 ﻿import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Headphones, MapPin, Search, ShieldCheck, Sparkles, Star, Users } from "lucide-react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -25,11 +25,10 @@ const isIndiaDestination = (dest: Destination) => dest.country === "India" || (d
 interface DestinationCardProps {
   dest: Destination;
   index: number;
-  onSelect: (dest: Destination) => void;
   key?: any;
 }
 
-function DestinationCard({ dest, index, onSelect }: DestinationCardProps) {
+function DestinationCard({ dest, index }: DestinationCardProps) {
   const locationLabel = [dest.city, dest.state, dest.country].filter(Boolean).join(", ");
   const displayType = isIndiaDestination(dest) && dest.type === "Domestic" ? "INDIA" : dest.type;
 
@@ -42,12 +41,13 @@ function DestinationCard({ dest, index, onSelect }: DestinationCardProps) {
       className="h-full"
     >
       <Card className="group h-full overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white shadow-[0_24px_70px_-48px_rgba(15,23,42,0.8)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_34px_90px_-52px_rgba(15,23,42,0.9)]">
-        <button type="button" onClick={() => onSelect(dest)} className="block w-full text-left">
+        <Link to={destinationPath(dest)} className="block w-full text-left">
           <div className="relative aspect-[16/11] overflow-hidden">
             <img
               src={dest.image}
               alt={dest.name}
               loading="lazy"
+              decoding="async"
               referrerPolicy="no-referrer"
               className={`h-full w-full transition-transform duration-700 group-hover:scale-105 ${shouldFitWholeImage(dest.image) ? "object-contain bg-slate-100" : "object-cover"}`}
               onError={(event) => {
@@ -71,7 +71,7 @@ function DestinationCard({ dest, index, onSelect }: DestinationCardProps) {
               <h3 className="text-2xl font-black leading-tight text-white">{dest.name}</h3>
             </div>
           </div>
-        </button>
+        </Link>
 
         <div className="flex h-[calc(100%-0px)] flex-col p-6">
           <div className="mb-5 flex items-center justify-between gap-4">
@@ -98,8 +98,7 @@ function DestinationCard({ dest, index, onSelect }: DestinationCardProps) {
 
           <div className="mt-auto flex items-center gap-3 border-t border-slate-100 pt-6">
             <Button
-              type="button"
-              onClick={() => onSelect(dest)}
+              render={<Link to={destinationPath(dest)} />}
               className="h-11 flex-1 rounded-full bg-[#0B2147] font-bold text-white hover:bg-primary"
             >
               View Journey
@@ -116,23 +115,17 @@ function DestinationCard({ dest, index, onSelect }: DestinationCardProps) {
             </Button>
           </div>
 
-          <button
-            type="button"
-            onClick={() => navigateToPackageReviews(dest)}
+          <Link
+            to={`${destinationPath(dest)}#package-reviews`}
             className="mt-4 inline-flex items-center text-sm font-bold text-primary transition-colors hover:text-primary/80"
           >
             Review this package
             <Star className="ml-2 h-4 w-4" />
-          </button>
+          </Link>
         </div>
       </Card>
     </motion.article>
   );
-}
-
-function navigateToPackageReviews(dest: Destination) {
-  const reviewPath = `${destinationPath(dest)}#package-reviews`;
-  window.location.href = reviewPath;
 }
 
 export default function Destinations() {
@@ -147,7 +140,6 @@ export default function Destinations() {
   const [visibleCount, setVisibleCount] = useState(9);
   const gridRef = useRef<HTMLDivElement>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
@@ -314,11 +306,6 @@ export default function Destinations() {
     return () => observer.disconnect();
   }, [filteredDestinations.length, loadingMore, visibleCount]);
 
-  const navigateToDetail = (dest: Destination) => {
-    window.scrollTo(0, 0);
-    navigate(destinationPath(dest));
-  };
-
   const clearFilters = () => {
     setActiveCategory("All Experiences");
     setSelectedDestinationId("All Destinations");
@@ -365,7 +352,7 @@ export default function Destinations() {
                 Journeys Designed To Be Remembered
               </h1>
               <p className="mt-6 max-w-72 text-base leading-7 text-white/78 sm:max-w-2xl sm:text-lg sm:leading-8">
-                An editorial travel catalogue for India and international journeys, built around strong visuals, clear choices, and polished trip discovery.
+                Browse India and international tour packages by route, season, budget, and travel style, including current high-intent picks such as Char Dham, monsoon Kerala, luxury trains, and Vietnam holidays from Ahmedabad.
               </p>
               <div className="mt-8 grid max-w-72 grid-cols-1 gap-3 sm:max-w-2xl sm:grid-cols-3">
                 <div className="rounded-2xl border border-white/15 bg-[#07111f]/70 p-4 shadow-lg backdrop-blur-md">
@@ -383,17 +370,18 @@ export default function Destinations() {
               </div>
               <div className="mt-8 flex max-w-4xl flex-wrap gap-3">
                 {[
+                  { label: "Char Dham Yatra", href: "/destinations?scope=INDIA&experience=Pilgrimage" },
+                  { label: "Monsoon Kerala", href: "/destinations?scope=INDIA&state=Kerala&experience=Seasonal" },
                   { label: "Vietnam Packages", href: "/destinations/vietnam" },
-                  { label: "Pilgrimage Routes", href: "/destinations?scope=INDIA&experience=Pilgrimage" },
                   { label: "Seasonal India", href: "/destinations?scope=INDIA&experience=Seasonal" },
                   { label: "Luxury Trains", href: "/destinations?experience=Luxury%20Train" },
                   { label: "Safari Holidays", href: "/destinations?scope=International&search=safari" },
                 ].map((link) => (
                   <Button
                     key={link.href}
+                    render={<Link to={link.href} />}
                     variant="outline"
                     className="rounded-full border-white/20 bg-white/10 text-white hover:bg-white/20"
-                    onClick={() => navigate(link.href)}
                   >
                     {link.label}
                   </Button>
@@ -489,8 +477,8 @@ export default function Destinations() {
             <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">{tripScope === "INDIA" ? "India collection" : "International collection"}</p>
             <h2 className="mt-2 text-4xl font-black tracking-tight">Available Journeys</h2>
           </div>
-            <p className="max-w-xl text-sm leading-6 text-slate-600">
-            One card per journey, with brochure download kept as a secondary action for a calm, premium browsing flow.
+          <p className="max-w-xl text-sm leading-6 text-slate-600">
+            Use the filters to compare seasonality, pilgrimage, rail, beach, safari, and city routes without losing the planning context that usually changes the final decision.
           </p>
         </div>
 
@@ -514,7 +502,7 @@ export default function Destinations() {
                   </div>
                   <motion.div layout className="grid grid-cols-1 gap-7 md:grid-cols-2 xl:grid-cols-3">
                     {group.items.map((dest, index) => (
-                      <DestinationCard key={dest.id} dest={dest} index={index} onSelect={navigateToDetail} />
+                      <DestinationCard key={dest.id} dest={dest} index={index} />
                     ))}
                   </motion.div>
                 </section>
@@ -523,7 +511,7 @@ export default function Destinations() {
           ) : (
             <motion.div layout className="grid grid-cols-1 gap-7 md:grid-cols-2 xl:grid-cols-3">
               {visibleDestinations.map((dest, index) => (
-                <DestinationCard key={dest.id} dest={dest} index={index} onSelect={navigateToDetail} />
+                <DestinationCard key={dest.id} dest={dest} index={index} />
               ))}
             </motion.div>
           )
@@ -549,12 +537,31 @@ export default function Destinations() {
       </section>
 
       <section className="mx-auto mt-16 max-w-7xl px-6">
+        <div className="mb-6 rounded-[2rem] border border-primary/15 bg-primary/[0.03] p-6 shadow-sm">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="max-w-3xl">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Current planning brief</p>
+              <h2 className="mt-2 text-2xl font-black tracking-tight">Use the latest Travel Gateway journal before you compare seasonal routes</h2>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                The October 5 brief explains why overlapping festival dates deserve a focused city, central stay, realistic transfers, and dated confirmations instead of an overpacked circuit.
+              </p>
+            </div>
+            <Button
+              render={<Link to="/blog/october-2026-festival-travel-dates-and-pacing" />}
+              className="rounded-full px-6 py-5 text-sm font-black uppercase tracking-tight"
+            >
+              Read the journal
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: <Sparkles className="h-6 w-6" />, title: "Curated Portfolio", description: "Hand-picked journeys with clearer destination grouping." },
-            { icon: <Users className="h-6 w-6" />, title: "India Expertise", description: "Journeys prepared for domestic and international travellers." },
-            { icon: <Headphones className="h-6 w-6" />, title: "Travel Support", description: "Guidance before and during the trip." },
-            { icon: <ShieldCheck className="h-6 w-6" />, title: "Verified Partners", description: "Reliable hotels, guides, and local operators." },
+            { icon: <Sparkles className="h-6 w-6" />, title: "Current Seasonal Picks", description: "Useful when timing matters as much as the destination." },
+            { icon: <Users className="h-6 w-6" />, title: "India Expertise", description: "Stronger fit for pilgrimage, heritage, family, and premium India routes." },
+            { icon: <Headphones className="h-6 w-6" />, title: "Travel Support", description: "Guidance before and during the trip, not just brochure delivery." },
+            { icon: <ShieldCheck className="h-6 w-6" />, title: "Verified Partners", description: "Reliable hotels, guides, and local operators matched to route quality." },
           ].map((feature) => (
             <div key={feature.title} className="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-sm">
               <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">{feature.icon}</div>

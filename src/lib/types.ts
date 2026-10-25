@@ -17,6 +17,11 @@ export interface DestinationImage {
   caption: string;
 }
 
+export interface PlanningNote {
+  title: string;
+  body: string;
+}
+
 export interface Destination {
   id: number;
   name: string;
@@ -33,8 +38,11 @@ export interface Destination {
   description: string;
   longDescription?: string;
   link?: string;
+  ctaTitle?: string;
+  ctaDescription?: string;
   services?: string[];
   itinerary?: ItineraryItem[];
   faqs?: FAQItem[];
   galleryImages?: DestinationImage[];
+  planningNotes?: PlanningNote[];
 }

@@ -59,6 +59,7 @@ type FeedResponse = {
   articles?: FeedArticle[];
   fetchedAt?: string;
   source?: string;
+  error?: string;
 };
 
 type LiveArticle = {
@@ -877,9 +878,11 @@ export default function Blog() {
       const liveFeedArticles = (data.articles || [])
         .filter(isTravelRelevant)
         .map(normalizeArticle);
-      const nextArticles = dedupeArticles(
-        liveFeedArticles.length > 0 ? liveFeedArticles : officialIndiaTravelUpdates
-      ).slice(0, 12);
+      if (liveFeedArticles.length === 0) {
+        throw new Error(data.error || "No current stories are available from the live travel feeds.");
+      }
+
+      const nextArticles = dedupeArticles(liveFeedArticles).slice(0, 12);
 
       setLiveArticles(nextArticles);
       setNewsArchive((current) => {
@@ -902,11 +905,9 @@ export default function Blog() {
         return nextArchive;
       });
       setSelectedLiveId(officialIndiaTravelUpdates[0]?.id ?? null);
-      setLastUpdated(new Date());
+      setFeedSource("Verified India travel updates");
       setNewsStatus("error");
-      setNewsError(
-        "The live travel feed could not refresh right now. Showing verified India travel updates instead."
-      );
+      setNewsError("The live travel feed could not refresh. Showing dated India travel updates instead.");
     }
   }, []);
 
@@ -1068,6 +1069,8 @@ export default function Blog() {
                   <p className="mt-1 text-sm font-semibold text-white/80">
                     {newsStatus === "loading"
                       ? "Refreshing current travel headlines..."
+                      : newsStatus === "error"
+                        ? "Live feed unavailable — showing dated updates"
                       : latestLiveArticle
                         ? `Latest: ${latestLiveArticle.title}`
                         : "Waiting for the next travel update"}

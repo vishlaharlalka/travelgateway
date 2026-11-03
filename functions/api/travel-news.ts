@@ -76,6 +76,18 @@ function jsonResponse(body: Record<string, unknown>, status = 200) {
 export async function onRequestGet() {
   try {
     const articles = await fetchTravelNews();
+    if (articles.length === 0) {
+      return jsonResponse(
+        {
+          articles,
+          fetchedAt: new Date().toISOString(),
+          source: "Live travel feeds",
+          error: "No travel news sources returned current stories.",
+        },
+        503
+      );
+    }
+
     return jsonResponse({
       articles,
       fetchedAt: new Date().toISOString(),
@@ -87,7 +99,7 @@ export async function onRequestGet() {
       fetchedAt: new Date().toISOString(),
       source: "Live travel feed",
       error: error instanceof Error ? error.message : "Travel news feed failed.",
-    });
+    }, 503);
   }
 }
 

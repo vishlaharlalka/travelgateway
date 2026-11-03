@@ -108,10 +108,10 @@ function travelNewsApiPlugin(): Plugin {
 
         try {
           const payload = await getTravelNewsPayload();
-          response.statusCode = 200;
+          response.statusCode = payload.articles.length > 0 ? 200 : 503;
           response.end(JSON.stringify(payload));
         } catch (error) {
-          response.statusCode = 200;
+          response.statusCode = 503;
           response.end(
             JSON.stringify({
               articles: [],

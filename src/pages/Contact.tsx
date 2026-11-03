@@ -237,20 +237,25 @@ export default function Contact() {
       setSubmitMessage("Thank you for your inquiry. Your email has been sent successfully. You can press Send Again if you need to resend the same details.");
     } catch (error) {
       console.error("Inquiry delivery failed. Opening direct contact fallback.", error);
+      let fallbackOpened = false;
       if (typeof window !== "undefined" && formData.preferredContact === "WhatsApp") {
         const whatsappUrl = buildWhatsAppUrl(formData);
-        window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+        fallbackOpened = Boolean(window.open(whatsappUrl, "_blank", "noopener,noreferrer"));
       } else if (typeof window !== "undefined") {
         const subject = `${formData.urgency === "Same-day travel" || formData.urgency === "Within 72 hours" ? `[URGENT: ${formData.urgency.toUpperCase()}] ` : ""}Travel Gateway Inquiry - ${formData.name || "Website Lead"}`;
         const body = buildInquiryLines(formData).join("\n");
-        window.open(`mailto:${inquiryDeliveryEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, "_blank");
+        fallbackOpened = Boolean(window.open(`mailto:${inquiryDeliveryEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, "_blank"));
       }
 
-      setSubmitState(formData.preferredContact === "WhatsApp" ? "success" : "error");
+      setSubmitState("error");
       setSubmitMessage(
         formData.preferredContact === "WhatsApp"
-          ? "Automatic email delivery needs attention. WhatsApp has been opened with your inquiry details so you can send them directly to Travel Gateway."
-          : "Automatic email delivery needs attention. A pre-filled email has been opened as a backup."
+          ? fallbackOpened
+            ? "Automatic email delivery failed. WhatsApp is open with your inquiry details; press Send in WhatsApp to contact Travel Gateway."
+            : "Automatic email delivery failed and WhatsApp did not open. Please use the WhatsApp link on this page or call Travel Gateway."
+          : fallbackOpened
+            ? "Automatic email delivery failed. A pre-filled email is open as a backup; press Send in your email app to contact Travel Gateway."
+            : "Automatic email delivery failed and a mail app did not open. Please email info@travelgateway.in or call Travel Gateway."
       );
     }
   };

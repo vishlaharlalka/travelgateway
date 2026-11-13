@@ -34,6 +34,14 @@ const curatedMediaRules: Array<{ keywords: string[]; url: string; caption: strin
   { keywords: ["jeju", "seongsan", "o'sulloc", "osulloc", "songak", "hallim", "cheonjeyeon", "jeolmul"], url: mediaUrl("Seongsan_Ilchulbong_from_the_air.jpg"), caption: "Jeju volcanic island scenery" },
   { keywords: ["seoul", "gyeongbok", "myeongdong", "insadong", "n seoul", "namsan", "gwanghwamun", "cheonggyecheon"], url: mediaUrl("Gyeongbokgung Palace.png"), caption: "Seoul palaces and modern city energy" },
   { keywords: ["nami", "rail bike", "ganchon", "gangchon"], url: mediaUrl("Nami island winter.jpg"), caption: "Nami Island day trip scenery" },
+  { keywords: ["prague", "bohemian"], url: "https://images.unsplash.com/photo-1415356838286-df6fd593e8b3?auto=format&fit=crop&q=80&w=1600", caption: "Prague Old Town and Charles Bridge" },
+  { keywords: ["vienna", "schönbrunn", "schonbrunn"], url: "https://images.unsplash.com/photo-1516550893923-42d28e5677af?auto=format&fit=crop&q=80&w=1600", caption: "Vienna historic centre" },
+  { keywords: ["budapest", "danube"], url: "https://images.unsplash.com/photo-1549877452-9c387954fbc2?auto=format&fit=crop&q=80&w=1600", caption: "Budapest and the Danube" },
+  { keywords: ["krakow", "warsaw", "poland", "wieliczka"], url: "https://images.unsplash.com/photo-1722504413792-b7ddaa94df95?auto=format&fit=crop&q=80&w=1600", caption: "Kraków Old Town Main Square, Poland" },
+  { keywords: ["bucharest", "brasov", "transylvania", "sinaia", "bran castle"], url: "https://images.unsplash.com/photo-1763900933046-001f2c67ae93?auto=format&fit=crop&q=80&w=1600", caption: "Brașov old town and mountain backdrop" },
+  { keywords: ["ljubljana", "bled", "slovenia", "plitvice", "croatia", "zagreb"], url: "https://images.unsplash.com/photo-1660496851546-d20198cd9cac?auto=format&fit=crop&q=80&w=1600", caption: "Lake Bled, Slovenia" },
+  { keywords: ["helsinki", "finland", "rovaniemi", "lapland", "santa claus village"], url: "https://images.unsplash.com/photo-1780995175298-5b1abe9642cc?auto=format&fit=crop&q=80&w=1600", caption: "Northern lights over snowy Finland" },
+  { keywords: ["norway", "bergen", "oslo", "flam", "fjord"], url: "https://images.unsplash.com/photo-1723809887047-bc7a1b39bd5c?auto=format&fit=crop&q=80&w=1600", caption: "Flåm fjord and mountains, Norway" },
 ];
 
 export function curatedImageForText(text: string): DestinationImage | undefined {
@@ -2782,6 +2790,191 @@ const pilgrimageIndiaPackages: Destination[] = [
     faqs: [
       { question: "Can this connect to Nepal?", answer: "Yes. Lumbini can be added with cross-border planning and extra days." },
       { question: "Is this suitable for international groups?", answer: "Yes. We can adapt hotels, meals, language support, and pace for international pilgrim groups." }
+    ]
+  },
+  {
+    id: 300,
+    name: "Central Europe Family Discovery",
+    country: "Czechia, Austria & Hungary",
+    city: "Prague, Vienna, Budapest",
+    type: "International",
+    region: "Central Europe",
+    regionId: "europe",
+    image: "https://images.unsplash.com/photo-1415356838286-df6fd593e8b3?auto=format&fit=crop&q=80&w=1600",
+    category: "Cultural",
+    price: "₹1,65,000",
+    rating: 4.9,
+    description: "A relaxed first-time Europe route for families, with storybook old towns, hands-on museums, parks, and scenic train journeys.",
+    longDescription: "Explore three welcoming Central European capitals at a family-friendly pace. Allow time for playground breaks, easy train connections, and flexible afternoons instead of packing every day with sightseeing. The indicative starting price is per person for land arrangements; final pricing depends on dates, family room availability, rail choices, and attractions.",
+    services: ["Family Room Requests", "Intercity Rail Planning", "Central Hotels Near Transit", "Private Airport Transfers on Request", "Child-Friendly Sightseeing Suggestions"],
+    itinerary: [
+      { day: "Day 1", title: "Arrive in Prague", description: "Settle into your hotel and enjoy an easy walk around Old Town Square, with an early night after the journey." },
+      { day: "Day 2", title: "Prague Castle & Riverside", description: "Explore Prague Castle at a steady pace, cross Charles Bridge, and leave time for a riverside break and the funicular or a tram ride." },
+      { day: "Day 3", title: "Choose Your Prague Day", description: "Pick a child-friendly museum, a river cruise, or a relaxed park and playground day. Keep the afternoon open for family downtime." },
+      { day: "Day 4", title: "Train to Vienna", description: "Take a daytime train to Vienna and spend the afternoon around the historic centre or Stadtpark." },
+      { day: "Day 5", title: "Vienna Palaces & Gardens", description: "Visit Schönbrunn Palace and its gardens; choose the zoo or a shorter palace visit depending on the children's ages." },
+      { day: "Day 6", title: "Vienna to Budapest", description: "Travel by train to Budapest, check in, and enjoy an easy Danube promenade before dinner." },
+      { day: "Day 7", title: "Budapest Family Favourites", description: "Ride the funicular to Buda Castle district, see the riverfront landmarks, and choose a boat ride or city park visit." },
+      { day: "Day 8", title: "Departure", description: "Have a relaxed breakfast and transfer to the airport, allowing extra time for the family's departure arrangements." }
+    ],
+    faqs: [
+      { question: "Is this route manageable with children?", answer: "Yes. Three bases over eight days limit hotel changes, and the route uses frequent intercity trains. Families can skip a sightseeing stop or add a rest day to suit younger children." },
+      { question: "Are the cities stroller-friendly?", answer: "Main transport and many parks are accessible, but historic cobbled streets and some castle areas can be uneven. A compact stroller or carrier can be useful." },
+      { question: "Does the listed price include flights?", answer: "The displayed starting price is an indicative land-package estimate per person. Flights, exact hotel category, family room supplements, rail tickets, and attraction tickets are confirmed in the final quote." }
+    ]
+  },
+  {
+    id: 301,
+    name: "Poland Family City & Nature Trail",
+    country: "Poland",
+    city: "Warsaw, Kraków, Wieliczka",
+    type: "International",
+    region: "Central Europe",
+    regionId: "europe",
+    image: "https://images.unsplash.com/photo-1722504413792-b7ddaa94df95?auto=format&fit=crop&q=80&w=1600",
+    category: "Cultural",
+    price: "₹1,35,000",
+    rating: 4.8,
+    description: "A balanced Poland holiday mixing interactive city museums, green spaces, a salt-mine adventure, and easy rail travel.",
+    longDescription: "See Warsaw and Kraków without rushing between too many hotels. This family route pairs engaging city experiences with open time for parks and cafés. The indicative starting price is per person for land arrangements and varies with dates, family room inventory, and selected activities.",
+    services: ["Family Room Requests", "Intercity Rail Planning", "Airport Transfer Options", "Museum and Tour Suggestions", "Flexible Daily Pace"],
+    itinerary: [
+      { day: "Day 1", title: "Arrive in Warsaw", description: "Check in and take a gentle evening walk around the Old Town and Market Square." },
+      { day: "Day 2", title: "Warsaw at Your Pace", description: "Choose the Copernicus Science Centre or a family-friendly museum, then unwind in Łazienki Park." },
+      { day: "Day 3", title: "Warsaw to Kraków", description: "Take a daytime train to Kraków. Settle in and explore the Main Market Square together." },
+      { day: "Day 4", title: "Kraków Old Town & Wawel", description: "Visit Wawel Castle grounds and the riverside, with breaks for snacks and time in the square." },
+      { day: "Day 5", title: "Wieliczka Salt Mine", description: "Take a guided visit to the Wieliczka Salt Mine. Check tour age guidance and stairs before booking; choose a city park afternoon if it is not a fit." },
+      { day: "Day 6", title: "Kraków Free Day", description: "Keep the day flexible for a family activity, a short local excursion, or a slower morning and playground time." },
+      { day: "Day 7", title: "Departure", description: "Transfer to Kraków airport or continue onward by rail, allowing suitable connection time." }
+    ],
+    faqs: [
+      { question: "Is the salt mine suitable for younger children?", answer: "The visit involves stairs and a guided route underground. Check the current operator's age, mobility, and accessibility guidance before booking; families can use Day 6 as an alternative activity day." },
+      { question: "Can we do this itinerary without a car?", answer: "Yes. Warsaw and Kraków are connected by frequent trains, and city transport plus pre-booked transfers can cover local journeys." },
+      { question: "Is the package price per family?", answer: "No. The displayed figure is an indicative per-person starting price for land arrangements. Family room rates and child pricing depend on ages, dates, and hotel availability." }
+    ]
+  },
+  {
+    id: 302,
+    name: "Romania Family Castles & Carpathians",
+    country: "Romania",
+    city: "Bucharest, Sinaia, Brașov",
+    type: "International",
+    region: "Eastern Europe",
+    regionId: "europe",
+    image: "https://images.unsplash.com/photo-1763900933046-001f2c67ae93?auto=format&fit=crop&q=80&w=1600",
+    category: "Adventure",
+    price: "₹1,45,000",
+    rating: 4.8,
+    description: "A gentle Eastern Europe family adventure with mountain scenery, castle visits, and unhurried time in Brașov.",
+    longDescription: "Combine Bucharest's parks and museums with the mountain towns and castles of Transylvania. A private driver for the countryside section helps families keep luggage and transfer days manageable. The indicative starting price is per person for land arrangements; final costs depend on season, room needs, and transport choices.",
+    services: ["Countryside Driver and Transfers", "Family Room Requests", "Flexible Castle Visit Planning", "Central City Hotels", "Child-Friendly Breaks Along the Route"],
+    itinerary: [
+      { day: "Day 1", title: "Arrive in Bucharest", description: "Check in and recover from travel with a short walk in a nearby garden or park." },
+      { day: "Day 2", title: "Bucharest Family Day", description: "Choose a city museum or the Village Museum, and leave the afternoon open for parks and rest." },
+      { day: "Day 3", title: "Bucharest to Sinaia", description: "Travel north into the Carpathians, stopping for breaks along the way. Visit Peleș Castle subject to opening days and available tickets." },
+      { day: "Day 4", title: "Sinaia to Brașov", description: "Continue to Brașov and explore the compact old town at a relaxed pace." },
+      { day: "Day 5", title: "Brașov & Mountain Views", description: "Ride the cable car or choose an easy nature walk, depending on weather and the children's ages." },
+      { day: "Day 6", title: "Bran Castle Option", description: "Take a day trip to Bran and nearby villages. Castle access and crowds vary, so keep an alternative local activity in mind." },
+      { day: "Day 7", title: "Return to Bucharest", description: "Drive back with a planned lunch stop and overnight near your departure connection." },
+      { day: "Day 8", title: "Departure", description: "Transfer to the airport with a suitable buffer for traffic and check-in." }
+    ],
+    faqs: [
+      { question: "Should we rent a car for this trip?", answer: "A private driver is a comfortable option for families on the Sinaia and Brașov section. Trains are possible between some towns, but local castle visits need separate planning." },
+      { question: "Is Bran Castle a must for children?", answer: "It can be a memorable visit, but it is busy and includes stairs. Families should check current visitor information and decide based on children's ages and interests." },
+      { question: "What should families know about the mountain section?", answer: "Weather can change quickly in the Carpathians. Keep outdoor plans flexible, carry layers, and confirm cable-car operation locally." }
+    ]
+  },
+  {
+    id: 303,
+    name: "Slovenia & Croatia Family Lakes and Coast",
+    country: "Slovenia & Croatia",
+    city: "Ljubljana, Lake Bled, Zagreb, Plitvice Lakes",
+    type: "International",
+    region: "Central & Eastern Europe",
+    regionId: "europe",
+    image: "https://images.unsplash.com/photo-1660496851546-d20198cd9cac?auto=format&fit=crop&q=80&w=1600",
+    category: "Adventure",
+    price: "₹1,75,000",
+    rating: 4.9,
+    description: "A scenic family route from Slovenia's lakes and compact capital to Croatia's parks and relaxed city time.",
+    longDescription: "Enjoy a small-country feel, alpine scenery, and a nature-focused finish across Slovenia and Croatia. This route is best with a private vehicle for the lake and national park sections, while Ljubljana and Zagreb are easy to explore on foot. The indicative starting price is per person for land arrangements, with final pricing based on season, transport, and family room availability.",
+    services: ["Private Intercity and Nature Transfers", "Family Room Requests", "Park Visit Planning", "Central Hotel Suggestions", "Flexible Outdoor Schedule"],
+    itinerary: [
+      { day: "Day 1", title: "Arrive in Ljubljana", description: "Settle in and take an easy walk along the river and central squares." },
+      { day: "Day 2", title: "Ljubljana Castle & Old Town", description: "Ride the funicular to the castle, explore the old town, and enjoy a relaxed riverside afternoon." },
+      { day: "Day 3", title: "Lake Bled", description: "Transfer to Bled for lake views, a lakeside walk, and an optional traditional boat ride if conditions allow." },
+      { day: "Day 4", title: "Bled & Lake Bohinj Option", description: "Choose a gentle Bled day or a Bohinj excursion. Keep swimming and boat activities weather dependent." },
+      { day: "Day 5", title: "Travel to Zagreb", description: "Cross into Croatia with a pre-planned transfer and border buffer. Spend the evening in Zagreb's pedestrian centre." },
+      { day: "Day 6", title: "Zagreb Family Day", description: "Visit a family-friendly museum or city park and enjoy an unhurried café and market day." },
+      { day: "Day 7", title: "Plitvice Lakes Excursion", description: "Explore the marked park paths and lakes. Reserve entry in advance and choose a route suited to family stamina and current park guidance." },
+      { day: "Day 8", title: "Departure", description: "Depart from Zagreb or add an overnight if your return flight requires a connection." }
+    ],
+    faqs: [
+      { question: "Is this trip better with a rental car?", answer: "A car or private transfers make Lake Bled and Plitvice easier to combine with family luggage. A driver avoids parking and cross-border rental questions; confirm any vehicle permissions in advance." },
+      { question: "Can young children manage Plitvice Lakes?", answer: "Some paths include steps, boardwalks, and long walking distances. Check current park route guidance and select a shorter route; the visit can be replaced with a relaxed Zagreb day." },
+      { question: "Can we fly home from a different city?", answer: "Yes. Open-jaw flights may work well, but compare fares and transfer times before choosing Ljubljana, Zagreb, or another departure airport." }
+    ]
+  },
+  {
+    id: 304,
+    name: "Finland Family Helsinki & Lapland",
+    country: "Finland",
+    city: "Helsinki, Rovaniemi",
+    type: "International",
+    region: "Northern Europe",
+    regionId: "europe",
+    image: "https://images.unsplash.com/photo-1780995175298-5b1abe9642cc?auto=format&fit=crop&q=80&w=1600",
+    category: "Adventure",
+    price: "₹2,10,000",
+    rating: 4.9,
+    description: "A family break combining Helsinki's easy city attractions with Arctic Circle experiences in Rovaniemi.",
+    longDescription: "Pair a few relaxed days in Helsinki with a Lapland stay in Rovaniemi. This route works year-round, with a different feel by season: winter brings snow activities and a chance to see the Northern Lights, while summer offers long daylight and outdoor nature time. Aurora sightings are never guaranteed. The indicative starting price is per person for land arrangements; seasonal flights or trains, winter clothing and activity choices affect the final quote.",
+    services: ["Family Room Requests", "Helsinki-Rovaniemi Transport Planning", "Seasonal Activity Suggestions", "Airport Transfers on Request", "Flexible Weather Backup Plans"],
+    itinerary: [
+      { day: "Day 1", title: "Arrive in Helsinki", description: "Check in and take a gentle walk around the harbour or a nearby park after the flight." },
+      { day: "Day 2", title: "Helsinki Family Highlights", description: "Visit Suomenlinna by ferry or choose a city museum, with time for Market Square and an early evening." },
+      { day: "Day 3", title: "Helsinki at Your Pace", description: "Pick a hands-on museum, public sauna experience suitable for your family, or a relaxed day in the city's parks and design district." },
+      { day: "Day 4", title: "Travel to Rovaniemi", description: "Fly or take an overnight train north. Choose the option that best fits the children's sleep and travel comfort." },
+      { day: "Day 5", title: "Arctic Circle & Santa Claus Village", description: "Visit the Arctic Circle and Santa Claus Village; allow time indoors to warm up during the winter season." },
+      { day: "Day 6", title: "Choose a Lapland Activity", description: "In winter, consider a reindeer visit or gentle snow activity; in warmer months, choose a nature trail or riverfront outing. Confirm age and weather suitability." },
+      { day: "Day 7", title: "Flexible Rovaniemi Day", description: "Keep a free day for the Arktikum museum, rest, or a second outdoor activity. In winter, an evening aurora outing is optional and sightings cannot be promised." },
+      { day: "Day 8", title: "Departure", description: "Depart from Rovaniemi or return to Helsinki according to your flight plan, leaving a suitable connection buffer." }
+    ],
+    faqs: [
+      { question: "When should families visit Finland?", answer: "Winter suits snow experiences and the Northern Lights, while late spring and summer bring milder weather and long daylight. Choose dates around the activities your family most wants to enjoy." },
+      { question: "Can we guarantee seeing the Northern Lights?", answer: "No. Aurora visibility depends on solar activity, cloud cover, darkness, and location. Treat an aurora outing as a possibility and plan other Lapland activities too." },
+      { question: "Is the overnight train comfortable for children?", answer: "Private sleeper cabins can make the journey easier for families. Availability and cabin layout vary, so compare the train with a short flight when planning dates." }
+    ]
+  },
+  {
+    id: 305,
+    name: "Norway Family Fjords & Scenic Rail",
+    country: "Norway",
+    city: "Oslo, Flåm, Bergen",
+    type: "International",
+    region: "Northern Europe",
+    regionId: "europe",
+    image: "https://images.unsplash.com/photo-1723809887047-bc7a1b39bd5c?auto=format&fit=crop&q=80&w=1600",
+    category: "Adventure",
+    price: "₹2,25,000",
+    rating: 4.9,
+    description: "A scenic Norway family journey linking Oslo, the Flåm railway, fjord landscapes, and Bergen.",
+    longDescription: "Discover Norway by rail and boat, with overnight stays that keep the journey comfortable for families. The route combines city attractions with dramatic scenery and leaves room for weather dependent outdoor plans. The indicative starting price is per person for land arrangements; rail, fjord cruise, accommodation season, and family room availability shape the final quote.",
+    services: ["Scenic Rail Journey Planning", "Fjord Cruise Suggestions", "Family Room Requests", "Central Hotels Near Transit", "Flexible Outdoor Activity Options"],
+    itinerary: [
+      { day: "Day 1", title: "Arrive in Oslo", description: "Settle in and enjoy an easy waterfront walk around Aker Brygge or the Opera House area." },
+      { day: "Day 2", title: "Oslo Museums & Parks", description: "Choose a museum suited to your family and spend time outdoors at Vigeland Park or the harbour." },
+      { day: "Day 3", title: "Oslo to Flåm via Scenic Rail", description: "Travel by train through the mountains, connecting to the Flåm Railway. Allow a full day for the rail journey and breaks." },
+      { day: "Day 4", title: "Fjord Day", description: "Take a fjord cruise from Flåm and enjoy the village at a relaxed pace. Check seasonal schedules before confirming onward connections." },
+      { day: "Day 5", title: "Flåm to Bergen", description: "Continue to Bergen by boat and/or rail connections, selecting the route that best fits your dates and family pace." },
+      { day: "Day 6", title: "Bergen Harbour & Funicular", description: "Explore Bryggen and the harbour, then ride the Fløibanen funicular if the weather is suitable." },
+      { day: "Day 7", title: "Bergen Flexible Day", description: "Keep a spare day for an aquarium, local museum, or a short nature outing. Choose indoor plans if rain or wind affects outdoor activities." },
+      { day: "Day 8", title: "Departure", description: "Have a relaxed morning and transfer to Bergen Airport with time for the onward journey." }
+    ],
+    faqs: [
+      { question: "Is Norway practical for a family without a car?", answer: "Yes. The Oslo-Flåm-Bergen route can be planned around public trains, boats, and local transport. Timetables are seasonal, so connections should be coordinated before booking." },
+      { question: "Will we see the Northern Lights on this route?", answer: "This southern Norway itinerary is not designed as an aurora trip, and Northern Lights sightings are not assured. For a dedicated aurora holiday, consider adding northern Norway in the darker season." },
+      { question: "What should we pack for the fjords?", answer: "Pack layers and rain protection in every season. Outdoor comfort and boat schedules can change with local weather, so keep a flexible indoor option for each area." }
     ]
   }
 ];
